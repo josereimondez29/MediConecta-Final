@@ -134,7 +134,7 @@ def register_user():
 
     return jsonify({"message": "User registered successfully"}), 201
 
-# Protect a route with jwt_required, which will kick out requests
+# Protect a route with jwt_required, which will kick out request
 # without a valid JWT present.
 @app.route("/api/protected", methods=["GET"])
 @jwt_required()
