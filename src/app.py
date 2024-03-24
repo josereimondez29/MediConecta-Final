@@ -89,7 +89,7 @@ def create_login():
     body = request.get_json (silent = True)
     
     if body is None:
-        return jsonify({'msg': "Debes enviar info al body"}), 400
+        return jsonify({'msg': "Debe enviar info al body"}), 400
     if 'email' not in body:
         return jsonify({'msg': "El campo email es obligatorio"}), 400
     if 'password' not in body:
