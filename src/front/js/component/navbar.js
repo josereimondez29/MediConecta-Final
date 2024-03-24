@@ -1,31 +1,63 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {Login} from "./../pages/login"
+import {Register} from "./../pages/register"
 
 export const Navbar = () => {
 	return (
 		<div className="text-center mt-5">
       <div data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-        <div className="py-1 bg-primary top">
+      <div className="top bg-primary top mt-auto">
           <div className="container">
-            <div className="row no-gutters d-flex align-items-start align-items-center px-md-0">
+            <div className="row no-gutters d-flex align-items-start align-items-center">
               <div className="col-lg-12 d-block">
                 <div className="row d-flex">
-                  <div className="col-md pr-4 d-flex topper align-items-center">
+                  <div className="col-md-4 pr-4 d-flex topper align-items-center">
                     <div className="icon mr-2 d-flex justify-content-center align-items-center"><span className="icon-phone2"></span></div>
-                    <span className="text">6666666666</span>
+                    <span className="text text-white">6666666666</span>
                   </div>
-                  <div className="col-md pr-4 d-flex topper align-items-center">
+                  <div className="col-md-4 pr-4 d-flex topper align-items-center">
                     <div className="icon mr-2 d-flex justify-content-center align-items-center"><span className="icon-paper-plane"></span></div>
-                    <span className="text">info@mediconecta.com</span>
+                    <span className="text text-white">info@mediconecta.com</span>
                   </div>
-                  <div className="col-md-5 pr-4 d-flex topper align-items-center text-lg-right justify-content-end">
-                    <p className="mb-0 register-link"><a href="#" className="mr-3">Inscribirse</a><a href="#">Iniciar Sesión</a></p>
+                  <div className="col-md-4 pr-4 d-flex topper align-items-center">
+                    {/*Button trigger Login modal*/}
+                    <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#income">
+                      Ingrese
+                    </button>
+                    {/*Modal start*/}
+                    <div class="modal fade" id="income" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <Login />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/*Modal end*/}
+                    {/*Button trigger Register modal*/}
+                    <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#register">
+                      Registro
+                    </button>
+                    {/*Modal start*/}
+                    <div class="modal fade" id="register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <Register />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/*Modal end*/}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light site-navbar-target" id="ftco-navbar">
           <div className="container">
             <a className="navbar-brand" href="index.html">MediConecta</a>
