@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
+import FormularioRegistro from "./../component/FormularioRegistro"
 import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.css";
+import bg_3 from "../../img/bg_3.jpg";
+
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
@@ -10,16 +12,16 @@ export const Home = () => {
     <div>
       {/*banner inicial*/}
       <section
-        className="hero-wrap js-fullheight"
-        style={{ backgroundImage: "url('img/bg_3.jpg')" }}
+        className="hero-wrap"
+        style={{ backgroundImage: "url('./img/bg_3.jpg')" }}
       >
         <div className="overlay"></div>
         <div className="container">
           <div
-            className="row no-gutters slider-text js-fullheight align-items-center justify-content-start"
-            data-scrollax-parent="true"
+            className="row no-gutters slider-text align-items-center justify-content-start"
+            
           >
-            <div className="col-md-6 pt-5 ftco-animate">
+            <div className="col-md-6 pt-5">
               <div className="mt-5">
                 <span className="subheading">Bienvenido MediConecta</span>
                 <h1 className="mb-4">
@@ -43,7 +45,7 @@ export const Home = () => {
       </section>
       {/*segundo*/}
       <section
-        className="ftco-counter img ftco-section ftco-no-pt ftco-no-pb"
+        className=""
         id="about-section"
       >
         <div className="container">
@@ -57,7 +59,7 @@ export const Home = () => {
             <div className="col-md-6 col-lg-7 pl-lg-5 py-md-5">
               <div className="py-md-5">
                 <div className="row justify-content-start pb-3">
-                  <div className="col-md-12 heading-section ftco-animate p-4 p-lg-5">
+                  <div className="col-md-12 heading-section p-4 p-lg-5">
                     <h2 className="mb-4">
                       Nosotros Somos <span>MediConecta</span> Una Clínica Online
                     </h2>
@@ -84,21 +86,21 @@ export const Home = () => {
         </div>
       </section>
       {/*tercero*/}
-      <section className="ftco-section ftco-no-pt ftco-no-pb ftco-services-2 bg-light">
+      <section className="bg-light">
         <div className="container">
           <div className="row d-flex">
             <div className="col-md-7 py-5">
               <div className="py-lg-5">
                 <div className="row justify-content-center pb-5">
-                  <div className="col-md-12 heading-section ftco-animate">
+                  <div className="col-md-12 heading-section">
                     <h2 className="mb-3">Nuestros Servicios</h2>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-6 d-flex align-self-stretch ftco-animate">
+                  <div className="col-md-6 d-flex align-self-stretch">
                     <div className="media block-6 services d-flex">
                       <div className="icon justify-content-center align-items-center d-flex">
-                        <span className="flaticon-ambulance"></span>
+                        <span className="icon-ambulance"></span>
                       </div>
                       <div className="media-body pl-md-4">
                         <h3 className="heading mb-3">
@@ -111,10 +113,10 @@ export const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6 d-flex align-self-stretch ftco-animate">
+                  <div className="col-md-6 d-flex align-self-stretch ">
                     <div className="media block-6 services d-flex">
                       <div className="icon justify-content-center align-items-center d-flex">
-                        <span className="flaticon-doctor"></span>
+                        <span className="icon-doctor"></span>
                       </div>
                       <div className="media-body pl-md-4">
                         <h3 className="heading mb-3">Doctores Calificados</h3>
@@ -125,10 +127,10 @@ export const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6 d-flex align-self-stretch ftco-animate">
+                  <div className="col-md-6 d-flex align-self-stretch">
                     <div className="media block-6 services d-flex">
                       <div className="icon justify-content-center align-items-center d-flex">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <div className="media-body pl-md-4">
                         <h3 className="heading mb-3">Revisión Online</h3>
@@ -139,10 +141,10 @@ export const Home = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6 d-flex align-self-stretch ftco-animate">
+                  <div className="col-md-6 d-flex align-self-stretch">
                     <div className="media block-6 services d-flex">
                       <div className="icon justify-content-center align-items-center d-flex">
-                        <span className="flaticon-24-hours"></span>
+                        <span className="icon-24-hours"></span>
                       </div>
                       <div className="media-body pl-md-4">
                         <h3 className="heading mb-3">Servicio las 24h</h3>
@@ -158,31 +160,7 @@ export const Home = () => {
             </div>
             <div className="col-md-5 d-flex">
               <div className="appointment-wrap bg-white p-4 p-md-5 d-flex align-items-center">
-                <form action="#" className="appointment-form ftco-animate">
-                  <h3>Consulta gratis</h3>
-                  <div className="">
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Primer Nombre"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Segundo Nombre"
-                      />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="form-group">
-                      <div className="form-field">
-                        <div className="select-wrap">
-                          <div className="icon">
-                            <span className="ion-ios-arrow-down"></span>
-                          </div>
+                
                           <select name="" id="" className="form-control">
                             <option value="">Seleccione sus servicios</option>
                             <option value="">Neurologia</option>
@@ -191,63 +169,7 @@ export const Home = () => {
                             <option value="">Oftalmologia</option>
                             <option value="">Otros Servicios</option>
                           </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Movil"
-                      />
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="form-group">
-                      <div className="input-wrap">
-                        <div className="icon">
-                          <span className="ion-md-calendar"></span>
-                        </div>
-                        <input
-                          type="text"
-                          className="form-control appointment_date"
-                          placeholder="Fecha"
-                        />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <div className="input-wrap">
-                        <div className="icon">
-                          <span className="ion-ios-clock"></span>
-                        </div>
-                        <input
-                          type="text"
-                          className="form-control appointment_time"
-                          placeholder="Hora"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="">
-                    <div className="form-group">
-                      <textarea
-                        name=""
-                        id=""
-                        cols="30"
-                        rows="2"
-                        className="form-control"
-                        placeholder="Mensaje"
-                      ></textarea>
-                    </div>
-                    <div className="form-group">
-                      <input
-                        type="submit"
-                        value="Registro"
-                        className="btn btn-secondary py-3 px-4"
-                      />
-                    </div>
-                  </div>
-                </form>
+                        <FormularioRegistro />
               </div>
             </div>
           </div>
@@ -255,7 +177,7 @@ export const Home = () => {
       </section>
       {/*cuarto*/}
       <section
-        className="ftco-intro img"
+        className="img"
         style={{ backgroundImage: "url('img/bg_2.jpg')" }}
       >
         <div className="overlay"></div>
@@ -278,7 +200,7 @@ export const Home = () => {
       </section>
       {/*quinto*/}
       <section
-        className="ftco-section ftco-no-pt ftco-no-pb"
+        className="section"
         id="department-section"
       >
         <div className="container-fluid px-0">
@@ -293,10 +215,10 @@ export const Home = () => {
             <div className="col-md-8">
               <div className="row no-gutters">
                 <div className="col-md-4">
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Neurología</a>
@@ -304,10 +226,10 @@ export const Home = () => {
                       <p>Muy muy lejos, detrás de la palabra montañas.</p>
                     </div>
                   </div>
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Cardiología</a>
@@ -315,10 +237,10 @@ export const Home = () => {
                       <p>Muy muy lejos, detrás de la palabra montañas.</p>
                     </div>
                   </div>
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Dental</a>
@@ -329,10 +251,10 @@ export const Home = () => {
                 </div>
 
                 <div className="col-md-4">
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Oftalmología</a>
@@ -340,10 +262,10 @@ export const Home = () => {
                       <p>Muy muy lejos, detrás de la palabra montañas.</p>
                     </div>
                   </div>
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Cardiología</a>
@@ -351,10 +273,10 @@ export const Home = () => {
                       <p>Muy muy lejos, detrás de la palabra montañas.</p>
                     </div>
                   </div>
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Traumatología</a>
@@ -365,10 +287,10 @@ export const Home = () => {
                 </div>
 
                 <div className="col-md-4">
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">Cerebral</a>
@@ -376,10 +298,10 @@ export const Home = () => {
                       <p>Muy muy lejos, detrás de la palabra montañas.</p>
                     </div>
                   </div>
-                  <div className="department-wrap p-4 ftco-animate">
+                  <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="flaticon-stethoscope"></span>
+                        <span className="icon-stethoscope"></span>
                       </div>
                       <h3>
                         <a href="#">X-ray</a>
@@ -395,10 +317,10 @@ export const Home = () => {
         </div>
       </section>
       {/*sexta*/}
-      <section className="ftco-section" id="doctor-section">
+      <section className="section" id="doctor-section">
         <div className="container-fluid px-5">
           <div className="row justify-content-center mb-5 pb-2">
-            <div className="col-md-8 text-center heading-section ftco-animate">
+            <div className="col-md-8 text-center heading-section ">
               <h2 className="mb-4">Nuestros doctores calificados</h2>
               <p>
                 Viven separados. Un pequeño río llamado Duden fluye por su lugar
@@ -407,7 +329,7 @@ export const Home = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col-md-6 col-lg-3 ftco-animate">
+            <div className="col-md-6 col-lg-3">
               <div className="staff">
                 <div className="img-wrap d-flex align-items-stretch">
                   <div
@@ -423,23 +345,23 @@ export const Home = () => {
                       Soy un adicto al trabajo ambicioso, pero aparte de eso,
                       una persona bastante sencilla..
                     </p>
-                    <ul className="ftco-social text-center">
-                      <li className="ftco-animate">
+                    <ul className="text-center">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-twitter"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-facebook"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-google-plus"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-instagram"></span>
                         </a>
@@ -455,7 +377,7 @@ export const Home = () => {
               </div>
             </div>
             {/* Repite esta estructura para los otros doctores */}
-            <div className="col-md-6 col-lg-3 ftco-animate">
+            <div className="col-md-6 col-lg-3 animate">
               <div className="staff">
                 <div className="img-wrap d-flex align-items-stretch">
                   <div
@@ -471,23 +393,23 @@ export const Home = () => {
                       Soy un adicto al trabajo ambicioso, pero aparte de eso,
                       una persona bastante sencilla..
                     </p>
-                    <ul className="ftco-social text-center">
-                      <li className="ftco-animate">
+                    <ul className="social text-center">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-twitter"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-facebook"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-google-plus"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-instagram"></span>
                         </a>
@@ -502,7 +424,7 @@ export const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-lg-3 ftco-animate">
+            <div className="col-md-6 col-lg-3 animate">
               <div className="staff">
                 <div className="img-wrap d-flex align-items-stretch">
                   <div
@@ -518,23 +440,23 @@ export const Home = () => {
                       Soy un adicto al trabajo ambicioso, pero aparte de eso,
                       una persona bastante sencilla..
                     </p>
-                    <ul className="ftco-social text-center">
-                      <li className="ftco-animate">
+                    <ul className="social text-center">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-twitter"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-facebook"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-google-plus"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-instagram"></span>
                         </a>
@@ -549,7 +471,7 @@ export const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="col-md-6 col-lg-3 ftco-animate">
+            <div className="col-md-6 col-lg-3 animate">
               <div className="staff">
                 <div className="img-wrap d-flex align-items-stretch">
                   <div
@@ -565,23 +487,23 @@ export const Home = () => {
                       Soy un adicto al trabajo ambicioso, pero aparte de eso,
                       una persona bastante sencilla..
                     </p>
-                    <ul className="ftco-social text-center">
-                      <li className="ftco-animate">
+                    <ul className="social text-center">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-twitter"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-facebook"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-google-plus"></span>
                         </a>
                       </li>
-                      <li className="ftco-animate">
+                      <li className="animate">
                         <a href="#">
                           <span className="icon-instagram"></span>
                         </a>
@@ -601,7 +523,7 @@ export const Home = () => {
       </section>
       {/*septimo*/}
       <section
-        className="ftco-facts img ftco-counter"
+        className="facts"
         style={{ backgroundImage: "url('img/bg_3.jpg')" }}
       >
         <div className="overlay"></div>
@@ -620,7 +542,7 @@ export const Home = () => {
             </div>
             <div className="col-md-7">
               <div className="row pt-4">
-                <div className="col-md-6 d-flex justify-content-center counter-wrap ftco-animate">
+                <div className="col-md-6 d-flex justify-content-center counter-wrap animate">
                   <div className="block-18">
                     <div className="text">
                       <strong className="number" data-number="30">
@@ -630,7 +552,7 @@ export const Home = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 d-flex justify-content-center counter-wrap ftco-animate">
+                <div className="col-md-6 d-flex justify-content-center counter-wrap animate">
                   <div className="block-18">
                     <div className="text">
                       <strong className="number" data-number="4500">
@@ -640,7 +562,7 @@ export const Home = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 d-flex justify-content-center counter-wrap ftco-animate">
+                <div className="col-md-6 d-flex justify-content-center counter-wrap animate">
                   <div className="block-18">
                     <div className="text">
                       <strong className="number" data-number="84">
@@ -650,7 +572,7 @@ export const Home = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6 d-flex justify-content-center counter-wrap ftco-animate">
+                <div className="col-md-6 d-flex justify-content-center counter-wrap animate">
                   <div className="block-18">
                     <div className="text">
                       <strong className="number" data-number="300">
@@ -666,10 +588,10 @@ export const Home = () => {
         </div>
       </section>
       {/*octavo*/}
-      <section className="ftco-section bg-light" id="blog-section">
+      <section className="section bg-light" id="blog-section">
         <div className="container" />
         <div className="row justify-content-center mb-5 pb-5">
-          <div className="col-md-10 heading-section text-center ftco-animate">
+          <div className="col-md-10 heading-section text-center animate">
             <h2 className="mb-4">Obtiene todas las actualizaciones aquí</h2>
             <p>
               Muy muy lejos, detrás de las montañas de la palabra, lejos de los
@@ -678,7 +600,7 @@ export const Home = () => {
           </div>
         </div>
         <div className="row d-flex">
-          <div className="col-md-4 ftco-animate">
+          <div className="col-md-4 animate">
             <div className="blog-entry">
               <a
                 href="blog-single.html"
@@ -718,7 +640,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="col-md-4 ftco-animate">
+          <div className="col-md-4 animate">
             <div className="blog-entry">
               <a
                 href="blog-single.html"
@@ -758,7 +680,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="col-md-4 ftco-animate">
+          <div className="col-md-4 animate">
             <div className="blog-entry">
               <a
                 href="blog-single.html"
@@ -798,7 +720,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="col-md-4 ftco-animate">
+          <div className="col-md-4 animate">
             <div className="blog-entry">
               <a
                 href="blog-single.html"
@@ -838,7 +760,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="col-md-4 ftco-animate">
+          <div className="col-md-4 animate">
             <div className="blog-entry">
               <a
                 href="blog-single.html"
@@ -878,7 +800,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="col-md-4 ftco-animate">
+          <div className="col-md-4 animate">
             <div className="blog-entry">
               <a
                 href="blog-single.html"
@@ -932,20 +854,20 @@ export const Home = () => {
       </section>
       {/*noveno*/}
       <section
-        className="ftco-section testimony-section img"
+        className="section testimony-section img"
         style={{ backgroundImage: "url(img/bg_3.jpg)" }}
       >
         <div className="overlay"></div>
         <div className="container">
           <div className="row justify-content-center pb-3">
-            <div className="col-md-7 text-center heading-section heading-section-white ftco-animate">
+            <div className="col-md-7 text-center heading-section heading-section-white animate">
               <span className="subheading">Leer testimonios</span>
               <h2 className="mb-4">Nuestros pacientes dicen</h2>
             </div>
           </div>
-          <div className="row ftco-animate justify-content-center">
+          <div className="row animate justify-content-center">
             <div className="col-md-12">
-              <div className="carousel-testimony owl-carousel ftco-owl">
+              <div className="carousel-testimony">
                 <div className="item">
                   <div className="testimony-wrap text-center py-4 pb-5">
                     <div
@@ -1057,10 +979,10 @@ export const Home = () => {
         </div>
       </section>
       {/*decimo*/}
-      <section className="ftco-section contact-section" id="contact-section">
+      <section className="section contact-section" id="contact-section">
         <div className="container">
           <div className="row justify-content-center mb-5 pb-3">
-            <div className="col-md-7 heading-section text-center ftco-animate">
+            <div className="col-md-7 heading-section text-center animate">
               <h2 className="mb-4">Contactenos</h2>
               <p>
                 Muy, muy lejos, detrás de las montañas de la palabra, lejos de
@@ -1069,7 +991,7 @@ export const Home = () => {
             </div>
           </div>
           <div className="row d-flex contact-info mb-5">
-            <div className="col-md-6 col-lg-3 d-flex ftco-animate">
+            <div className="col-md-6 col-lg-3 d-flex animate">
               <div className="align-self-stretch box p-4 text-center bg-light">
                 <div className="icon d-flex align-items-center justify-content-center">
                   <span className="icon-map-signs"></span>
@@ -1078,7 +1000,7 @@ export const Home = () => {
                 <p>198 West 21th Street, Suite 721 New York NY 10016</p>
               </div>
             </div>
-            <div className="col-md-6 col-lg-3 d-flex ftco-animate">
+            <div className="col-md-6 col-lg-3 d-flex animate">
               <div className="align-self-stretch box p-4 text-center bg-light">
                 <div className="icon d-flex align-items-center justify-content-center">
                   <span className="icon-phone2"></span>
@@ -1089,7 +1011,7 @@ export const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="col-md-6 col-lg-3 d-flex ftco-animate">
+            <div className="col-md-6 col-lg-3 d-flex animate">
               <div className="align-self-stretch box p-4 text-center bg-light">
                 <div className="icon d-flex align-items-center justify-content-center">
                   <span className="icon-paper-plane"></span>
@@ -1100,7 +1022,7 @@ export const Home = () => {
                 </p>
               </div>
             </div>
-            <div className="col-md-6 col-lg-3 d-flex ftco-animate">
+            <div className="col-md-6 col-lg-3 d-flex animate">
               <div className="align-self-stretch box p-4 text-center bg-light">
                 <div className="icon d-flex align-items-center justify-content-center">
                   <span className="icon-globe"></span>
