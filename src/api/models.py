@@ -59,3 +59,111 @@ class Patient(db.Model):
             "medicated": self.medicated,
             "specific_medicated": self.specific_medicated
         }
+    
+class Doctor(db.Model):
+    __tablename__ = 'doctor'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    surname = db.Column(db.String(120))
+    age = db.Column(db.Integer)
+    identification = db.Column(db.Integer)
+    medical_license = db.Column(db.Integer)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(80), unique=False, nullable=False)
+    speciality = db.Column(db.String(250))
+    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    
+
+    def __repr__(self):
+        return f"Doctor {self.id}: de nombre {self.name}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "speciality": self.speciality,
+            "medical_license": self.medical_license,
+            "is_active": self.is_active
+        }
+    
+class Speciality(db.Model):
+    __tablename__ = 'speciality'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+
+    def __repr__(self):
+        return f"Especialidad {self.id} de nombre {self.name} en estado {self.is_active}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "is_active": self.is_active
+        }
+    
+class FavoriteSpeciality(db.Model):
+    __tablename__ = 'favorite_speciality'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'))
+    speciality_relationship = db.relationship(Speciality) 
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    patient_relationship = db.relationship(Patient) 
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
+    doctor_id_relationship = db.relationship(Doctor) 
+
+    def __repr__(self):
+        return f"El paciente {self.patient_id} es atendido por el doctor {self.doctor_id} en la especialidad {self.speciality_id}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "doctor_id": self.doctor_id,
+            "speciality": self.speciality_id
+        }
+    
+'''class FavoritePatient(db.Model):
+    __tablename__ = 'favorite_patient'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'))
+    speciality_relationship = db.relationship(Speciality) 
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    patient_relationship = db.relationship(Patient) 
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
+    doctor_id_relationship = db.relationship(Doctor) 
+
+    def __repr__(self):
+        return f"El paciente {self.patient_id} es atendido por el doctor {self.doctor_id} en la especialidad {self.speciality_id}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "doctor_id": self.doctor_id,
+            "speciality": self.speciality_id
+        }'''
+    
+class FavoriteDoctor(db.Model):
+    __tablename__ = 'favorite_doctor'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'))
+    speciality_relationship = db.relationship(Speciality) 
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
+    patient_relationship = db.relationship(Patient) 
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
+    doctor_id_relationship = db.relationship(Doctor) 
+
+    def __repr__(self):
+        return f"El paciente {self.patient_id} es atendido por el doctor {self.doctor_id} en la especialidad {self.speciality_id}"
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "patient_id": self.patient_id,
+            "doctor_id": self.doctor_id,
+            "speciality": self.speciality_id
+        }
