@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User
+from api.models import db, User, Patient
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -95,24 +95,47 @@ def create_login():
     if 'password' not in body:
         return jsonify({'msg': "El campo password es obligatorio"}), 400
     # Fetch user from database
-    user = User.query.filter_by(email=body["email"]).first()
+    patient = Patient.query.filter_by(email=body["email"]).first()
     #Check if user exists
-    if user is None:
+    if patient is None:
         return jsonify({"msg": "Bad username"}), 401
     #devuelve TRUE si la contraseña es correcta
-    password_correct = bcrypt.check_password_hash(user.password, body['password'])
+    password_correct = bcrypt.check_password_hash(patient.password, body['password'])
     if not password_correct:
         return jsonify({"msg":"Wrong password"}), 401
     # Generate token
-    access_token = create_access_token(identity=user.email)
-    print(user)
+    access_token = create_access_token(identity=patient.email)
+    print(patient)
     return jsonify({'msg': 'Login succesfull...',
                     'token': access_token})
-    
 
- 
-@app.route("/api/register", methods=["POST"])
+#Register admin users    
+@app.route("/api/register/user", methods=["POST"])
+
 def register_user():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    if 'email' not in body:
+        return jsonify({'msg': "El campo email es obligatorio"}), 400
+    if 'password' not in body:
+        return jsonify({'msg': "El campo password es obligatorio"}), 400
+    
+    new_user = User()
+    new_user.username = body['name']
+    new_user.email = body['email']
+    pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
+    new_user.password = pw_hash
+    new_user.is_active = True
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({"message": "User registered successfully"}), 201
+
+#Register Patients 
+@app.route("/api/register/patient", methods=["POST"])
+def register_patient():
     body = request.get_json(silent=True)
     
     if body is None:
@@ -120,26 +143,67 @@ def register_user():
     if 'email' not in body or 'password' not in body:
         return jsonify({'msg': "Los campos email y password son obligatorios"}), 400
     
-    new_user = User()
-   
-    new_user.email = body['email']
+    new_patient = Patient()
+    new_patient.name = body['name']
+    new_patient.surname = body['surname']
+    new_patient.age = body['age']
+    new_patient.identification = body['identification']
+    new_patient.social_security = body['social_security']
+    new_patient.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
-    new_user.password = pw_hash
-    new_user.nombre = body.get('nombre', '')
-    new_user.apellido = body.get('apellido', '')
-    new_user.edad = body.get('edad', '')
-    new_user.identificacion = body.get('identificacion', '')
-    new_user.seguridad_social = body.get('seguridadSocial', '')
-    new_user.alergico = body.get('alergico', '')
-    new_user.alergia_especifica = body.get('alergiaEspecifica', '')
-    new_user.medicado = body.get('medicado', '')
-    new_user.medicamento_especifico = body.get('medicamentoEspecifico', '')
+    new_patient.password = pw_hash
+    new_patient.alergic = body['alergic']
+    new_patient.specific_alergic = body['specific_alergic']
+    new_patient.medicated = body['medicated']
+    new_patient.specific_medicated = body['specific_medicated']
     
-    new_user.is_active = True
-    db.session.add(new_user)
+    new_patient.is_active = True
+    db.session.add(new_patient)
     db.session.commit()
 
     return jsonify({"message": "User registered successfully"}), 201
+
+@app.route('/patient/<int:patient_id>', methods=['GET'])
+def get_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+    if patient:
+        patient_data = {
+            "id": '',
+            "name": patient['name'],
+            "surname": patient['surname'],
+            "age": patient['age'],
+            "identification": patient['identification'],
+            "social_security": patient['social_security'],
+            "email": patient['email'],
+            "alergic": patient['alergic'],
+            "specific_alergic": patient['specific_alergic'],
+            "medicated": patient['medicated'],
+            "specific_medicated": patient['specific_medicated'],
+            
+        }
+        return jsonify({"message": "Patient found", "patient": patient_data}), 200
+    return jsonify({"message": "patient not found"}), 404
+
+'''@app.route('/user/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        data = request.json
+        user.email = data.get('email', user.email)
+        user.password = data.get('password', user.password)
+        user.is_active = data.get('is_active', user.is_active)
+        db.session.commit()
+        return jsonify({"message": "User updated"}), 200
+    return jsonify({"message": "User not found"}), 404
+
+@app.route('/user/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "User deleted"}), 200
+    return jsonify({"message": "User not found"}), 404'''
 
 # Protect a route with jwt_required, which will kick out request
 # without a valid JWT present.
@@ -147,8 +211,8 @@ def register_user():
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+    current_patient = get_jwt_identity()
+    return jsonify(logged_in_as=current_patient), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

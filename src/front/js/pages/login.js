@@ -17,7 +17,7 @@ export const Login = () => {
 
   const login = async (email, password) => {
     try {
-      const resp = await fetch(`https://improved-capybara-5wrwjwv79j4crxj-3001.app.github.dev/api/login`, {
+      const resp = await fetch(`https://improved-capybara-5wrwjwv79j4crxj-3001.app.github.dev/api/login/patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
