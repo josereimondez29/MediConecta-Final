@@ -112,22 +112,29 @@ def create_login():
 
  
 @app.route("/api/register", methods=["POST"])
-
 def register_user():
-    body = request.get_json (silent = True)
+    body = request.get_json(silent=True)
     
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
-    if 'email' not in body:
-        return jsonify({'msg': "El campo email es obligatorio"}), 400
-    if 'password' not in body:
-        return jsonify({'msg': "El campo password es obligatorio"}), 400
+    if 'email' not in body or 'password' not in body:
+        return jsonify({'msg': "Los campos email y password son obligatorios"}), 400
     
     new_user = User()
    
     new_user.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_user.password = pw_hash
+    new_user.nombre = body.get('nombre', '')
+    new_user.apellido = body.get('apellido', '')
+    new_user.edad = body.get('edad', '')
+    new_user.identificacion = body.get('identificacion', '')
+    new_user.seguridad_social = body.get('seguridadSocial', '')
+    new_user.alergico = body.get('alergico', '')
+    new_user.alergia_especifica = body.get('alergiaEspecifica', '')
+    new_user.medicado = body.get('medicado', '')
+    new_user.medicamento_especifico = body.get('medicamentoEspecifico', '')
+    
     new_user.is_active = True
     db.session.add(new_user)
     db.session.commit()

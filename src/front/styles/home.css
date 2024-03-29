@@ -1,7 +1,150 @@
-/*
-    home.css: This website contains selectors only used in home.css
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+  /* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Banner inicial */
+  .hero-wrap {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+  align-items: center; /* Centrar verticalmente */
+  }
+  
+  .hero-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .subheading {
+    display: block;
+    font-size: 16px;
+    color: #fff;
+  }
+  
+  h1 {
+    font-size: 36px;
+    color: #fff;
+  }
+  
+  /* Hechos graciosos */
+  .facts {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 100px 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: #fff;
+  }
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .heading-section {
+    text-align: center;
+  }
+  
+  .counter-wrap {
+    padding: 20px;
+  }
+  
+  .block-18 {
+    text-align: center;
+  }
+  
+  .block-18 .text {
+    color: #fff;
+  }
+  
+  .number {
+    font-size: 40px;
+    color: #fff;
+  }
+  
+  /* Testimonios */
+  .testimony-section {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 100px 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: #fff;
+  }
+  
+  .carousel-testimony {
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .item {
+    display: none;
+  }
+  
+  /* Contacto */
+  .contact-section {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 100px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .contact-info {
+    margin-bottom: 40px;
+  }
+  
+  .box {
+    padding: 20px;
+    color: #000;
+  }
+  
+  .contact-form {
+    background-color: #fff;
+  }
+  
+  /* Footer */
+  .footer {
+    padding: 50px 0;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .footer p {
+    margin-bottom: 0;
+  }
+  

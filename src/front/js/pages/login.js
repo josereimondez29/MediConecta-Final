@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../styles/home.css";
+import "../../styles/login.css";
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,7 +11,7 @@ export const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem('jwt-token');
     if (token) {
-      navigate("/private"); // Redirige al usuario a la ruta /private si hay un token presente
+      navigate("/private");
     }
   }, [navigate]); 
 
@@ -27,7 +27,7 @@ export const Login = () => {
       }
       const data = await resp.json();
       localStorage.setItem("jwt-token", data.token);
-      navigate("/private"); // Redirige al usuario a la ruta /private después del inicio de sesión exitoso
+      navigate("/private");
     } catch (error) {
       setError(error.message);
     }
@@ -73,4 +73,5 @@ export const Login = () => {
     </div>
   );
 };
+
 

@@ -1,13 +1,23 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import {Login} from "./../pages/login"
-import {Register} from "./../pages/register"
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-	return (
-		<div className="text-center mt-5">
+  const navigate = useNavigate();
+
+  const handleLoginButtonClickLogin = () => {
+    // Redirige al componente Login
+    navigate('/login');
+  };
+
+  const handleLoginButtonClickRegister = () => {
+    // Redirige al componente Register
+    navigate('/register');
+  };
+
+  return (
+    <div>
       <div data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-      <div className="top bg-primary top mt-auto">
+        <div className="top bg-primary top mt-auto">
           <div className="container">
             <div className="row no-gutters d-flex align-items-start align-items-center">
               <div className="col-lg-12 d-block">
@@ -21,36 +31,23 @@ export const Navbar = () => {
                     <span className="text text-white">info@mediconecta.com</span>
                   </div>
                   <div className="col-md-4 pr-4 d-flex topper align-items-center">
-                    {/*Button trigger Login modal*/}
-                    <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#income">
+                    {/*Button trigger Login */}
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={handleLoginButtonClickLogin}
+                    >
                       Ingrese
                     </button>
-                    {/*Modal start*/}
-                    <div class="modal fade" id="income" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <Login />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/*Modal end*/}
-                    {/*Button trigger Register modal*/}
-                    <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target="#register">
+                    
+                    {/*Button trigger Register*/}
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={handleLoginButtonClickRegister}
+                    >
                       Registro
                     </button>
-                    {/*Modal start*/}
-                    <div class="modal fade" id="register" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <Register />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/*Modal end*/}
                   </div>
                 </div>
               </div>
@@ -80,5 +77,6 @@ export const Navbar = () => {
         </nav>
       </div>
     </div>
-	);
+  );
 };
+
