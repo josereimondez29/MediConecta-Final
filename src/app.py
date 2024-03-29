@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User
+from api.models import db, User, Patient, Doctor, Speciality, FavoriteDoctor, FavoriteSpeciality
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -82,10 +82,34 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
+#Register admin users    
+@app.route("/api/register/user", methods=["POST"])
 
-@app.route("/api/login", methods=["POST"])
+def register_user():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    if 'email' not in body:
+        return jsonify({'msg': "El campo email es obligatorio"}), 400
+    if 'password' not in body:
+        return jsonify({'msg': "El campo password es obligatorio"}), 400
+    
+    new_user = User()
+    new_user.username = body['name']
+    new_user.email = body['email']
+    pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
+    new_user.password = pw_hash
+    new_user.is_active = True
+    db.session.add(new_user)
+    db.session.commit()
 
-def create_login():
+    return jsonify({"message": "User registered successfully"}), 201
+
+# Login Admin Users
+@app.route("/api/login/user", methods=["POST"])
+
+def create_admin_login():
     body = request.get_json (silent = True)
     
     if body is None:
@@ -108,11 +132,63 @@ def create_login():
     print(user)
     return jsonify({'msg': 'Login succesfull...',
                     'token': access_token})
-    
 
- 
-@app.route("/api/register", methods=["POST"])
-def register_user():
+#GET Admin Users
+@app.route('/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+
+    users_serialized = []
+    for user in users:
+        users_serialized.append(user.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": users_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET Admin User by id
+@app.route('/user/<int:user_id>', methods=['GET'])
+def get_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        user_data = {
+            "id": user.id,
+            "username": user.name,
+            "email": user.email,
+        }
+        return jsonify({"message": "User founded", "user": user_data}), 200
+    return jsonify({"message": "User not found"}), 404
+
+#PUT Admin user by id
+@app.route('/user/<int:user_id>', methods=['PUT'])
+def update_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        data = request.json
+        user.email = data.get('email', user.email)
+        user.password = data.get('password', user.password)
+        user.is_active = data.get('is_active', user.is_active)
+        db.session.commit()
+        return jsonify({"message": "User updated"}), 200
+    return jsonify({"message": "User not found"}), 404
+
+#DELETE Admin user by id
+@app.route('/user/<int:user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    user = User.query.get(user_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"message": "User deleted"}), 200
+    return jsonify({"message": "User not found"}), 404
+
+
+#Register Patients 
+@app.route("/api/register/patient", methods=["POST"])
+def register_patient():
     body = request.get_json(silent=True)
     
     if body is None:
@@ -120,29 +196,352 @@ def register_user():
     if 'email' not in body or 'password' not in body:
         return jsonify({'msg': "Los campos email y password son obligatorios"}), 400
     
-    new_user = User()
-   
-    new_user.email = body['email']
+    # Convertir las cadenas "true" o "false" a booleanos
+    alergic_bool = body['alergic'].lower() == "true"
+    medicated_bool = body['medicated'].lower() == "true"
+
+    new_patient = Patient()
+    new_patient.name = body['name']
+    new_patient.surname = body['surname']
+    new_patient.age = int(body['age'])
+    new_patient.identification = body['identification']
+    new_patient.social_security = body['social_security']
+    new_patient.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
-    new_user.password = pw_hash
-    new_user.nombre = body.get('nombre', '')
-    new_user.apellido = body.get('apellido', '')
-    new_user.edad = body.get('edad', '')
-    new_user.identificacion = body.get('identificacion', '')
-    new_user.seguridad_social = body.get('seguridadSocial', '')
-    new_user.alergico = body.get('alergico', '')
-    new_user.alergia_especifica = body.get('alergiaEspecifica', '')
-    new_user.medicado = body.get('medicado', '')
-    new_user.medicamento_especifico = body.get('medicamentoEspecifico', '')
+    new_patient.password = pw_hash
+    new_patient.alergic = alergic_bool
+    new_patient.specific_alergic = body['specific_alergic'] if alergic_bool else None
+    new_patient.medicated = medicated_bool
+    new_patient.specific_medicated = body['specific_medicated'] if medicated_bool else None
     
-    new_user.is_active = True
-    db.session.add(new_user)
+    new_patient.is_active = True
+    db.session.add(new_patient)
     db.session.commit()
 
     return jsonify({"message": "User registered successfully"}), 201
 
+
+# Login Patient
+@app.route("/api/login/patient", methods=["POST"])
+
+def create_login():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debe enviar info al body"}), 400
+    if 'email' not in body:
+        return jsonify({'msg': "El campo email es obligatorio"}), 400
+    if 'password' not in body:
+        return jsonify({'msg': "El campo password es obligatorio"}), 400
+    # Fetch user from database
+    patient = Patient.query.filter_by(email=body["email"]).first()
+    #Check if user exists
+    if patient is None:
+        return jsonify({"msg": "Bad username"}), 401
+    #devuelve TRUE si la contraseña es correcta
+    password_correct = bcrypt.check_password_hash(patient.password, body['password'])
+    if not password_correct:
+        return jsonify({"msg":"Wrong password"}), 401
+    # Generate token
+    access_token = create_access_token(identity=patient.email)
+    print(patient)
+    return jsonify({'msg': 'Login succesfull...',
+                    'token': access_token})
+
+#GET Patients
+@app.route('/patients', methods=['GET'])
+def get_patients():
+    patients = Patient.query.all()
+
+    patients_serialized = []
+    for patient in patients:
+        patients_serialized.append(patient.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": patients_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET Patient by id
+@app.route('/patient/<int:patient_id>', methods=['GET'])
+def get_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+    if patient:
+        patient_data = {
+            "id": patient.id,
+            "name": patient.name,
+            "surname": patient.surname,
+            "age": patient.age,
+            "identification": patient.identification,
+            "social_security": patient.social_security,
+            "email": patient.email,
+            "alergic": patient.alergic,
+            "specific_alergic": patient.specific_alergic,
+            "medicated": patient.medicated,
+            "specific_medicated": patient.specific_medicated,
+            "is_active": patient.is_active
+        }
+        return jsonify({"message": "Patient found", "patient": patient_data}), 200
+    return jsonify({"message": "Patient not found"}), 404
+
+#PUT Patient by id
+@app.route('/patient/<int:patient_id>', methods=['PUT'])
+def update_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+    if not patient:
+        return jsonify({"message": "Patient not found"}), 404
+    
+    # Actualizar los campos del paciente según los datos proporcionados en la solicitud
+    data = request.json
+    patient.name = data.get('name', patient.name)
+    patient.surname = data.get('surname', patient.surname)
+    patient.age = data.get('age', patient.age)
+    patient.identification = data.get('identification', patient.identification)
+    patient.social_security = data.get('social_security', patient.social_security)
+    patient.email = data.get('email', patient.email)
+    patient.alergic = data.get('alergic', patient.alergic)
+    patient.specific_alergic = data.get('specific_alergic', patient.specific_alergic)
+    patient.medicated = data.get('medicated', patient.medicated)
+    patient.specific_medicated = data.get('specific_medicated', patient.specific_medicated)
+    patient.is_active = data.get('is_active', patient.is_active)
+    
+    db.session.commit()
+    
+    return jsonify({"message": "Patient updated successfully"}), 200
+
+#DELETE Patient by id
+@app.route('/patient/<int:patient_id>', methods=['DELETE'])
+def delete_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+    if not patient:
+        return jsonify({"message": "Patient not found"}), 404
+    
+    db.session.delete(patient)
+    db.session.commit()
+    
+    return jsonify({"message": "Patient deleted successfully"}), 200
+
+#Register doctors    
+@app.route("/api/register/doctor", methods=["POST"])
+
+def register_doctor():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    if 'email' not in body:
+        return jsonify({'msg': "El campo email es obligatorio"}), 400
+    if 'password' not in body:
+        return jsonify({'msg': "El campo password es obligatorio"}), 400
+    
+    new_doctor = Doctor()
+    new_doctor.name = body['name']
+    new_doctor.surname = body['surname']
+    new_doctor.age = body['age']
+    new_doctor.identification = body['identification']
+    new_doctor.medical_license = body['medical_license']
+    new_doctor.email = body['email']
+    pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
+    new_doctor.password = pw_hash
+    new_doctor.speciality = body['speciality']
+    new_doctor.is_active = True
+    db.session.add(new_doctor)
+    db.session.commit()
+
+    return jsonify({"message": "Doctor registered successfully"}), 201
+
+# Login Doctors
+@app.route("/api/login/doctor", methods=["POST"])
+
+def create_doctor_login():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debe enviar info al body"}), 400
+    if 'email' not in body:
+        return jsonify({'msg': "El campo email es obligatorio"}), 400
+    if 'password' not in body:
+        return jsonify({'msg': "El campo password es obligatorio"}), 400
+    # Fetch user from database
+    doctor = Doctor.query.filter_by(email=body["email"]).first()
+    #Check if user exists
+    if doctor is None:
+        return jsonify({"msg": "Bad username"}), 401
+    #devuelve TRUE si la contraseña es correcta
+    password_correct = bcrypt.check_password_hash(doctor.password, body['password'])
+    if not password_correct:
+        return jsonify({"msg":"Wrong password"}), 401
+    # Generate token
+    access_token = create_access_token(identity=doctor.email)
+    print(doctor)
+    return jsonify({'msg': 'Login succesfull...',
+                    'token': access_token})
+
+#GET Doctors
+@app.route('/doctors', methods=['GET'])
+def get_doctors():
+    doctors = Doctor.query.all()
+
+    doctors_serialized = []
+    for doctor in doctors:
+        doctors_serialized.append(doctor.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": doctors_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET Doctor by id
+@app.route('/doctor/<int:doctor_id>', methods=['GET'])
+def get_doctor(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor:
+        doctor_data = {
+            "id": doctor.id,
+            "name": doctor.name,
+            "email": doctor.email,
+            "is_active": doctor.is_active
+        }
+        return jsonify({"message": "Doctor founded", "user": doctor_data}), 200
+    return jsonify({"message": "Doctor not found"}), 404
+
+#PUT Doctor by id
+@app.route('/doctor/<int:doctor_id>', methods=['PUT'])
+def update_doctor(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor:
+        data = request.json
+        doctor.name = data.get('name', doctor.name)
+        doctor.surname = data.get('surname', doctor.surname)
+        doctor.age = data.get('age', doctor.age)
+        doctor.identification = data.get('identification', doctor.identification)
+        doctor.medical_license = data.get('medical_license', doctor.medical_license)
+        doctor.email = data.get('email', doctor.email)
+        doctor.password = data.get('password', doctor.password)
+        doctor.speciality = data.get('speciality', doctor.speciality)
+        doctor.is_active = data.get('is_active', doctor.is_active)
+        db.session.commit()
+        return jsonify({"message": "User updated"}), 200
+    return jsonify({"message": "User not found"}), 404
+
+#DELETE Doctor by id
+@app.route('/doctor/<int:doctor_id>', methods=['DELETE'])
+def delete_doctor(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor:
+        db.session.delete(doctor)
+        db.session.commit()
+        return jsonify({"message": "Doctor deleted"}), 200
+    return jsonify({"message": "Doctor not found"}), 404
+
+#Register Speciality    
+@app.route("/api/register/speciality", methods=["POST"])
+
+def register_speciality():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    
+    
+    new_speciality = Speciality()
+    new_speciality.name = body['name']
+    new_speciality.is_active = True
+    db.session.add(new_speciality)
+    db.session.commit()
+
+    return jsonify({"message": "Speciality registered successfully"}), 201
+
+#GET Speciality
+@app.route('/specialities', methods=['GET'])
+def get_specialities():
+    specialities = User.query.all()
+
+    specialities_serialized = []
+    for speciality in specialities:
+        specialities_serialized.append(speciality.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": specialities_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET Speciality id
+@app.route('/speciality/<int:speciality_id>', methods=['GET'])
+def get_speciality(speciality_id):
+    speciality = Speciality.query.get(speciality_id)
+    if speciality:
+        speciality_data = {
+            "id": speciality.id,
+            "name": speciality.name,
+            "is_active": speciality.is_active
+            
+        }
+        return jsonify({"message": "Speciality founded", "speciality": speciality_data}), 200
+    return jsonify({"message": "Speciality not found"}), 404
+
+#PUT Speciality by id
+@app.route('/speciality/<int:speciality_id>', methods=['PUT'])
+def update_speciality(speciality_id):
+    speciality = Speciality.query.get(speciality_id)
+    if speciality:
+        data = request.json
+        speciality.name = data.get('name', speciality.email)
+        speciality.is_active = data.get('is_active', speciality.is_active)
+        db.session.commit()
+        return jsonify({"message": "User updated"}), 200
+    return jsonify({"message": "User not found"}), 404
+
+#DELETE Speciality by id
+@app.route('/speciality/<int:speciality_id>', methods=['DELETE'])
+def delete_speciality(speciality_id):
+    speciality = Speciality.query.get(speciality_id)
+    if speciality:
+        db.session.delete(speciality)
+        db.session.commit()
+        return jsonify({"message": "Speciality deleted"}), 200
+    return jsonify({"message": "Speciality not found"}), 404
+
+# Favorite Routes
+
+@app.route('/user/favorites', methods=['GET'])
+def favorites():
+    body = request.get_json(silent=True)
+    if body is None:
+        return jsonify({'msg': "debes enviar informacion en el body"}), 400
+    if 'patient_id' not in body:
+        return jsonify({'msg': 'El campo patient_id es obligatorio'}), 400
+    patient = Patient.query.get(body['patient_id'])
+    if patient is None:
+        return jsonify({'msg': "El paciente con el id {} no existe".format(body['patient_id'])}), 404
+    favorite_speciality = db.session.query(FavoriteSpeciality, Speciality).join(Speciality).filter(FavoriteSpeciality.patient_id==body['patient_id']).all()
+    favorite_speciality_serialized = []
+    for favorite_item, speciality_item in favorite_speciality:
+        favorite_speciality_serialized.append({"favorite_speciality_id": favorite_item.id, "speciality": speciality_item.serialize()})
+        return jsonify({"msg": "ok", "results": favorite_speciality_serialized})
+    favorite_doctor= db.session.query(FavoriteDoctor, Doctor).join(Doctor).filter(FavoriteDoctor.doctor_id==body['doctor_id']).all()
+    favorite_doctor_serialized = []
+    for favorite_item, doctor_item in favorite_doctor:
+        favorite_doctor_serialized.append({"favorite_doctor_id": favorite_item.id, "doctor": doctor_item.serialize()})
+        return jsonify({"msg": "ok", "results": favorite_doctor_serialized})
+    print(patient)
+    return jsonify({'msg': 'ok'})
+
 # Protect a route with jwt_required, which will kick out request
 # without a valid JWT present.
+'''@app.route("/api/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current patient with get_jwt_identity
+    current_patient = get_jwt_identity()
+    return jsonify(logged_in_as=current_patient), 200'''
+
 @app.route("/api/protected", methods=["GET"])
 @jwt_required()
 def protected():

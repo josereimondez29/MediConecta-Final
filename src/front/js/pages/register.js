@@ -21,7 +21,7 @@ export const Register = () => {
 
   const register = async (userData) => {
     try {
-      const resp = await fetch(`https://improved-capybara-5wrwjwv79j4crxj-3001.app.github.dev/api/register`, {
+      const resp = await fetch(`https://improved-capybara-5wrwjwv79j4crxj-3001.app.github.dev/api/register/patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
