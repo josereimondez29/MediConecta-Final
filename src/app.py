@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, Patient, Doctor, Speciality, FavoriteDoctor, FavoriteSpeciality
+from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Favorite_Medical_Appointment, FavoriteDoctor, FavoriteSpeciality
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -459,7 +459,7 @@ def register_speciality():
 #GET Speciality
 @app.route('/specialities', methods=['GET'])
 def get_specialities():
-    specialities = User.query.all()
+    specialities = Speciality.query.all()
 
     specialities_serialized = []
     for speciality in specialities:
@@ -492,7 +492,7 @@ def update_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:
         data = request.json
-        speciality.name = data.get('name', speciality.email)
+        speciality.name = data.get('name', speciality.name)
         speciality.is_active = data.get('is_active', speciality.is_active)
         db.session.commit()
         return jsonify({"message": "User updated"}), 200
@@ -507,6 +507,76 @@ def delete_speciality(speciality_id):
         db.session.commit()
         return jsonify({"message": "Speciality deleted"}), 200
     return jsonify({"message": "Speciality not found"}), 404
+
+#Register Medical Appoinment    
+@app.route("/api/register/medical_appoinment", methods=["POST"])
+
+def register_medical_appoinment():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    
+    
+    new_medical_appoinment = Medical_Appointment()
+    new_medical_appoinment.number = body['number']
+    new_medical_appoinment.is_active = True
+    db.session.add(new_medical_appoinment)
+    db.session.commit()
+
+    return jsonify({"message": "Medical Appoinment registered successfully"}), 201
+
+#GET medical_appoinments
+@app.route('/medical_appoinments', methods=['GET'])
+def get_medical_appoinments():
+    medical_appoinments = Medical_Appointment.query.all()
+
+    medical_appoinments_serialized = []
+    for medical_appoinment in medical_appoinments:
+        medical_appoinments_serialized.append(medical_appoinment.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": medical_appoinments_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET medical_appoinment by id
+@app.route('/medical_appoinment/<int:medical_appoinment_id>', methods=['GET'])
+def get_medical_appoinment(medical_appoinment_id):
+    medical_appoinment = Medical_Appointment.query.get(medical_appoinment_id)
+    if medical_appoinment:
+        medical_appoinment_data = {
+            "id": medical_appoinment.id,
+            "number": medical_appoinment.number,
+            "is_active": medical_appoinment.is_active
+            
+        }
+        return jsonify({"message": "Medical Appoinment founded", "medical_appoinment": medical_appoinment_data}), 200
+    return jsonify({"message": "Medical Appoinment not found"}), 404
+
+#PUT medical_appoinment by id
+@app.route('/medical_appoinment/<int:medical_appoinment_id>', methods=['PUT'])
+def update_medical_appoinment(medical_appoinment_id):
+    medical_appoinment = Medical_Appointment.query.get(medical_appoinment_id)
+    if medical_appoinment:
+        data = request.json
+        medical_appoinment.number = data.get('number', medical_appoinment.number)
+        medical_appoinment.is_active = data.get('is_active', medical_appoinment.is_active)
+        db.session.commit()
+        return jsonify({"message": "Medical Appoinment updated"}), 200
+    return jsonify({"message": "Medical Appoinment not found"}), 404
+
+#DELETE Speciality by id
+@app.route('/medical_appoinment/<int:medical_appoinment_id>', methods=['DELETE'])
+def delete_medical_appoinment(medical_appoinment_id):
+    medical_appoinment = Medical_Appointment.query.get(medical_appoinment_id)
+    if medical_appoinment:
+        db.session.delete(medical_appoinment)
+        db.session.commit()
+        return jsonify({"message": "Medical Appoinment deleted"}), 200
+    return jsonify({"message": "Medical Appoinment not found"}), 404
 
 # Favorite Routes
 
@@ -525,11 +595,16 @@ def favorites():
     for favorite_item, speciality_item in favorite_speciality:
         favorite_speciality_serialized.append({"favorite_speciality_id": favorite_item.id, "speciality": speciality_item.serialize()})
         return jsonify({"msg": "ok", "results": favorite_speciality_serialized})
-    favorite_doctor= db.session.query(FavoriteDoctor, Doctor).join(Doctor).filter(FavoriteDoctor.doctor_id==body['doctor_id']).all()
+    favorite_doctor= db.session.query(FavoriteDoctor, Doctor).join(Doctor).filter(FavoriteDoctor.patient_id==body['patient_id']).all()
     favorite_doctor_serialized = []
     for favorite_item, doctor_item in favorite_doctor:
         favorite_doctor_serialized.append({"favorite_doctor_id": favorite_item.id, "doctor": doctor_item.serialize()})
         return jsonify({"msg": "ok", "results": favorite_doctor_serialized})
+    favorite_medical_appointment = db.session.query(Favorite_Medical_Appointment, Medical_Appointment).join(Medical_Appointment).filter(Favorite_Medical_Appointment.patient_id==body['patient_id']).all()
+    favorite_medical_appointment_serialized = []
+    for favorite_item, medical_appointment_item in favorite_medical_appointment:
+        favorite_medical_appointment_serialized.append({"favorite_medical_appointment_id": favorite_item.id, "medical_appointment": medical_appointment_item.serialize()})
+        return jsonify({"msg": "ok", "results": favorite_medical_appointment_serialized})
     print(patient)
     return jsonify({'msg': 'ok'})
 
