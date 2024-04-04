@@ -4,7 +4,7 @@ import { Register } from "./register";
 import './../../styles/home.css'
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import bg_3 from "../../img/bg_3.jpg";
-import Cards from "../component/Cards";
+import Especialidades from "../component/Especialidades";
 
 
 export const Home = () => {
@@ -113,7 +113,7 @@ export const Home = () => {
               </div>
             </div> */} 
             <div className="row justify-content-center">
-          <Cards className="col-md-4" />
+          <Especialidades className="col-md-4" />
       </div>
             {/* <div className="col-md-5 d-flex">
               <div className="appointment-wrap bg-white p-4 p-md-5 d-flex align-items-center">
