@@ -80,9 +80,11 @@ class Speciality(db.Model):
 class Doctor(db.Model):
     __tablename__ = 'doctor'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    surname = db.Column(db.String(120))
+    name = db.Column(db.String(120), nullable=False)
+    surname = db.Column(db.String(120), nullable=False)
     age = db.Column(db.Integer)
+    bio = db.Column(db.String(500), unique=True, nullable=False)
+    # review = 
     identification = db.Column(db.Integer)
     medical_license = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True, nullable=False)

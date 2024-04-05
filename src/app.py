@@ -400,10 +400,13 @@ def get_doctors():
 def get_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:
-        doctor_data = {
+        doctor_data = { 
             "id": doctor.id,
             "name": doctor.name,
+            "surname": doctor.surname,
             "email": doctor.email,
+            "bio": doctor.bio,
+            # "review": doctor.review,
             "is_active": doctor.is_active
         }
         return jsonify({"message": "Doctor founded", "user": doctor_data}), 200
