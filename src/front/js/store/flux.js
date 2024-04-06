@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			authentication:false, 
+			messageError: null,
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -46,9 +48,71 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+
+			loginPacient: (email, password) => {
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				};
+				
+				fetch(process.env.BACKEND_URL + "/api/login/patient", requestOptions)
+				.then((response) => {
+					console.log(response.status)
+					if (response.status === 200){
+						setStore({ authentication: true });
+					}
+					return response.json();
+				})
+				.then((data) => {
+					localStorage.setItem("token", data.token);
+					sessionStorage.setItem("token", data.token);
+					 
+				})
+				.catch((error) => {
+					console.error( error);
+					setStore({ messageError: error.message });
+				});
+			},
+
+			loginDoctor: (email, password) => {
+				const requestOptions = {
+					method: "POST",
+					headers: {"Content-Type": "application/json"},
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				};
+				
+				fetch(process.env.BACKEND_URL + "/api/login/doctor", requestOptions)
+				.then((response) => {
+					console.log(response.status)
+					if (response.status === 200){
+						setStore({ authentication: true });
+					}
+					return response.json();
+				})
+				.then((data) => {
+					localStorage.setItem("token", data.token);
+					sessionStorage.setItem("token", data.token);
+					 
+				})
+				.catch((error) => {
+					console.error( error);
+					setStore({ messageError: error.message });
+				});
+			},
+
+
+
+			},
 		}
 	};
-};
+
 
 export default getState;
