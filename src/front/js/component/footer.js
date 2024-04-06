@@ -21,13 +21,13 @@ export const Footer = () => (
             <div className="ftco-footer-widget mb-4 ml-md-4">
               <h2 className="ftco-heading-2">Departamentos</h2>
               <ul className="list-unstyled">
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Dermatología</a></li>
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Fisioterapia</a></li>
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Medicina General</a></li>
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Nutrición</a></li>
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Pediatría</a></li>
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Psicología</a></li>
-                <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Psiquiatría</a></li>
+                <li><a href="#">Dermatología</a></li>
+                <li><a href="#">Fisioterapia</a></li>
+                <li><a href="#">Medicina General</a></li>
+                <li><a href="#">Nutrición</a></li>
+                <li><a href="#">Pediatría</a></li>
+                <li><a href="#">Psicología</a></li>
+                <li><a href="#">Psiquiatría</a></li>
               </ul>
             </div>
           </div>
