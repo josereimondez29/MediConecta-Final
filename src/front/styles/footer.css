@@ -28,3 +28,7 @@
     text-decoration: none;
     color: orange;
  }
+
+ .footer-social{
+    justify-content:space-around;
+ }

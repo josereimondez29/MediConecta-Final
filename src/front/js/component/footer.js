@@ -9,10 +9,11 @@ export const Footer = () => (
             <div className="ftco-footer-widget mb-4">
               <h2 className="ftco-heading-2">MediConecta</h2>
               <p className="text">Ofrecemos las 24 horas del día, los 7 días de la semana atención a los pacientes. Ya sea que se trate de una consulta de rutina, una emergencia médica o simplemente una pregunta sobre la salud.</p>
-              <ul className="ftco-footer-social list-unstyled mt-5">
-                <li className="ftco-animate"><a href="#"><span className="icon-twitter"></span></a></li>
-                <li className="ftco-animate"><a href="#"><span className="icon-facebook"></span></a></li>
-                <li className="ftco-animate"><a href="#"><span className="icon-instagram"></span></a></li>
+              <ul className=" footer-social list-unstyled mt-5 d-flex">
+                <li><a href="#"><span className="icon-twitter"><i class="fa-brands fa-twitter"></i></span></a></li>
+                <li><a href="#"><span className="icon-facebook"><i class="fa-brands fa-facebook"></i></span></a></li>
+                <li><a href="#"><span className="icon-instagram"><i class="fa fa-instagram" aria-hidden="true"></i>
+</span></a></li>
               </ul>
             </div>
           </div>
