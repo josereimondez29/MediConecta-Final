@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { Register } from "./register";
-import './../../styles/home.css'
+// import './../../styles/home.css'
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import bg_3 from "../../img/bg_3.jpg";
 import Especialidades from "../component/Especialidades";
@@ -18,8 +18,8 @@ export const Home = () => {
           className="hero-img"
           style={{ backgroundImage: `url(${bg_3})` }}
         ></div>
-        <div className="overlay"></div>
-        <div className="container">
+        {/* <div className="overlay"></div> */}
+        {/* <div className="container">
           <div className="row align-items-center justify-content-start">
             <div className="col-md-6 pt-5">
               <div className="mt-5">
@@ -41,11 +41,11 @@ export const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
       {/*segundo*/}
       <section className="section" id="about-section">
-        <div className="container">
+        {/* <div className="container">
           <div className="row d-flex">
             <div className="col-md-6 col-lg-5 d-flex">
               <div
@@ -80,7 +80,7 @@ export const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
       {/*tercero*/}
       <section className="bg-light">

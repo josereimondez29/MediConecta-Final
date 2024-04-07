@@ -399,6 +399,7 @@ def get_doctors():
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
 def get_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
+    print(doctor.serialize())
     if doctor:
         doctor_data = { 
             "id": doctor.id,
@@ -406,6 +407,7 @@ def get_doctor(doctor_id):
             "surname": doctor.surname,
             "email": doctor.email,
             "bio": doctor.bio,
+            "speciality_id": doctor.speciality_id,
             # "review": doctor.review,
             "is_active": doctor.is_active
         }

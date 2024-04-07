@@ -84,14 +84,16 @@ class Doctor(db.Model):
     surname = db.Column(db.String(120), nullable=False)
     age = db.Column(db.Integer)
     bio = db.Column(db.String(500), unique=True, nullable=False)
-    # review = 
+    # review = ???
     identification = db.Column(db.Integer)
     medical_license = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
-    speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'))
+    speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'), nullable=False)
     speciality = db.relationship('Speciality', backref=db.backref('doctors', lazy=True))
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+
+    #REVISAR SI LA LLAVE DE SPECIALIDAD Y DOCTOR 
 
     def __repr__(self):
         return f"ID{self.id}: {self.name} {self.surname}"
@@ -100,9 +102,10 @@ class Doctor(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "speciality": self.speciality_id,  # Usar el ID de la especialidad
+            "speciality": self.speciality,
             "medical_license": self.medical_license,
-            "is_active": self.is_active
+            "is_active": self.is_active,
+            "bio": self.bio
         }
 
     
