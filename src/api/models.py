@@ -14,36 +14,37 @@ class User(db.Model):
     
 
     def __repr__(self):
-        return f"ID {self.id}, nombre {self.name} y email: {self.email}"
+        return f"ID {self.id}, nombre {self.username} y email: {self.email}"
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name,
+            "name": self.username,
             "email": self.email,
             "is_active": self.is_active,
             "password": self.password
             
         }
+    
+
 
 class Patient(db.Model):
     __tablename__ = 'patient'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    surname = db.Column(db.String(120))
-    age = db.Column(db.Integer)
-    identification = db.Column(db.Integer)
-    social_security = db.Column(db.Integer)
+    name = db.Column(db.String(120), nullable=False)
+    surname = db.Column(db.String(120), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+    identification = db.Column(db.Integer, nullable=False, unique=True)
+    social_security = db.Column(db.Integer, nullable=False, unique=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), unique=False, nullable=False)
-    alergic = db.Column(db.Boolean())
-    specific_alergic = db.Column(db.String(250))
-    medicated = db.Column(db.Boolean())
-    specific_medicated = db.Column(db.String(250))
-    is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    password = db.Column(db.String(80), nullable=False)
+    is_active = db.Column(db.Boolean(), nullable=False, default=True)
+    
+    alergic = db.relationship('Alergic', backref='patient', uselist=False)
+    medicated = db.relationship('Medicated', backref='patient', uselist=False)
 
     def __repr__(self):
-        return f"ID{self.id}: {self.name} {self.surname}, identificacion: {self.identification}"
+        return f"ID {self.id}: {self.name} {self.surname}, identificacion: {self.identification}"
 
     def serialize(self):
         return {
@@ -54,13 +55,50 @@ class Patient(db.Model):
             "identification": self.identification,
             "social_security": self.social_security,
             "email": self.email,
-            # do not serialize the password, its a security breach
-            "alergic": self.alergic,
-            "specific_alergic": self.specific_alergic,
-            "medicated": self.medicated,
-            "specific_medicated": self.specific_medicated
+            "is_active": self.is_active,
+            "alergic": self.alergic.serialize() if self.alergic else None,
+            "medicated": self.medicated.serialize() if self.medicated else None
         }
-    
+
+class Alergic(db.Model):
+    __tablename__ = 'alergic'
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), unique=True, nullable=False)
+    alergic = db.Column(db.Boolean(), nullable=False, default=False)
+    alergic_name = db.Column(db.String(250))
+    is_active = db.Column(db.Boolean(), nullable=False, default=True)
+
+    def __repr__(self):
+        return f"ID {self.id}: {self.alergic_name}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "alergic": self.alergic,
+            "alergic_name": self.alergic_name,
+            "is_active": self.is_active
+        }
+
+class Medicated(db.Model):
+    __tablename__ = 'medicated'
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), unique=True, nullable=False)
+    medicated = db.Column(db.Boolean(), nullable=False, default=False)
+    medicated_name = db.Column(db.String(250))
+    is_active = db.Column(db.Boolean(), nullable=False, default=True)
+
+    def __repr__(self):
+        return f"ID {self.id}: {self.medicated_name}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "medicated": self.medicated,
+            "medicated_name": self.medicated_name,
+            "is_active": self.is_active
+        }
+
+
 class Speciality(db.Model):
     __tablename__ = 'speciality'
     id = db.Column(db.Integer, primary_key=True)
@@ -118,7 +156,7 @@ class Medical_Appointment(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "number": self.number,
+            "number": self.id,
             "is_active": self.is_active
         }
     
@@ -146,7 +184,7 @@ class Favorite_Medical_Appointment(db.Model):
             "speciality": self.speciality_id
         }
 
-class FavoriteSpeciality(db.Model):
+"""class FavoriteSpeciality(db.Model):
     __tablename__ = 'favorite_speciality'
     id = db.Column(db.Integer, primary_key=True)
     medical_appointment_id = db.Column(db.Integer, db.ForeignKey('medical_appointment.id'))
@@ -214,4 +252,4 @@ class FavoriteDoctor(db.Model):
             "patient_id": self.patient_id,
             "doctor_id": self.doctor_id,
             "speciality": self.speciality_id
-        }
+        }"""

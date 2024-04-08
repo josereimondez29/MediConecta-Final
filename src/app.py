@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Favorite_Medical_Appointment, FavoriteDoctor, FavoriteSpeciality
+from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Favorite_Medical_Appointment, Alergic, Medicated
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -84,9 +84,8 @@ def serve_any_other_file(path):
 
 #Register admin users    
 @app.route("/api/register/user", methods=["POST"])
-
 def register_user():
-    body = request.get_json (silent = True)
+    body = request.get_json(silent=True)
     
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
@@ -96,7 +95,7 @@ def register_user():
         return jsonify({'msg': "El campo password es obligatorio"}), 400
     
     new_user = User()
-    new_user.username = body['name']
+    new_user.name = body.get('name')  # Usar get() en lugar de indexación directa para evitar errores si 'name' no está en el cuerpo
     new_user.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_user.password = pw_hash
@@ -104,7 +103,9 @@ def register_user():
     db.session.add(new_user)
     db.session.commit()
 
+    
     return jsonify({"message": "User registered successfully"}), 201
+
 
 # Login Admin Users
 @app.route("/api/login/user", methods=["POST"])
@@ -156,7 +157,7 @@ def get_user(user_id):
     if user:
         user_data = {
             "id": user.id,
-            "username": user.name,
+            "name": user.name,
             "email": user.email,
         }
         return jsonify({"message": "User founded", "user": user_data}), 200
@@ -403,7 +404,7 @@ def get_doctor(doctor_id):
         doctor_data = {
             "id": doctor.id,
             "name": doctor.name,
-            "email": doctor.email,
+            "speciality": doctor.speciality,
             "is_active": doctor.is_active
         }
         return jsonify({"message": "Doctor founded", "user": doctor_data}), 200
@@ -519,7 +520,7 @@ def register_medical_appoinment():
     
     
     new_medical_appoinment = Medical_Appointment()
-    new_medical_appoinment.number = body['number']
+    new_medical_appoinment.id = body['id']
     new_medical_appoinment.is_active = True
     db.session.add(new_medical_appoinment)
     db.session.commit()
@@ -549,7 +550,6 @@ def get_medical_appoinment(medical_appoinment_id):
     if medical_appoinment:
         medical_appoinment_data = {
             "id": medical_appoinment.id,
-            "number": medical_appoinment.number,
             "is_active": medical_appoinment.is_active
             
         }
@@ -562,13 +562,13 @@ def update_medical_appoinment(medical_appoinment_id):
     medical_appoinment = Medical_Appointment.query.get(medical_appoinment_id)
     if medical_appoinment:
         data = request.json
-        medical_appoinment.number = data.get('number', medical_appoinment.number)
+        medical_appoinment.id = data.get('id', medical_appoinment.id)
         medical_appoinment.is_active = data.get('is_active', medical_appoinment.is_active)
         db.session.commit()
         return jsonify({"message": "Medical Appoinment updated"}), 200
     return jsonify({"message": "Medical Appoinment not found"}), 404
 
-#DELETE Speciality by id
+#DELETE Medical_appoinment by id
 @app.route('/medical_appoinment/<int:medical_appoinment_id>', methods=['DELETE'])
 def delete_medical_appoinment(medical_appoinment_id):
     medical_appoinment = Medical_Appointment.query.get(medical_appoinment_id)
@@ -577,6 +577,146 @@ def delete_medical_appoinment(medical_appoinment_id):
         db.session.commit()
         return jsonify({"message": "Medical Appoinment deleted"}), 200
     return jsonify({"message": "Medical Appoinment not found"}), 404
+
+#Register Alergic    
+@app.route("/api/register/alergic", methods=["POST"])
+
+def register_alergic():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    
+    
+    new_alergic = Alergic()
+    new_alergic.name = body['name']
+    new_alergic.is_active = True
+    db.session.add(new_alergic)
+    db.session.commit()
+
+    return jsonify({"message": "Alergic registered successfully"}), 201
+
+#GET Alergics
+@app.route('/alergics', methods=['GET'])
+def get_alergics():
+    alergics = Alergic.query.all()
+
+    alergics_serialized = []
+    for alergic in alergics:
+        alergics_serialized.append(alergic.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": alergics_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET Alergic by id
+@app.route('/alergic/<int:alergic_id>', methods=['GET'])
+def get_alergic(alergic_id):
+    alergic = Alergic.query.get(alergic_id)
+    if alergic:
+        alergic_data = {
+            "id": alergic.id,
+            "name": alergic.name,
+            "is_active": alergic.is_active
+            
+        }
+        return jsonify({"message": "Alergic founded", "medical_appoinment": alergic_data}), 200
+    return jsonify({"message": "Alergic not found"}), 404
+
+#PUT Alergic by id
+@app.route('/alergic/<int:alergic_id>', methods=['PUT'])
+def update_alergic(alergic_id):
+    alergic = Alergic.query.get(alergic_id)
+    if alergic:
+        data = request.json
+        alergic.name = data.get('name', alergic.name)
+        alergic.is_active = data.get('is_active', alergic.is_active)
+        db.session.commit()
+        return jsonify({"message": "Alergic updated"}), 200
+    return jsonify({"message": "Alergic not found"}), 404
+
+#DELETE Alergic by id
+@app.route('/alergic/<int:alergic_id>', methods=['DELETE'])
+def delete_alergic(alergic_id):
+    alergic = Alergic.query.get(alergic_id)
+    if alergic:
+        db.session.delete(alergic)
+        db.session.commit()
+        return jsonify({"message": "Alergic deleted"}), 200
+    return jsonify({"message": "Alergic not found"}), 404
+
+#Register Medicated    
+@app.route("/api/register/medicated", methods=["POST"])
+
+def register_medicated():
+    body = request.get_json (silent = True)
+    
+    if body is None:
+        return jsonify({'msg': "Debes enviar info al body"}), 400
+    
+    
+    new_medicated = Medicated()
+    new_medicated.name = body['name']
+    new_medicated.is_active = True
+    db.session.add(new_medicated)
+    db.session.commit()
+
+    return jsonify({"message": "Medicated registered successfully"}), 201
+
+#GET Medicated
+@app.route('/medicateds', methods=['GET'])
+def get_medicateds():
+    medicateds = Medicated.query.all()
+
+    medicateds_serialized = []
+    for medicated in medicateds:
+        medicateds_serialized.append(medicated.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": medicateds_serialized
+    }
+
+    return jsonify(response_body), 200
+
+#GET Medicated by id
+@app.route('/medicated/<int:medicated_id>', methods=['GET'])
+def get_medicated(medicated_id):
+    medicated = Medicated.query.get(medicated_id)
+    if medicated:
+        medicated_data = {
+            "id": medicated.id,
+            "name": medicated.name,
+            "is_active": medicated.is_active
+            
+        }
+        return jsonify({"message": "Alergic founded", "medical_appoinment": medicated_data}), 200
+    return jsonify({"message": "Alergic not found"}), 404
+
+#PUT Medicated by id
+@app.route('/medicated/<int:medicated_id>', methods=['PUT'])
+def update_medicated(medicated_id):
+    medicated = Medicated.query.get(medicated_id)
+    if medicated:
+        data = request.json
+        medicated.name = data.get('name', medicated.name)
+        medicated.is_active = data.get('is_active', medicated.is_active)
+        db.session.commit()
+        return jsonify({"message": "Medicated updated"}), 200
+    return jsonify({"message": "Medicated not found"}), 404
+
+#DELETE Medicated by id
+@app.route('/medicated/<int:medicated_id>', methods=['DELETE'])
+def delete_medicated(medicated_id):
+    medicated = Medicated.query.get(medicated_id)
+    if medicated:
+        db.session.delete(medicated)
+        db.session.commit()
+        return jsonify({"message": "Alergic deleted"}), 200
+    return jsonify({"message": "Alergic not found"}), 404
 
 # Favorite Routes
 
@@ -590,7 +730,7 @@ def favorites():
     patient = Patient.query.get(body['patient_id'])
     if patient is None:
         return jsonify({'msg': "El paciente con el id {} no existe".format(body['patient_id'])}), 404
-    favorite_speciality = db.session.query(FavoriteSpeciality, Speciality).join(Speciality).filter(FavoriteSpeciality.patient_id==body['patient_id']).all()
+    """favorite_speciality = db.session.query(FavoriteSpeciality, Speciality).join(Speciality).filter(FavoriteSpeciality.patient_id==body['patient_id']).all()
     favorite_speciality_serialized = []
     for favorite_item, speciality_item in favorite_speciality:
         favorite_speciality_serialized.append({"favorite_speciality_id": favorite_item.id, "speciality": speciality_item.serialize()})
@@ -599,7 +739,7 @@ def favorites():
     favorite_doctor_serialized = []
     for favorite_item, doctor_item in favorite_doctor:
         favorite_doctor_serialized.append({"favorite_doctor_id": favorite_item.id, "doctor": doctor_item.serialize()})
-        return jsonify({"msg": "ok", "results": favorite_doctor_serialized})
+        return jsonify({"msg": "ok", "results": favorite_doctor_serialized})"""
     favorite_medical_appointment = db.session.query(Favorite_Medical_Appointment, Medical_Appointment).join(Medical_Appointment).filter(Favorite_Medical_Appointment.patient_id==body['patient_id']).all()
     favorite_medical_appointment_serialized = []
     for favorite_item, medical_appointment_item in favorite_medical_appointment:
