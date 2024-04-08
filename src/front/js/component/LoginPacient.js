@@ -52,7 +52,7 @@ export const LoginPacient = () => {
         {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
         </div>
       </div>}
-     
+     {/* PONER LINK QUE VAYA A LA PAGINA DE REGISTRO CON EL TEXTO  "SI NO ESTAS REGISTRADO ACCEDE AQUI" */}
     </div>
   );
 };
