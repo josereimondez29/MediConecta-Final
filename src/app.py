@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Favorite_Medical_Appointment, Alergic, Medicated
+from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -726,33 +726,33 @@ def delete_medicated(medicated_id):
 
 # Favorite Routes
 
-@app.route('/user/favorites', methods=['GET'])
-def favorites():
-    body = request.get_json(silent=True)
-    if body is None:
-        return jsonify({'msg': "debes enviar informacion en el body"}), 400
-    if 'patient_id' not in body:
-        return jsonify({'msg': 'El campo patient_id es obligatorio'}), 400
-    patient = Patient.query.get(body['patient_id'])
-    if patient is None:
-        return jsonify({'msg': "El paciente con el id {} no existe".format(body['patient_id'])}), 404
-    """favorite_speciality = db.session.query(FavoriteSpeciality, Speciality).join(Speciality).filter(FavoriteSpeciality.patient_id==body['patient_id']).all()
-    favorite_speciality_serialized = []
-    for favorite_item, speciality_item in favorite_speciality:
-        favorite_speciality_serialized.append({"favorite_speciality_id": favorite_item.id, "speciality": speciality_item.serialize()})
-        return jsonify({"msg": "ok", "results": favorite_speciality_serialized})
-    favorite_doctor= db.session.query(FavoriteDoctor, Doctor).join(Doctor).filter(FavoriteDoctor.patient_id==body['patient_id']).all()
-    favorite_doctor_serialized = []
-    for favorite_item, doctor_item in favorite_doctor:
-        favorite_doctor_serialized.append({"favorite_doctor_id": favorite_item.id, "doctor": doctor_item.serialize()})
-        return jsonify({"msg": "ok", "results": favorite_doctor_serialized})"""
-    favorite_medical_appointment = db.session.query(Favorite_Medical_Appointment, Medical_Appointment).join(Medical_Appointment).filter(Favorite_Medical_Appointment.patient_id==body['patient_id']).all()
-    favorite_medical_appointment_serialized = []
-    for favorite_item, medical_appointment_item in favorite_medical_appointment:
-        favorite_medical_appointment_serialized.append({"favorite_medical_appointment_id": favorite_item.id, "medical_appointment": medical_appointment_item.serialize()})
-        return jsonify({"msg": "ok", "results": favorite_medical_appointment_serialized})
-    print(patient)
-    return jsonify({'msg': 'ok'})
+# @app.route('/user/favorites', methods=['GET'])
+# def favorites():
+#     body = request.get_json(silent=True)
+#     if body is None:
+#         return jsonify({'msg': "debes enviar informacion en el body"}), 400
+#     if 'patient_id' not in body:
+#         return jsonify({'msg': 'El campo patient_id es obligatorio'}), 400
+#     patient = Patient.query.get(body['patient_id'])
+#     if patient is None:
+#         return jsonify({'msg': "El paciente con el id {} no existe".format(body['patient_id'])}), 404
+#     """favorite_speciality = db.session.query(FavoriteSpeciality, Speciality).join(Speciality).filter(FavoriteSpeciality.patient_id==body['patient_id']).all()
+#     favorite_speciality_serialized = []
+#     for favorite_item, speciality_item in favorite_speciality:
+#         favorite_speciality_serialized.append({"favorite_speciality_id": favorite_item.id, "speciality": speciality_item.serialize()})
+#         return jsonify({"msg": "ok", "results": favorite_speciality_serialized})
+#     favorite_doctor= db.session.query(FavoriteDoctor, Doctor).join(Doctor).filter(FavoriteDoctor.patient_id==body['patient_id']).all()
+#     favorite_doctor_serialized = []
+#     for favorite_item, doctor_item in favorite_doctor:
+#         favorite_doctor_serialized.append({"favorite_doctor_id": favorite_item.id, "doctor": doctor_item.serialize()})
+#         return jsonify({"msg": "ok", "results": favorite_doctor_serialized})"""
+#     favorite_medical_appointment = db.session.query(Favorite_Medical_Appointment, Medical_Appointment).join(Medical_Appointment).filter(Favorite_Medical_Appointment.patient_id==body['patient_id']).all()
+#     favorite_medical_appointment_serialized = []
+#     for favorite_item, medical_appointment_item in favorite_medical_appointment:
+#         favorite_medical_appointment_serialized.append({"favorite_medical_appointment_id": favorite_item.id, "medical_appointment": medical_appointment_item.serialize()})
+#         return jsonify({"msg": "ok", "results": favorite_medical_appointment_serialized})
+#     print(patient)
+#     return jsonify({'msg': 'ok'})
 
 # Protect a route with jwt_required, which will kick out request
 # without a valid JWT present.
