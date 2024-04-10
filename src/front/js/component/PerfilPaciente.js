@@ -30,7 +30,6 @@ const PerfilPaciente =()=>{
         </div>
       </div>
     
-    </ >
     )
 }
 

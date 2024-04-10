@@ -40,13 +40,12 @@ class Patient(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     is_active = db.Column(db.Boolean(), nullable=False, default=True)
-    
     alergic = db.Column(db.Boolean(), nullable=False)
     medicated = db.Column(db.Boolean(), nullable=False)
 
     def __repr__(self):
         return f"ID {self.id}: {self.name} {self.surname}, identificacion: {self.identification}"
-
+    
     def serialize(self):
         return {
             "id": self.id,
@@ -60,6 +59,7 @@ class Patient(db.Model):
             "alergic": self.alergic,
             "medicated": self.medicated
         }
+
 
 class Alergic(db.Model):
     __tablename__ = 'alergic'
@@ -75,18 +75,16 @@ class Alergic(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "alergic": self.alergic,
+            "patient_id": self.patient_id,
             "alergic_name": self.alergic_name,
-            "is_active": self.is_active
         }
 
 class Medicated(db.Model):
     __tablename__ = 'medicated'
     id = db.Column(db.Integer, primary_key=True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'), unique=True, nullable=False)
-    medicated = db.Column(db.Boolean(), nullable=False, default=False)
+    patient_id_relationship = db.relationship(Patient)
     medicated_name = db.Column(db.String(250))
-    is_active = db.Column(db.Boolean(), nullable=False, default=True)
 
     def __repr__(self):
         return f"ID {self.id}: {self.medicated_name}"
@@ -94,9 +92,8 @@ class Medicated(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "medicated": self.medicated,
+            "patiend_id": self.patient_id,
             "medicated_name": self.medicated_name,
-            "is_active": self.is_active
         }
 
 
@@ -142,8 +139,10 @@ class Doctor(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "speciality": self.speciality_id,
+            "age": self.age,
+            "speciality_id": self.speciality_id,
             "medical_license": self.medical_license,
+            "identification": self.identification,
             "is_active": self.is_active,
             "bio": self.bio
         }
