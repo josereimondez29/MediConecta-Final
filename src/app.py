@@ -189,6 +189,7 @@ def delete_user(user_id):
 
 #Register Patients
 @app.route("/api/register/patient", methods=["POST"])
+
 def register_patient():
     body = request.get_json(silent=True)
     if body is None:
@@ -210,7 +211,10 @@ def register_patient():
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_patient.password = pw_hash
     new_patient.alergic = alergic_bool
+    
     new_patient.medicated = medicated_bool
+     
+    
     new_patient.is_active = True
 
     db.session.add(new_patient)
