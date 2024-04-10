@@ -189,7 +189,6 @@ def delete_user(user_id):
 
 #Register Patients
 @app.route("/api/register/patient", methods=["POST"])
-
 def register_patient():
     body = request.get_json(silent=True)
     if body is None:
