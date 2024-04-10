@@ -187,11 +187,10 @@ def delete_user(user_id):
     return jsonify({"message": "User not found"}), 404
 
 
-#Register Patients 
+#Register Patients
 @app.route("/api/register/patient", methods=["POST"])
 def register_patient():
     body = request.get_json(silent=True)
-    
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
     if 'email' not in body or 'password' not in body:
@@ -200,7 +199,7 @@ def register_patient():
     # Convertir las cadenas "true" o "false" a booleanos
     alergic_bool = body['alergic'].lower() == "true"
     medicated_bool = body['medicated'].lower() == "true"
-
+    
     new_patient = Patient()
     new_patient.name = body['name']
     new_patient.surname = body['surname']
@@ -211,16 +210,12 @@ def register_patient():
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_patient.password = pw_hash
     new_patient.alergic = alergic_bool
-    new_patient.specific_alergic = body['specific_alergic'] if alergic_bool else None
     new_patient.medicated = medicated_bool
-    new_patient.specific_medicated = body['specific_medicated'] if medicated_bool else None
-    
     new_patient.is_active = True
+
     db.session.add(new_patient)
     db.session.commit()
-
     return jsonify({"message": "User registered successfully"}), 201
-
 
 # Login Patient
 @app.route("/api/login/patient", methods=["POST"])

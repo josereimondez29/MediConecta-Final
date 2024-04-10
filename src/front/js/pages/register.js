@@ -6,22 +6,26 @@ export const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [apellido, setApellido] = useState('');
-  const [edad, setEdad] = useState('');
-  const [identificacion, setIdentificacion] = useState('');
-  const [seguridadSocial, setSeguridadSocial] = useState('');
-  const [alergico, setAlergico] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [age, setAge] = useState('');
+  const [identification, setIdentification] = useState('');
+  const [social_security, setSocial_security] = useState('');
+  const [alergic, setAlergic] = useState('');
   const [alergiaEspecifica, setAlergiaEspecifica] = useState('');
-  const [medicado, setMedicado] = useState('');
+  const [medicated, setMedicated] = useState('');
   const [medicamentoEspecifico, setMedicamentoEspecifico] = useState('');
   const [error, setError] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const register = async (userData) => {
+    console.log(userData)
+
+
     try {
-      const resp = await fetch(`https://improved-capybara-5wrwjwv79j4crxj-3001.app.github.dev/api/register/patient`, {
+
+      const resp = await fetch(process.env.BACKEND_URL + `api/register/patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
@@ -51,20 +55,20 @@ export const Register = () => {
     const userData = {
       email,
       password,
-      nombre,
-      apellido,
-      edad,
-      identificacion,
-      seguridadSocial,
-      alergico,
+      name,
+      surname,
+      age,
+      identification,
+      social_security,
+      alergic,
       alergiaEspecifica,
-      medicado,
+      medicated,
       medicamentoEspecifico
     };
 
     register(userData);
   };
-
+  
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
@@ -107,8 +111,8 @@ export const Register = () => {
               <input
                 type="text"
                 className="form-control"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -117,8 +121,8 @@ export const Register = () => {
               <input
                 type="text"
                 className="form-control"
-                value={apellido}
-                onChange={(e) => setApellido(e.target.value)}
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
                 required
               />
             </div>
@@ -127,8 +131,8 @@ export const Register = () => {
               <input
                 type="number"
                 className="form-control"
-                value={edad}
-                onChange={(e) => setEdad(e.target.value)}
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
                 required
               />
             </div>
@@ -137,8 +141,8 @@ export const Register = () => {
               <input
                 type="text"
                 className="form-control"
-                value={identificacion}
-                onChange={(e) => setIdentificacion(e.target.value)}
+                value={identification}
+                onChange={(e) => setIdentification(e.target.value)}
                 required
               />
             </div>
@@ -147,8 +151,8 @@ export const Register = () => {
               <input
                 type="text"
                 className="form-control"
-                value={seguridadSocial}
-                onChange={(e) => setSeguridadSocial(e.target.value)}
+                value={social_security}
+                onChange={(e) => setSocial_security(e.target.value)}
                 required
               />
             </div>
@@ -156,16 +160,16 @@ export const Register = () => {
               <label>¿Alergico?</label>
               <select
                 className="form-control"
-                value={alergico}
-                onChange={(e) => setAlergico(e.target.value)}
+                value={alergic}
+                onChange={(e) => setAlergic(e.target.value)}
                 required
               >
                 <option value="">Seleccione</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
+                <option value={true}>Sí</option>
+                <option value={false}>No</option>
               </select>
             </div>
-            {alergico === "si" && (
+            {alergic === "true" && (
               <div className="form-group">
                 <label>Especifique la alergia:</label>
                 <input
@@ -181,16 +185,16 @@ export const Register = () => {
               <label>¿Medicado por alguna enfermedad?</label>
               <select
                 className="form-control"
-                value={medicado}
-                onChange={(e) => setMedicado(e.target.value)}
+                value={medicated}
+                onChange={(e) => setMedicated(e.target.value)}
                 required
               >
                 <option value="">Seleccione</option>
-                <option value="si">Sí</option>
-                <option value="no">No</option>
+                <option value={true}>Sí</option>
+                <option value={false}>No</option>
               </select>
             </div>
-            {medicado === "si" && (
+            {medicated === "true" && (
               <div className="form-group">
                 <label>Especifique la enfermedad:</label>
                 <input
@@ -215,8 +219,3 @@ export const Register = () => {
     </div>
   );
 };
-
-
-
-
-

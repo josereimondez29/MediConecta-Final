@@ -1,7 +1,9 @@
 /* FOOTER.CSS */
 
+
+ 
 .footer {
-    background-color: #1E2C30; 
+    background-color: #83a8b1; 
     
 }
 
@@ -9,26 +11,26 @@
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
- .list-unstyled{
+.list-unstyled{
     text-decoration: none;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
  }
 
- .text {
+.text {
     text-align: justify;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
  }
 
- a{
+a{
     text-decoration: none;
     color: white;
  }
 
- a:hover{
+a:hover{
     text-decoration: none;
     color: orange;
  }
 
- .footer-social{
+.footer-social{
     justify-content:space-around;
- }
+ } 
