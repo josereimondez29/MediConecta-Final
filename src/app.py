@@ -209,8 +209,8 @@ def register_patient():
     new_patient.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_patient.password = pw_hash
-    new_patient.alergic = alergic_bool
-    new_patient.medicated = medicated_bool
+    # new_patient.alergic = alergic_bool
+    # new_patient.medicated = medicated_bool
     new_patient.is_active = True
 
     db.session.add(new_patient)
