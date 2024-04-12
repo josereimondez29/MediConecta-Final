@@ -197,20 +197,20 @@ def register_patient():
         return jsonify({'msg': "Los campos email y password son obligatorios"}), 400
     
     # Convertir las cadenas "true" o "false" a booleanos
-    alergic_bool = body['alergic'].lower() == "true"
-    medicated_bool = body['medicated'].lower() == "true"
+    # alergic_bool = body['alergic'].lower() == "true"
+    # medicated_bool = body['medicated'].lower() == "true"
     
     new_patient = Patient()
     new_patient.name = body['name']
     new_patient.surname = body['surname']
-    new_patient.age = int(body['age'])
-    new_patient.identification = body['identification']
-    new_patient.social_security = body['social_security']
+    # new_patient.age = int(body['age'])
+    # new_patient.identification = body['identification']
+    # new_patient.social_security = body['social_security']
     new_patient.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_patient.password = pw_hash
-    new_patient.alergic = alergic_bool
-    new_patient.medicated = medicated_bool
+    # new_patient.alergic = alergic_bool
+    # new_patient.medicated = medicated_bool
     new_patient.is_active = True
 
     db.session.add(new_patient)
