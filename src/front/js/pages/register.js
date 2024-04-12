@@ -8,13 +8,13 @@ export const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [age, setAge] = useState('');
+  /*const [age, setAge] = useState('');
   const [identification, setIdentification] = useState('');
   const [social_security, setSocial_security] = useState('');
   const [alergic, setAlergic] = useState('');
   const [alergiaEspecifica, setAlergiaEspecifica] = useState('');
   const [medicated, setMedicated] = useState('');
-  const [medicamentoEspecifico, setMedicamentoEspecifico] = useState('');
+  const [medicamentoEspecifico, setMedicamentoEspecifico] = useState('');*/
   const [error, setError] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const Register = () => {
 
     try {
 
-      const resp = await fetch(process.env.BACKEND_URL + `api/register/patient`, {
+      const resp = await fetch(process.env.BACKEND_URL + `/api/register/patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
@@ -57,13 +57,13 @@ export const Register = () => {
       password,
       name,
       surname,
-      age,
-      identification,
-      social_security,
-      alergic,
-      alergiaEspecifica,
-      medicated,
-      medicamentoEspecifico
+      // age,
+      // identification,
+      // social_security,
+      // alergic,
+      // alergiaEspecifica,
+      // medicated,
+      // medicamentoEspecifico
     };
 
     register(userData);
@@ -75,6 +75,26 @@ export const Register = () => {
         <div className="col-md-6">
           <h2 className="text-center mb-4">Register</h2>
           <form onSubmit={handleSubmit}>
+          <div className="form-group">
+              <label>Nombre:</label>
+              <input
+                type="text"
+                className="form-control"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label>Apellido:</label>
+              <input
+                type="text"
+                className="form-control"
+                value={surname}
+                onChange={(e) => setSurname(e.target.value)}
+                required
+              />
+            </div>
             <div className="form-group">
               <label>Email:</label>
               <input
@@ -105,28 +125,9 @@ export const Register = () => {
                 required
               />
             </div>
-            {/* Agregar los nuevos campos */}
-            <div className="form-group">
-              <label>Nombre:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Apellido:</label>
-              <input
-                type="text"
-                className="form-control"
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
+            
+            
+            {/* <div className="form-group">
               <label>Edad:</label>
               <input
                 type="number"
@@ -205,7 +206,7 @@ export const Register = () => {
                   required
                 />
               </div>
-            )}
+            )} */}
             <button type="submit" className="btn btn-primary btn-block">Register</button>
             {error && <div className="mt-3 text-danger">{error}</div>}
           </form>
