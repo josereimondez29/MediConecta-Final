@@ -34,14 +34,14 @@ class Patient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     surname = db.Column(db.String(120), nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    identification = db.Column(db.Integer, nullable=False, unique=True)
-    social_security = db.Column(db.Integer, nullable=False, unique=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
-    is_active = db.Column(db.Boolean(), nullable=False, default=True)
-    alergic = db.Column(db.Boolean(), nullable=False)
-    medicated = db.Column(db.Boolean(), nullable=False)
+    age = db.Column(db.Integer, nullable=True)
+    identification = db.Column(db.Integer, unique=True)
+    social_security = db.Column(db.Integer, unique=True)
+    email = db.Column(db.String(120), unique=True,)
+    password = db.Column(db.String(80))
+    is_active = db.Column(db.Boolean(), default=True)
+    alergic = db.Column(db.Boolean())
+    medicated = db.Column(db.Boolean())
 
     def __repr__(self):
         return f"ID {self.id}: {self.name} {self.surname}, identificacion: {self.identification}"

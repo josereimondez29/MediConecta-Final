@@ -25,7 +25,7 @@ export const Register = () => {
 
     try {
 
-      const resp = await fetch(process.env.BACKEND_URL + `api/register/patient`, {
+      const resp = await fetch(process.env.BACKEND_URL + `/api/register/patient`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData)
@@ -57,13 +57,13 @@ export const Register = () => {
       password,
       name,
       surname,
-      age,
-      identification,
-      social_security,
-      alergic,
-      alergiaEspecifica,
-      medicated,
-      medicamentoEspecifico
+      // age,
+      // identification,
+      // social_security,
+      // alergic,
+      // alergiaEspecifica,
+      // medicated,
+      // medicamentoEspecifico
     };
 
     register(userData);
