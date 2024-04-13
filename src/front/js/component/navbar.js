@@ -8,12 +8,12 @@ export const Navbar = () => {
 
   const handleLoginButtonClickMedicos = () => {
     // Redirige al componente Login
-    navigate('/login');
+    navigate('/login/doctor');
   };
 
   const handleLoginButtonClickPacientes = () => {
     // Redirige al componente Login
-    navigate('/login');
+    navigate('/login/patient');
   };
 
   return (
