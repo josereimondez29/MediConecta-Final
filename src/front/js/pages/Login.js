@@ -3,22 +3,22 @@ import { Link, Navigate } from "react-router-dom";
 import "../../styles/login.css";
 import { Context } from "../store/appContext";
 
-export const LoginDoctor = () => {
+export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
- 
+  const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
 
  
   const handleSubmit = (e) => {
     e.preventDefault()
-    actions.loginDoctor(email, password);
+    actions.login(email, password, userType);
   };
 
   return (
    
     <div className="container mt-5">
-    {store.authentication === true ? <Navigate to = "/"/> :
+    {store.authentication === true ? <Navigate to = "/private"/> :
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Login</h2>
@@ -42,6 +42,17 @@ export const LoginDoctor = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+            </div>
+            <div className="form-group">
+              <label>Tipo de Usuario:</label>
+              <select
+                className="form-control"
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
+              >
+                <option value="patient">Paciente</option>
+                <option value="doctor">Médico</option>
+              </select>
             </div>
             <button type="submit" className="btn btn-primary btn-block">Login</button>
              

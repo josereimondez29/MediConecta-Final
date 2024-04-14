@@ -118,15 +118,16 @@ class Doctor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     surname = db.Column(db.String(120), nullable=False)
-    age = db.Column(db.Integer)
-    bio = db.Column(db.String(500), unique=True, nullable=False)
+    age = db.Column(db.Integer, nullable=True)
+    bio = db.Column(db.String(500), unique=True, nullable=True)
     # review = ???
     identification = db.Column(db.Integer)
     medical_license = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
-    speciality_id = db.Column(db.ForeignKey("speciality.id"), nullable=False)
+    speciality_id = db.Column(db.ForeignKey("speciality.id"), nullable=True)
     speciality_id_relationship = db.relationship(Speciality)
+    
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
 
