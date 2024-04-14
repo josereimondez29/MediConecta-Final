@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SpecialitySelection = ({ specialities, handleSpecialitySelect }) => {
+export const SpecialitySelection = ({ specialities, handleSpecialitySelect }) => {
   return (
     <div>
       <h2>Select Speciality</h2>
@@ -13,4 +13,3 @@ const SpecialitySelection = ({ specialities, handleSpecialitySelect }) => {
   );
 };
 
-export default SpecialitySelection;

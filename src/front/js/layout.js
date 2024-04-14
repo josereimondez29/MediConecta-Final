@@ -6,13 +6,14 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 
 import { Single } from "./pages/single";
-import { Login } from "./pages/login";
+import LoginPacient from "./component/LoginPacient";
 import { Register } from "./pages/register";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Private } from "./pages/private";
+import MedicalAppointment from "./component/CitaMedica";
 
 //create your first component
 const Layout = () => {
@@ -31,8 +32,9 @@ const Layout = () => {
           <Routes>
             <Route element={<Home />} path="/" />
             <Route element={<Private />} path="/private" />
-            <Route element={<Login />} path="/login/patient" />
+            <Route element={<LoginPacient />} path="/login/patient" />
             <Route element={<Register />} path="/register/patient" />
+            <Route element={<MedicalAppointment />} path="/register/medical_appointment" />
             <Route element={<Single />} path="/single/:theid" />
             <Route element={<h1>Not found</h1>} /> 
           </Routes>
