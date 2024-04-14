@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import { Register } from "./register";
+
 // import './../../styles/home.css'
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import bg_3 from "../../img/bg_3.jpg";
+import dept1 from "../../img/dept-1.jpg"
 import Especialidades from "../component/Especialidades";
+import ListDoctors from "../component/ListDoctors";
 
 
 export const Home = () => {
@@ -154,13 +156,13 @@ export const Home = () => {
       </section>
 
       {/* Quinto */}
-      <section className="section" id="department-section">
+      {/* <section className="section" id="department-section">
         <div className="container-fluid px-0">
           <div className="row no-gutters">
             <div className="col-md-4 d-flex">
               <div
                 className="img img-dept align-self-stretch"
-                style={{ backgroundImage: "url('img/dept-1.jpg')" }}
+                style={{ backgroundImage: `url(${dept1})`, width:"380px", height:"380px" }}
               ></div>
             </div>
 
@@ -170,7 +172,7 @@ export const Home = () => {
                   <div className="department-wrap p-4">
                     <div className="text p-2 text-center">
                       <div className="icon">
-                        <span className="icon-stethoscope"></span>
+                        <span className="icon-stethoscope">Aqui hay un ico</span>
                       </div>
                       <h3>
                         <a href="#">Neurología</a>
@@ -178,19 +180,19 @@ export const Home = () => {
                       <p>Muy muy lejos, detrás de la palabra montañas.</p>
                     </div>
                   </div>
-                  {/* Repite esta estructura para los otros servicios */}
+                  Repite esta estructura para los otros servicios
                 </div>
                 <div className="col-md-4">
-                  {/* Repite esta estructura para los otros servicios */}
+                  Repite esta estructura para los otros servicios
                 </div>
                 <div className="col-md-4">
-                  {/* Repite esta estructura para los otros servicios */}
+                  Repite esta estructura para los otros servicios
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Sexto */}
       <section className="section" id="doctor-section">
