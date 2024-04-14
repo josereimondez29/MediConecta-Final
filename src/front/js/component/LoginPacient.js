@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import "../../styles/login.css";
 import { Context } from "../store/appContext";
 
-export const LoginPacient = () => {
+const LoginPacient = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
  
@@ -57,4 +57,4 @@ export const LoginPacient = () => {
   );
 };
 
-
+export default LoginPacient;
