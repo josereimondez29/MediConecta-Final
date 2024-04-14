@@ -8,12 +8,12 @@ export const Navbar = () => {
 
   const handleLoginButtonClickMedicos = () => {
     // Redirige al componente Login
-    navigate('/login/doctor');
+    navigate('/register');
   };
 
   const handleLoginButtonClickPacientes = () => {
     // Redirige al componente Login
-    navigate('/login/patient');
+    navigate('/login');
   };
 
   return (
@@ -51,10 +51,10 @@ export const Navbar = () => {
           </div>
           <div className="d-flex ms-auto">
                 <form className="d-flex p-2" role="log in">
-                    <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="submit">Área privada Médicos</button>
+                    <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="submit">Registrate</button>
                 </form>
                 <form className="d-flex p-2" role="log in">
-                    <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="submit">Área privada Pacientes</button>
+                    <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="submit">Login</button>
                 </form>
           </div>
         </div>

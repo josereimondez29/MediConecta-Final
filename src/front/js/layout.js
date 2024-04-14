@@ -6,10 +6,10 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 
 import { Single } from "./pages/single";
-import { Register } from "./pages/register";
+import { Register } from "./pages/Register";
+import { Login } from "./pages/Login";
+
 import injectContext from "./store/appContext";
-import {LoginPacient} from "./component/LoginPacient";
-import {LoginDoctor} from "./component/LoginDoctor"
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -32,11 +32,10 @@ const Layout = () => {
           <Routes>
             <Route element={<Home />} path="/" />
             <Route element={<Private />} path="/private" />
-            <Route element={<LoginPacient />} path="/login/patient" />
-            <Route element={<LoginDoctor />} path="/login/doctor" />
-            <Route element={<Register />} path="/register/patient" />
+            <Route element={<Login/>} path="/login"/>
+            <Route element={<Register />} path="/register" />
             <Route element={<Single />} path="/single/:theid" />
-            <Route element={<h1>Not found</h1>} /> 
+            <Route element={<h1>Not found</h1>} />
           </Routes>
           <Footer />
         </ScrollToTop>
