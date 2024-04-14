@@ -242,7 +242,8 @@ def create_login():
     access_token = create_access_token(identity=patient.email)
     print(patient)
     return jsonify({'msg': 'Login succesfull...',
-                    'token': access_token})
+                    'token': access_token,
+                    'patient': patient.serialize()})
 
 #GET Patients
 @app.route('/patients', methods=['GET'])
@@ -335,13 +336,13 @@ def register_doctor():
     new_doctor = Doctor()
     new_doctor.name = body['name']
     new_doctor.surname = body['surname']
-    new_doctor.age = body['age']
-    new_doctor.identification = body['identification']
-    new_doctor.medical_license = body['medical_license']
+    # new_doctor.age = body['age']
+    # new_doctor.identification = body['identification']
+    # new_doctor.medical_license = body['medical_license']
     new_doctor.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_doctor.password = pw_hash
-    new_doctor.speciality = body['speciality']
+    # new_doctor.speciality = body['speciality']
     new_doctor.is_active = True
     db.session.add(new_doctor)
     db.session.commit()
@@ -373,7 +374,8 @@ def create_doctor_login():
     access_token = create_access_token(identity=doctor.email)
     print(doctor)
     return jsonify({'msg': 'Login succesfull...',
-                    'token': access_token})
+                    'token': access_token,
+                    'doctor': doctor.serialize()})
 
 #GET Doctors
 @app.route('/doctors', methods=['GET'])

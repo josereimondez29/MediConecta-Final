@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
+			signupSuccesful:null, 
 			demo: [
 				{
 					title: "FIRST",
@@ -53,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 
-			loginPacient: (email, password) => {
+			login: (email, password, userType) => {
 				const requestOptions = {
 					method: "POST",
 					headers: {"Content-Type": "application/json"},
@@ -63,7 +64,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 				};
 				
-				fetch(process.env.BACKEND_URL + "/api/login/patient", requestOptions)
+				fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
 				.then((response) => {
 					console.log(response.status)
 					if (response.status === 200){
@@ -74,7 +75,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then((data) => {
 					localStorage.setItem("token", data.token);
 					sessionStorage.setItem("token", data.token);
-					 
+					
+					const user = userType === 'patient' ? data.patient : data.doctor;
+					localStorage.setItem("name", user.name);
+					sessionStorage.setItem("name", user.name);
+
 				})
 				.catch((error) => {
 					console.error( error);
@@ -82,40 +87,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
-			loginDoctor: (email, password) => {
-				const requestOptions = {
-					method: "POST",
-					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({
-						"email": email,
-						"password": password
-					})
-				};
-				
-				fetch(process.env.BACKEND_URL + "/api/login/doctor", requestOptions)
-				.then((response) => {
-					console.log(response.status)
-					if (response.status === 200){
-						setStore({ authentication: true });
+			register: async (userData, userType) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + `/api/register/${userType}`, {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(userData)
+					});
+					if (!resp.ok) {
+						
+						throw new Error("There was a problem in the registration request");
 					}
-					return response.json();
-				})
-				.then((data) => {
-					localStorage.setItem("token", data.token);
-					sessionStorage.setItem("token", data.token);
-					 
-				})
-				.catch((error) => {
-					console.error( error);
+					const data = await resp.json();
+					setStore({ signupSuccesful: "Successful registration! Now you can log in." });
+			
+				} catch (error) {
 					setStore({ messageError: error.message });
-				});
+				}
 			},
-
-
-
-			},
-		}
-	};
+		},
+	}
+};
 
 
 export default getState;
