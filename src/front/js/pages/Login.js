@@ -13,6 +13,7 @@ export const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     actions.login(email, password, userType);
+
   };
 
   return (

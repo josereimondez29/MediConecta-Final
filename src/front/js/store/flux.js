@@ -72,11 +72,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then((data) => {
 					localStorage.setItem("token", data.token);
 					sessionStorage.setItem("token", data.token);
-					
+					localStorage.setItem("authentication", true)
+
 					const user = userType === 'patient' ? data.patient : data.doctor;
 					localStorage.setItem("name", user.name);
 					sessionStorage.setItem("name", user.name);
-
+			
 				})
 				.catch((error) => {
 					console.error( error);
@@ -102,6 +103,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ messageError: error.message });
 				}
 			},
+
+			logout: ()=>{
+				setStore({ authentication: false });
+			        // Eliminar el token del almacenamiento local
+				localStorage.removeItem('token');
+				localStorage.removeItem('name');
+				localStorage.removeItem('authentication');
+				sessionStorage.removeItem('authentication');
+				sessionStorage.removeItem('token');
+				sessionStorage.removeItem('name');
+					// Redireccionar al usuario a la página de inicio de sesión
+				navigate("/"); // Cambia "/login" por la ruta correcta si es diferente
+				},
 		},
 	}
 };
