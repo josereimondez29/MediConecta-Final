@@ -73,6 +73,7 @@
 		]
 	},
 	"dependencies": {
+		"@types/react": "^18.2.79",
 		"@whereby.com/browser-sdk": "^2.8.1",
 		"axios": "^1.6.8",
 		"http-server": "^14.1.1",
@@ -81,6 +82,8 @@
 		"react-datepicker": "^6.7.1",
 		"react-dom": "^16.8.4",
 		"react-polyfills": "0.0.1",
-		"react-router-dom": "^6.3.0"
+		"react-router-dom": "^6.3.0",
+		"react-scripts": "^5.0.1",
+		"web-vitals": "^3.5.2"
 	}
 }

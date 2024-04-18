@@ -4,7 +4,6 @@ import { useRoomConnection } from "@whereby.com/browser-sdk/react";
 import IconButton from "./IconButton";
 import ChatInput from "./ChatInput";
 
-
 const ROOM_URL = "https://mediconecta.whereby.com/mediconectad2c06dd5-8e34-4da3-8b4e-1468e7807bfb?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI4NDkzNzE3OSIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvbWVkaWNvbmVjdGFkMmMwNmRkNS04ZTM0LTRkYTMtOGI0ZS0xNDY4ZTc4MDdiZmIiLCJvcmdhbml6YXRpb25JZCI6IjIyNTUxMyJ9LCJpc3MiOiJodHRwczovL2FjY291bnRzLnNydi53aGVyZWJ5LmNvbSIsImlhdCI6MTcxMzI3ODkxMSwicm9vbUtleVR5cGUiOiJtZWV0aW5nSG9zdCJ9.M1tQeshKHldm9RnEeTT9MAKfs24FJrefJy75VMYwynk";
 
 function VideoConf() {
@@ -81,9 +80,7 @@ function VideoConf() {
                             toggleCamera();
                         }}
                         isActive={isCameraActive}
-                    >
-                        Cam
-                    </IconButton>
+                    />
                     <IconButton
                         variant="microphone"
                         onClick={() => {
@@ -91,9 +88,7 @@ function VideoConf() {
                             toggleMicrophone();
                         }}
                         isActive={isMicrophoneActive}
-                    >
-                        Mic
-                    </IconButton>
+                    />
                     <IconButton
                         variant="share"
                         onClick={() => {
@@ -105,9 +100,7 @@ function VideoConf() {
                             setIsLocalScreenshareActive((prev) => !prev);
                         }}
                         isActive={isLocalScreenshareActive}
-                    >
-                        {isLocalScreenshareActive ? "Stop" : "Share"}
-                    </IconButton>
+                    />
                 </div>
             </div>
         </div>
@@ -115,3 +108,5 @@ function VideoConf() {
 }
 
 export default VideoConf;
+
+

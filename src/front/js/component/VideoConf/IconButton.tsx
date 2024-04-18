@@ -45,26 +45,27 @@ function getIconProps(variant: ButtonVariant): {
     }
 }
 
-interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface IconButtonProps {
     variant: ButtonVariant;
     isActive?: boolean;
+    onClick?: () => void;
 }
 
-export default function IconButton({ children, variant, isActive = true, ...rest }: IconButtonProps) {
+export default function IconButton({ variant, isActive = true, onClick }: IconButtonProps) {
     const { alt, activeBgColor, bgColor, iconSource, offIcon } = getIconProps(variant);
 
     return (
         <div className="icon-button-wrapper">
             <button
                 className="icon-button"
-                {...rest}
+                onClick={onClick}
                 style={{
                     backgroundColor: isActive ? activeBgColor : bgColor,
                 }}
             >
-                {isActive ? <img src={iconSource} alt={alt} /> : <img src={offIcon} alt={alt} />}
+                <img src={isActive ? iconSource : offIcon} alt={alt} />
             </button>
-            {children}
         </div>
     );
 }
+
