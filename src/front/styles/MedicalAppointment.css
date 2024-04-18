@@ -1,9 +1,27 @@
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .btn {
-    margin-top: 10px;
-  }
+
+.medical-appointment-container {
+  padding: 20px;
+  text-align: center; 
+}
+
+.message {
+  margin-bottom: 20px;
+  font-size: 18px; 
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.selection-container {
+  margin-bottom: 20px;
+}
+
+
+.selection-container select {
+  width: 100%; 
+  padding: 10px; 
+  font-size: 16px; 
+  border-radius: 5px; 
+  border: 1px solid #ccc; 
+}

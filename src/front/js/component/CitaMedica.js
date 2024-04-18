@@ -1,24 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {SpecialitySelection} from './SpecialitySelection';
+import SpecialitySelection from './SpecialitySelection';
 import DoctorSelection from './DoctorSelection';
 import AvailabilityCalendar from './AvailabilityCalendar';
-import './../../styles/MedicalAppointment.css';
+import './../../styles/MedicalAppointment.css'; // Tu archivo CSS personalizado
+import { Context } from "../store/appContext";
+import 'react-datepicker/dist/react-datepicker.css'; // Estilo de react-datepicker
 
-const MedicalAppointment = ({ specialities, doctors }) => {
+
+const MedicalAppointment = () => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [selectedSpeciality, setSelectedSpeciality] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isAppointmentScheduled, setIsAppointmentScheduled] = useState(false);
+  const { store, actions } = useContext(Context);
 
   const handleLoginSuccess = () => {
     setIsLoggedIn(true);
   };
 
   const handleRegisterAppointment = async () => {
-    // Lógica para registrar la cita médica
+    if (selectedSpeciality && selectedDoctor && selectedDate ) {
+      const token = localStorage.getItem('token');
+      const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + token // ⬅⬅⬅ authorization token
+        },
+        body: JSON.stringify({
+          speciality: selectedSpeciality,
+          doctor: selectedDoctor,
+          date: selectedDate
+        })
+      });
+      const data = await response.json();
+      console.log("Response from backend:", data); // Verifica la respuesta del backend
+      setIsAppointmentScheduled(true);
+    } else {
+      alert("Por favor, selecciona una especialidad, un médico y una fecha para programar la cita.");
+    }
   };
 
   const handleLoginRedirect = () => {
@@ -29,9 +52,11 @@ const MedicalAppointment = ({ specialities, doctors }) => {
     navigate('/register'); // Redirige a la ruta de registro
   };
 
+  const isButtonDisabled = !(selectedSpeciality && selectedDoctor && selectedDate);
+
   return (
-    <div className="container">
-      {!isLoggedIn ? (
+    <div className="container medical-appointment-container">
+      {store.authentication === false ? (
         <div className="row justify-content-center">
           <div className="col-md-6">
             <div className="message">
@@ -52,19 +77,17 @@ const MedicalAppointment = ({ specialities, doctors }) => {
             </div>
           ) : (
             <div className="row justify-content-center">
-              <div className="col-md-6">
-                <SpecialitySelection specialities={specialities} handleSpecialitySelect={(speciality) => setSelectedSpeciality(speciality)} />
+              <div className="col-md-6 selection-container">
+                <SpecialitySelection handleSpecialitySelect={setSelectedSpeciality} />
+              </div>
+              <div className="col-md-6 selection-container">
+                <DoctorSelection handleDoctorSelect={setSelectedDoctor} />
+              </div>
+              <div className="col-md-6 selection-container">
+                <AvailabilityCalendar handleAppointment={setSelectedDate} />
               </div>
               <div className="col-md-6">
-                {selectedSpeciality && <DoctorSelection doctors={doctors.filter(doctor => doctor.specialityId === selectedSpeciality.id)} handleDoctorSelect={(doctor) => setSelectedDoctor(doctor)} />}
-              </div>
-              <div className="col-md-6">
-                {selectedDoctor && <AvailabilityCalendar handleAppointment={(date) => setSelectedDate(date)} />}
-              </div>
-              <div className="col-md-6">
-                {selectedDate && (
-                  <button className="btn btn-success" onClick={handleRegisterAppointment}>Registrar cita</button>
-                )}
+                <button className="btn btn-success" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>Registrar cita</button>
               </div>
             </div>
           )}
@@ -75,6 +98,11 @@ const MedicalAppointment = ({ specialities, doctors }) => {
 };
 
 export default MedicalAppointment;
+
+
+
+
+
 
 
 

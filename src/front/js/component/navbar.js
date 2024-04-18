@@ -1,6 +1,6 @@
 
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 // import './../../styles/navbar.css';
 
 export const Navbar = () => {
@@ -14,6 +14,11 @@ export const Navbar = () => {
   const handleLoginButtonClickPacientes = () => {
     // Redirige al componente Login
     navigate('/login');
+  };
+
+  const handleMedicalAppointment = () => {
+    // Redirige a sacar cita
+    navigate('/register/medical_appointment');
   };
 
   return (
@@ -55,6 +60,11 @@ export const Navbar = () => {
                 </form>
                 <form className="d-flex p-2" role="log in">
                     <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="submit">Login</button>
+                </form>
+                <form className="d-flex p-2" role="log in">
+                <Link to = {"/register/medical_appointment"}>
+                  <button className="btn btn-success" >Registrar cita</button>
+                  </Link>
                 </form>
           </div>
         </div>

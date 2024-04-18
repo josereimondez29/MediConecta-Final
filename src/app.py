@@ -15,6 +15,7 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS, cross_origin
+from flask_mail import Mail, Message
 
 
 # from models import Person
@@ -23,6 +24,20 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+
+
+app.config.update(dict(
+    DEBUG=False,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME="mediconecta1@gmail.com",
+    MAIL_PASSWORD= os.getenv("MAIL_PASSWORD")
+))
+
+mail= Mail(app)
+
 CORS(app)
 app.url_map.strict_slashes = False
 
@@ -513,22 +528,31 @@ def delete_speciality(speciality_id):
     return jsonify({"message": "Speciality not found"}), 404
 
 #Register Medical Appoinment    
-@app.route("/api/register/medical_appoinment", methods=["POST"])
-
-def register_medical_appoinment():
-    body = request.get_json (silent = True)
+@app.route("/api/register/medical_appointment", methods=["POST"])
+@jwt_required()
+def register_medical_appointment():
+    body = request.get_json(silent=True)
     
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
     
+    patient = get_jwt_identity()
+    print(patient)
+    patient_info = Patient.query.filter_by(email=patient).first()
+    print(patient_info)
+    print(patient_info.id)
+    new_medical_appointment = Medical_Appointment()
+    new_medical_appointment.speciality_id = body['speciality'],
+    new_medical_appointment.patient_id = patient_info.id,
+    new_medical_appointment.doctor_id = body['doctor'],
+    new_medical_appointment.appointment_date = body['date'],
+    new_medical_appointment.is_active=True
     
-    new_medical_appoinment = Medical_Appointment()
-    new_medical_appoinment.id = body['id']
-    new_medical_appoinment.is_active = True
-    db.session.add(new_medical_appoinment)
+    
+    db.session.add(new_medical_appointment)
     db.session.commit()
 
-    return jsonify({"message": "Medical Appoinment registered successfully"}), 201
+    return jsonify({"message": "Medical Appointment registered successfully"}), 201
 
 #GET medical_appoinments
 @app.route('/medical_appoinments', methods=['GET'])
@@ -720,6 +744,15 @@ def delete_medicated(medicated_id):
         db.session.commit()
         return jsonify({"message": "Alergic deleted"}), 200
     return jsonify({"message": "Alergic not found"}), 404
+
+#SEND EMAIL
+@app.route('/send_mail', methods=['GET'])
+def send_mail():
+    msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
+                  recipients=['mediconecta1@gmail.com'])
+    msg.html = "<h1> Hola desde el correo</h1>"
+    mail.send(msg)
+    return jsonify ({"msg": "Mail enviado!!!"})
 
 # Favorite Routes
 

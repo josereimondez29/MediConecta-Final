@@ -71,4 +71,4 @@ export const Login = () => {
   );
 };
 
-export default LoginPacient;
+
