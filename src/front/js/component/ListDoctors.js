@@ -13,7 +13,7 @@ const ListDoctors = () => {
         navigate('/alldoctors');
       };
 
-    // Obtener solo los primeros 6 médicos si no se ha hecho clic en "ver más"
+    // Obtener solo los primeros 3 médicos si no se ha hecho clic en "ver más"
     const displayedDoctors = store.doctors.slice(0, 3);
 
     return (
