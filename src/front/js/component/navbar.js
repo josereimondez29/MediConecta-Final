@@ -1,11 +1,12 @@
 
-import React from "react";
+import React, { useContext, useEffect }  from "react";
 import { useNavigate } from "react-router-dom";
 // import './../../styles/navbar.css';
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
   const navigate = useNavigate();
-
+  const { store, actions } = useContext(Context);
   const handleLoginButtonClickMedicos = () => {
     // Redirige al componente Login
     navigate('/register');
@@ -15,6 +16,17 @@ export const Navbar = () => {
     // Redirige al componente Login
     navigate('/login');
   };
+
+  function submitlogout() {
+    actions.logout();
+    localStorage.removeItem("authentication"); // Elimina la autenticación del localStorage al cerrar sesión
+    navigate("/"); // Cambia "/login" por la ruta correcta si es diferente
+}
+
+  useEffect (()=>{
+    console.log("cambió el token")
+    console.log(localStorage.getItem("token"))
+  },[store.authentication])
 
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -50,12 +62,19 @@ export const Navbar = () => {
             </ul>
           </div>
           <div className="d-flex ms-auto">
-                <form className="d-flex p-2" role="log in">
+                <form className="d-flex p-2" role="register">
                     <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="submit">Registrate</button>
                 </form>
                 <form className="d-flex p-2" role="log in">
                     <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="submit">Login</button>
                 </form>
+
+                {store.authentication === true ? (
+                    <form className="d-flex p-2" role="log out">
+                        <button onClick={submitlogout} className="btn btn-outline-danger">Logout</button>
+                    </form> 
+                ): " "}
+                
           </div>
         </div>
       </div>

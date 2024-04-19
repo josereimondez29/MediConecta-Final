@@ -17,6 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			authentication:false, 
 			messageError: null,
+			doctors: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -72,11 +73,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then((data) => {
 					localStorage.setItem("token", data.token);
 					sessionStorage.setItem("token", data.token);
+					localStorage.setItem("authentication", true)
+					sessionStorage.setItem("authentication", true);
+					localStorage.setItem("id", data.doctor.id)
+					sessionStorage.setItem("id", data.doctor.id);
+
+					console.log("DATA LOGIN ->", data)
 					
 					const user = userType === 'patient' ? data.patient : data.doctor;
 					localStorage.setItem("name", user.name);
 					sessionStorage.setItem("name", user.name);
-
+			
 				})
 				.catch((error) => {
 					console.error( error);
@@ -102,6 +109,69 @@ const getState = ({ getStore, getActions, setStore }) => {
 					setStore({ messageError: error.message });
 				}
 			},
+
+			logout: ()=>{
+				setStore({ authentication: false });
+			        // Eliminar el token del almacenamiento local
+				localStorage.removeItem('token');
+				localStorage.removeItem('name');
+				localStorage.removeItem('authentication');
+				localStorage.removeItem('id');
+				sessionStorage.removeItem('id');
+				sessionStorage.removeItem('authentication');
+				sessionStorage.removeItem('token');
+				sessionStorage.removeItem('name');
+					// Redireccionar al usuario a la página de inicio de sesión
+				},
+			
+			loadDoctors: ()=>{
+				fetch(process.env.BACKEND_URL + "/doctors")
+					.then((response) => response.json())
+					.then((data) => setStore({doctors:data.result}))
+					.catch((error) => console.error(error))
+				}, 
+
+			getinfoDoctor: (id) => { 
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+				// Aquí se asume que los datos del médico obtenidos del backend están en data
+					let updatedDoctor = result; // Suponiendo que los datos del médico se encuentran en data.result
+					let updatedDoctors = getStore().doctors.map((Doctor) => {
+						if (Doctor.id === id) {
+							return updatedDoctor; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+						} else {
+							return Doctor; // Si el ID no coincide, conserva el médico sin cambios
+						}
+					});
+					setStore({ doctors: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados
+					console.log("UPDATE", updatedDoctors); // Muestra los médicos actualizados en la consola
+				});
+			},
+
+			updateDoctor: (doctors, id) => {
+				const requestOptions = {
+					method: "PUT",
+					body: JSON.stringify(doctors),
+					headers: { "Content-Type": "application/json" },
+					redirect: "follow"
+				  };
+				  
+				  fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
+					.then((response) => response.text())
+					.then((result) => {
+						console.log("RESULTADOS", result)
+						fetch(process.env.BACKEND_URL + "/doctors")
+						.then((response) => response.json())
+						.then((data) => setStore({doctors:data.result}))
+						.catch((error) => console.error(error))
+							
+							
+					})
+					.catch((error) => console.error(error));
+			 
+			},
+			
 		},
 	}
 };
