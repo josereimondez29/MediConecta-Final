@@ -19,7 +19,8 @@ export const Login = () => {
   return (
    
     <div className="container mt-5">
-    {store.authentication === true ? <Navigate to = "/private"/> :
+    {store.authentication === true ? 
+      (userType === 'patient' ? <Navigate to="/private"/> : <Navigate to="/log"/>) :
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Login</h2>
