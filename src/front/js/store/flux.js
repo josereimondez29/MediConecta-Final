@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			authentication:false, 
 			messageError: null,
 			doctors: [],
+			patients: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -52,44 +53,89 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ demo: demo });
 			},
 
+			// login: (email, password, userType) => {
+			// 	const requestOptions = {
+			// 		method: "POST",
+			// 		headers: {"Content-Type": "application/json"},
+			// 		body: JSON.stringify({
+			// 			"email": email,
+			// 			"password": password
+			// 		})
+			// 	};
+				
+			// 	fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
+			// 	.then((response) => {
+			// 		console.log(response.status)
+			// 		if (response.status === 200){
+			// 			setStore({ authentication: true });
+			// 		}
+			// 		return response.json();
+			// 	})
+			// 	.then((data) => {
+			// 		localStorage.setItem("token", data.token);
+			// 		sessionStorage.setItem("token", data.token);
+			// 		localStorage.setItem("authentication", true)
+			// 		sessionStorage.setItem("authentication", true);
+
+			// 		localStorage.setItem("id", data.doctor.id)
+			// 		sessionStorage.setItem("id", data.doctor.id);
+
+			// 		console.log("DATA LOGIN ->", data)
+					
+			// 		const user = userType === 'patient' ? data.patient : data.doctor;
+			// 		localStorage.setItem("name", user.name);
+			// 		sessionStorage.setItem("name", user.name);
+			
+			// 	})
+			// 	.catch((error) => {
+			// 		console.error( error);
+			// 		setStore({ messageError: error.message });
+			// 	});
+			// },
+
 			login: (email, password, userType) => {
 				const requestOptions = {
-					method: "POST",
-					headers: {"Content-Type": "application/json"},
-					body: JSON.stringify({
-						"email": email,
-						"password": password
-					})
+				  method: "POST",
+				  headers: { "Content-Type": "application/json" },
+				  body: JSON.stringify({
+					"email": email,
+					"password": password
+				  })
 				};
 				
 				fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
 				.then((response) => {
-					console.log(response.status)
-					if (response.status === 200){
-						setStore({ authentication: true });
-					}
-					return response.json();
+				  console.log(response.status)
+				  if (response.status === 200){
+					setStore({ authentication: true });
+				  }
+				  return response.json();
 				})
 				.then((data) => {
-					localStorage.setItem("token", data.token);
-					sessionStorage.setItem("token", data.token);
-					localStorage.setItem("authentication", true)
-					sessionStorage.setItem("authentication", true);
-					localStorage.setItem("id", data.doctor.id)
+				  localStorage.setItem("token", data.token);
+				  sessionStorage.setItem("token", data.token);
+				  localStorage.setItem("authentication", true);
+				  sessionStorage.setItem("authentication", true);
+			  
+				  if (userType === 'patient') {
+					localStorage.setItem("id", data.patient.id);
+					sessionStorage.setItem("id", data.patient.id);
+					localStorage.setItem("name", data.patient.name);
+					sessionStorage.setItem("name", data.patient.name);
+				  } else if (userType === 'doctor') {
+					localStorage.setItem("id", data.doctor.id);
 					sessionStorage.setItem("id", data.doctor.id);
-
-					console.log("DATA LOGIN ->", data)
-					
-					const user = userType === 'patient' ? data.patient : data.doctor;
-					localStorage.setItem("name", user.name);
-					sessionStorage.setItem("name", user.name);
-			
+					localStorage.setItem("name", data.doctor.name);
+					sessionStorage.setItem("name", data.doctor.name);
+				  }
+				  
+				  console.log("DATA LOGIN ->", data);
 				})
 				.catch((error) => {
-					console.error( error);
-					setStore({ messageError: error.message });
+				  console.error( error);
+				  setStore({ messageError: error.message });
 				});
-			},
+			  },
 
 			register: async (userData, userType) => {
 				try {
@@ -170,6 +216,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch((error) => console.error(error));
 			 
+			},
+
+			loadPatients: ()=>{
+				fetch(process.env.BACKEND_URL + "/patients")
+					.then((response) => response.json())
+					.then((data) => setStore({patients:data.result}))
+					.catch((error) => console.error(error))
+				}, 
+			
+			
+			// getinfoPatient: (id) => { 
+			// 	fetch(process.env.BACKEND_URL + `/patient/${id}`)
+			// 	.then((response) => response.json())
+			// 	.then((result) => {
+			// 		// Aquí se asume que los datos del paciente obtenidos del backend están en data
+			// 			let updatedPatient = result; // Suponiendo que los datos del médico se encuentran en data.result
+			// 			let updatedPatients = getStore().patients.map((Patient) => {
+			// 				if (Patient.id === id) {
+			// 					return updatedPatient; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+			// 				} else {
+			// 					return Patient; // Si el ID no coincide, conserva el médico sin cambios
+			// 				}
+			// 			});
+			// 			setStore({ patients: updatedPatients }); // Actualiza el estado de la tienda con los médicos actualizados
+			// 			console.log("UPDATE", updatedPatients); // Muestra los médicos actualizados en la consola
+			// 		});
+			// 	},
+
+			getinfoPatient: (id) => { 
+				fetch(process.env.BACKEND_URL + `/patient/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+					// Actualizar el estado global con la información del paciente que ha iniciado sesión
+					setStore({ currentPatient: result });
+				})
+				.catch((error) => {
+					console.error("Error al obtener la información del paciente:", error);
+					setStore({ messageError: "Error al obtener la información del paciente" });
+				});
+			},
+
+			//PARA USAR EN EL PrivateMedico.js
+			getinfoMedico: (id) => { 
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+					// Actualizar el estado global con la información del paciente que ha iniciado sesión
+					setStore({ currentMedico: result });
+				})
+				.catch((error) => {
+					console.error("Error al obtener la información del paciente:", error);
+					setStore({ messageError: "Error al obtener la información del paciente" });
+				});
 			},
 			
 		},
