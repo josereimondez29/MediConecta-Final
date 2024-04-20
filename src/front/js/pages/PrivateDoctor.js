@@ -13,6 +13,7 @@ const PrivateDoctor = (props) => {
             .then(() => setLoading(false))
             .catch(() => setLoading(false));
     }, [params.id]);
+    
 
     if (loading) {
         return <p>Cargando...</p>;

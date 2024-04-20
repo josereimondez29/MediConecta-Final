@@ -411,18 +411,23 @@ def get_doctor(doctor_id):
 def get_doctor_details(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     print(doctor)
-    if doctor:
-        doctor_data = { 
-            "id": doctor.id,
-            "name": doctor.name,
-            "surname": doctor.surname,
-            "email": doctor.email,
-            "bio": doctor.bio,
-            "speciality_id": doctor.speciality_id,
-            "speciality": doctor.speciality,
-            "is_active": doctor.is_active
-        }
-        return jsonify({"message": "Doctor details found", "doctor": doctor_data}), 200
+    speciality = db.session.query(Doctor, Speciality).join(Doctor).filter(Speciality.id == doctor.speciality_id).all()
+    speciality_serialized = []
+    for Doctor_item, Speciality_item in speciality:
+        speciality_serialized.append({'Doctor': Doctor_item.serialize(), 'Speciality': Speciality_item.serialize()})
+    print(speciality)
+    # if doctor:
+    #     doctor_data = { 
+    #         "id": doctor.id,
+    #         "name": doctor.name,
+    #         "surname": doctor.surname,
+    #         "email": doctor.email,
+    #         "bio": doctor.bio,
+    #         "speciality_id": doctor.speciality_id,
+    #         "speciality": doctor.speciality,
+    #         "is_active": doctor.is_active
+    #     }
+    return jsonify({"message": "Doctor details found", "speciality": speciality_serialized}), 200
     return jsonify({"message": "Doctor not found"}), 404
 
 #PUT Doctor by id
@@ -437,6 +442,7 @@ def update_doctor(doctor_id):
         doctor.identification = data.get('identification', doctor.identification)
         doctor.medical_license = data.get('medical_license', doctor.medical_license)
         doctor.email = data.get('email', doctor.email)
+        doctor.bio = data.get('bio', doctor.bio)
         doctor.password = data.get('password', doctor.password)
         doctor.speciality_id = data.get('speciality', doctor.speciality_id)
         doctor.is_active = data.get('is_active', doctor.is_active)

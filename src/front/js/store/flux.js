@@ -18,6 +18,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			authentication:false, 
 			messageError: null,
 			doctors: [],
+			specialities: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -130,6 +131,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then((data) => setStore({doctors:data.result}))
 					.catch((error) => console.error(error))
 				}, 
+
+			loadSpeciality: ()=>{
+				fetch(process.env.BACKEND_URL + "/specialities")
+					.then((response) => response.json())
+					.then((data) => setStore({specialities:data.result}))
+					.catch((error) => console.error(error))
+				}, 
+	
 
 			getinfoDoctor: (id) => { 
 				fetch(process.env.BACKEND_URL + `/doctor/${id}`)

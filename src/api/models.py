@@ -128,6 +128,8 @@ class Doctor(db.Model):
     speciality_id = db.Column(db.ForeignKey("speciality.id"), nullable=True)
     speciality_id_relationship = db.relationship(Speciality)
     
+    
+
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
 

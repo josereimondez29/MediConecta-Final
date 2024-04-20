@@ -5,24 +5,40 @@ import { Link, useParams  } from "react-router-dom";
 const CardDoctor = (props) => {
     const { store, actions } = useContext(Context);
     const [doctorData, setDoctorData] = useState(null);
+    const [specialityData, setSpecialityData] = useState(null);
     const { id } = useParams(); // Obtener los parámetros de la URL correctamente
 
     useEffect(() => {
+       
         // Obtener la información del doctor solo si aún no se ha cargado
         if (!doctorData) {
             actions.getinfoDoctor(id);
         }
-    }, [doctorData]);
+    }, [doctorData, specialityData]);
+
+    useEffect(() => {
+       
+        // Obtener la información del doctor solo si aún no se ha cargado
+        if (!specialityData) {
+            actions.loadSpeciality(id)
+        }
+    }, [doctorData, specialityData]);
 
     useEffect(() => {
         // Cuando se actualice el contexto con la información del médico, actualizar el estado local
         setDoctorData(store.doctors.find(doctor => doctor.id === props.id));
+        setSpecialityData(store.specialities.find(speciality => speciality.id === props.id))
     }, [store.doctors]);
 
     // Esperar hasta que doctorData tenga valor antes de renderizar el componente
     if (!doctorData) {
         return <div>Cargando...</div>;
     }
+
+
+    console.log("DOCTORDATA-->", doctorData)
+    console.log("STORE-->", store.doctors)
+    console.log("STORE.ESPECIALITY-->", store.speciality)
 
     return (
         <>  
