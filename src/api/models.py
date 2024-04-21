@@ -5,6 +5,7 @@ from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 #from your_database_module import db  # Importa tu objeto de base de datos, como db
 
+
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -152,11 +153,13 @@ class Doctor(db.Model):
         print("Doctor ID:", self.id)
         print("Fecha y hora de la cita:", appointment_time)
 
+        appointment_day_of_week = appointment_time.weekday()
+        appointment_time_of_day = appointment_time.time()
+
         for availability in self.availabilities:
             print("Disponibilidad:", availability)
-            if availability.day_of_week == appointment_time.weekday() and \
-               availability.start_time <= appointment_time.time() and \
-               availability.end_time >= appointment_time.time():
+            if availability.day_of_week == appointment_day_of_week and \
+                availability.start_time <= appointment_time_of_day <= availability.end_time:
                 print("El doctor está disponible en la fecha y hora especificadas.")
                 return True
         

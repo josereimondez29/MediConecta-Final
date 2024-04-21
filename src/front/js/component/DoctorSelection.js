@@ -25,7 +25,7 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
     setSelectedDoctorId(doctorId);
-    handleDoctorSelect(doctorId); // Pasar el id del doctor seleccionado al componente padre
+    handleDoctorSelect(doctorId);
   };
 
   return (

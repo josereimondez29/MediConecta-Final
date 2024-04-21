@@ -1,7 +1,7 @@
   
 import os
 from flask_admin import Admin
-from .models import db, User, Patient, Doctor,Speciality, Medical_Appointment, Alergic, Medicated
+from .models import db, User, Patient, Doctor,Speciality, Medical_Appointment, Alergic, Medicated, DoctorAvailability
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -14,6 +14,7 @@ def setup_admin(app):
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Patient, db.session))
     admin.add_view(ModelView(Doctor, db.session))
+    admin.add_view(ModelView(DoctorAvailability, db.session))
     admin.add_view(ModelView(Speciality, db.session))
     admin.add_view(ModelView(Medical_Appointment, db.session))
     admin.add_view(ModelView(Alergic, db.session))

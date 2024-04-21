@@ -19,7 +19,7 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
 
   const handleDateChange = date => {
     setSelectedDate(date);
-    handleAppointment(date); // Pasar la fecha seleccionada al componente padre
+    handleAppointment(date);
   };
 
   return (
@@ -32,9 +32,8 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
         timeFormat="HH:mm"
         timeIntervals={15}
         dateFormat="MMMM d, yyyy h:mm aa"
-        minDate={new Date()} // Evitar fechas pasadas
+        minDate={new Date()}
         placeholderText="Seleccione una fecha y hora"
-        // Deshabilitar los horarios que no están disponibles
         excludeTimes={transformAvailabilityToExcludeTimes()}
       />
     </div>
@@ -42,6 +41,7 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
 };
 
 export default AvailabilityCalendar;
+
 
 
 

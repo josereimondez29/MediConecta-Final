@@ -593,7 +593,7 @@ def register_medical_appointment():
     print("Fecha y hora de la cita recibida:", appointment_time_str)  
 
     try:
-        appointment_time = datetime.strptime(appointment_time_str, '%Y-%m-%d %H:%M:%S')
+        appointment_time = datetime.fromisoformat(appointment_time_str)
     except ValueError:
         return jsonify({'msg': "Formato de fecha y hora incorrecto"}), 400
 
@@ -602,7 +602,7 @@ def register_medical_appointment():
         return jsonify({'msg': "El doctor especificado no existe"}), 404
 
     if not doctor.is_available(appointment_time):
-        return jsonify({'msg': "La fecha y hora seleccionadas no están disponibles"}), 400
+        return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
 
     existing_appointment = Medical_Appointment.query.filter_by(
         doctor_id=doctor_id,
@@ -623,7 +623,9 @@ def register_medical_appointment():
     db.session.add(new_medical_appointment)
     db.session.commit()
 
-    return jsonify({"message": "Medical Appointment registered successfully"}), 201
+    return jsonify({"message": "La cita médica se registró correctamente"}), 201
+
+
 
 
 

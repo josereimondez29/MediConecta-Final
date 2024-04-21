@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const SpecialitySelection = ({ handleSpecialitySelect }) => {
   const [specialities, setSpecialities] = useState([]);
-  const [selectedSpeciality, setSelectedSpeciality] = useState(""); // Estado para almacenar la especialidad seleccionada
+  const [selectedSpeciality, setSelectedSpeciality] = useState(""); 
 
   useEffect(() => {
     fetch(process.env.BACKEND_URL + '/specialities')
@@ -22,8 +22,7 @@ const SpecialitySelection = ({ handleSpecialitySelect }) => {
 
   const handleChange = (e) => {
     const selectedSpecialityId = e.target.value;
-    console.log('Selected speciality id:', selectedSpecialityId); // Log del valor seleccionado
-    setSelectedSpeciality(selectedSpecialityId); // Actualizar el estado con el ID de la especialidad seleccionada
+    setSelectedSpeciality(selectedSpecialityId);
     handleSpecialitySelect(selectedSpecialityId);
   };
 
@@ -41,6 +40,7 @@ const SpecialitySelection = ({ handleSpecialitySelect }) => {
 };
 
 export default SpecialitySelection;
+
 
 
 
