@@ -21,6 +21,7 @@ import { AllPatients } from "./component/AllPatients"
 import { IsLogin } from "./component/IsLogin";
 import { PrivatePatient } from "./pages/PrivatePatient";
 import Prices from "./component/Prices";
+import MedicinaGeneral from "./component/MedicinaGeneral";
 
 
 //create your first component
@@ -50,6 +51,7 @@ const Layout = () => {
             <Route element={<Prices />} path="/prices" />
             <Route element={<IsLogin />} path="/log" />
             <Route element={<EditDoctor />} path="/editDoctor" />
+            <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
             <Route element={<h1>Not found</h1>} />
           </Routes>
           <Footer />
