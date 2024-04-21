@@ -394,6 +394,7 @@ def register_doctor():
     return jsonify({"message": "Doctor registered successfully"}), 201
 
 
+
 # Login Doctors
 @app.route("/api/login/doctor", methods=["POST"])
 
@@ -487,6 +488,17 @@ def delete_doctor(doctor_id):
         return jsonify({"message": "Doctor deleted"}), 200
     return jsonify({"message": "Doctor not found"}), 404
 
+#Doctor Availability
+@app.route("/api/doctor_availability/<int:doctor_id>", methods=["GET"])
+def get_doctor_availability(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'error': "El doctor especificado no existe", 'doctor_id': doctor_id}), 404
+
+    availability = [availability.serialize() for availability in doctor.availabilities]
+    return jsonify({'availability': availability}), 200
+
+
 
 
 
@@ -571,22 +583,27 @@ def register_medical_appointment():
     patient = get_jwt_identity()
     patient_info = Patient.query.filter_by(email=patient).first()
 
-    if 'doctor_id' not in body or 'appointment_time' not in body or 'speciality' not in body:  # Agregar verificación para speciality
+    if 'doctor_id' not in body or 'appointment_time' not in body or 'speciality' not in body:  
         return jsonify({'msg': "Los campos doctor_id, appointment_time y speciality son obligatorios"}), 400
 
-    doctor_id = body['doctor_id']
-    appointment_time = datetime.strptime(body['appointment_time'], '%Y-%m-%d %H:%M:%S')
+    doctor_id = body.get('doctor_id')
+    appointment_time_str = body.get('appointment_time')
 
-    # Verificar si el doctor existe
+    print("Doctor ID recibido:", doctor_id)  
+    print("Fecha y hora de la cita recibida:", appointment_time_str)  
+
+    try:
+        appointment_time = datetime.strptime(appointment_time_str, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        return jsonify({'msg': "Formato de fecha y hora incorrecto"}), 400
+
     doctor = Doctor.query.get(doctor_id)
     if doctor is None:
         return jsonify({'msg': "El doctor especificado no existe"}), 404
 
-    # Verificar disponibilidad del doctor
     if not doctor.is_available(appointment_time):
         return jsonify({'msg': "La fecha y hora seleccionadas no están disponibles"}), 400
 
-    # Verificar si la cita ya está ocupada por otro paciente
     existing_appointment = Medical_Appointment.query.filter_by(
         doctor_id=doctor_id,
         appointment_date=appointment_time
@@ -595,7 +612,6 @@ def register_medical_appointment():
     if existing_appointment:
         return jsonify({'msg': "La cita ya está reservada"}), 400
 
-    # Guardar la nueva cita
     new_medical_appointment = Medical_Appointment(
         speciality_id=body['speciality'],
         patient_id=patient_info.id,
@@ -608,6 +624,7 @@ def register_medical_appointment():
     db.session.commit()
 
     return jsonify({"message": "Medical Appointment registered successfully"}), 201
+
 
 
 

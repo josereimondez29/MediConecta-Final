@@ -63,6 +63,7 @@ class Patient(db.Model):
         }
 
 
+
 class Alergic(db.Model):
     __tablename__ = 'alergic'
     id = db.Column(db.Integer, primary_key=True)
@@ -127,13 +128,13 @@ class Doctor(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     speciality_id = db.Column(db.Integer, db.ForeignKey("speciality.id"), nullable=True)
-    speciality_relationship = db.relationship('Speciality')  # Corregido aquí
+    speciality_relationship = db.relationship('Speciality')
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    availabilities = db.relationship('DoctorAvailability')  # Relación con la disponibilidad del doctor
+    availabilities = db.relationship('DoctorAvailability')
 
     def __repr__(self):
         return f"ID{self.id}: {self.name} {self.surname}"
-    
+
     def serialize(self):
         return {
             "id": self.id,
@@ -147,12 +148,20 @@ class Doctor(db.Model):
         }
 
     def is_available(self, appointment_time):
-        for availability in self.availabilities:
-            if availability.day_of_week == appointment_time.weekday() and \
-               availability.start_time <= appointment_time.time() < availability.end_time:
-                return True
-        return False
+        print("Verificando disponibilidad del doctor...")
+        print("Doctor ID:", self.id)
+        print("Fecha y hora de la cita:", appointment_time)
 
+        for availability in self.availabilities:
+            print("Disponibilidad:", availability)
+            if availability.day_of_week == appointment_time.weekday() and \
+               availability.start_time <= appointment_time.time() and \
+               availability.end_time >= appointment_time.time():
+                print("El doctor está disponible en la fecha y hora especificadas.")
+                return True
+        
+        print("El doctor NO está disponible en la fecha y hora especificadas.")
+        return False
 
 class DoctorAvailability(db.Model):
     __tablename__ = 'doctor_availability'
@@ -170,10 +179,9 @@ class DoctorAvailability(db.Model):
             "id": self.id,
             "doctor_id": self.doctor_id,
             "day_of_week": self.day_of_week,
-            "start_time": self.start_time.strftime('%H:%M'),  # Convertir a formato HH:MM para JSON serializable
-            "end_time": self.end_time.strftime('%H:%M')  # Convertir a formato HH:MM para JSON serializable
+            "start_time": self.start_time.strftime('%H:%M'),
+            "end_time": self.end_time.strftime('%H:%M')
         }
-
 
     
 
@@ -198,12 +206,12 @@ class Medical_Appointment(db.Model):
     __tablename__ = 'medical_appointment'
     id = db.Column(db.Integer, primary_key=True)
     speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'))
-    speciality_relationship = db.relationship('Speciality')  # Corregido aquí
+    speciality_relationship = db.relationship('Speciality')  
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
-    patient_relationship = db.relationship('Patient')  # Corregido aquí
+    patient_relationship = db.relationship('Patient')  
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
-    doctor_id_relationship = db.relationship('Doctor')  # Corregido aquí
-    appointment_date = db.Column(db.DateTime, nullable=False)  # Corregido aquí
+    doctor_id_relationship = db.relationship('Doctor')  
+    appointment_date = db.Column(db.DateTime, nullable=False)  
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):

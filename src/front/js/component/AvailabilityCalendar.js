@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const AvailabilityCalendar = ({ handleAppointment, doctorId }) => {
+const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const transformAvailabilityToExcludeTimes = () => {
+    if (!doctorAvailability) {
+      return [];
+    }
+    
+    return doctorAvailability.map(availability => {
+      const startTime = new Date(`1970-01-01T${availability.start_time}`);
+      const endTime = new Date(`1970-01-01T${availability.end_time}`);
+      return { start: startTime, end: endTime };
+    });
+  };
 
   const handleDateChange = date => {
     setSelectedDate(date);
     handleAppointment(date); // Pasar la fecha seleccionada al componente padre
   };
-
-  useEffect(() => {
-    // Aquí puedes implementar la lógica para obtener la disponibilidad del doctor
-    // utilizando el doctorId y actualizando el estado según corresponda
-    // Esto podría involucrar una solicitud a una ruta en tu API que maneje la disponibilidad del doctor
-    // Por ahora, supondrémos que la disponibilidad del doctor se obtiene correctamente
-  }, [doctorId]);
 
   return (
     <div>
@@ -29,11 +34,18 @@ const AvailabilityCalendar = ({ handleAppointment, doctorId }) => {
         dateFormat="MMMM d, yyyy h:mm aa"
         minDate={new Date()} // Evitar fechas pasadas
         placeholderText="Seleccione una fecha y hora"
+        // Deshabilitar los horarios que no están disponibles
+        excludeTimes={transformAvailabilityToExcludeTimes()}
       />
     </div>
   );
 };
 
 export default AvailabilityCalendar;
+
+
+
+
+
 
 

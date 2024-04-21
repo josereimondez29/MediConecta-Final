@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
   const [doctors, setDoctors] = useState([]);
+  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
 
   useEffect(() => {
     if (selectedSpeciality) {
@@ -21,10 +22,16 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
     }
   }, [selectedSpeciality]);
 
+  const handleDoctorChange = (e) => {
+    const doctorId = e.target.value;
+    setSelectedDoctorId(doctorId);
+    handleDoctorSelect(doctorId); // Pasar el id del doctor seleccionado al componente padre
+  };
+
   return (
     <div>
       <h2>Seleccione Doctor</h2>
-      <select onChange={(e) => handleDoctorSelect(e.target.value)}>
+      <select onChange={handleDoctorChange}>
         <option value="">Seleccionar Doctor</option>
         {doctors.map((doctor) => (
           <option key={doctor.id} value={doctor.id}>{doctor.name}</option>
@@ -35,4 +42,5 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 };
 
 export default DoctorSelection;
+
 

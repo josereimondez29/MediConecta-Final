@@ -15,9 +15,12 @@ const MedicalAppointment = () => {
 
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
+      console.log("Doctor seleccionado:", selectedDoctor);  // Agregar información de depuración
+      console.log("Fecha y hora seleccionadas:", selectedDate);  // Agregar información de depuración
+
       const token = localStorage.getItem('token');
-      // Convertir la fecha y hora al formato esperado
       const formattedDate = selectedDate.toISOString().slice(0, 19).replace('T', ' ');
+
       const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
         method: "POST",
         headers: {
@@ -27,11 +30,12 @@ const MedicalAppointment = () => {
         body: JSON.stringify({
           speciality: selectedSpeciality,
           doctor_id: selectedDoctor,
-          appointment_time: formattedDate  // Enviar la fecha y hora convertida
+          appointment_time: formattedDate
         })
       });
       const data = await response.json();
-      console.log("Response from backend:", data);
+      console.log("Respuesta del backend:", data);
+
       if (response.ok) {
         navigate('/success');
       } else {
@@ -83,6 +87,10 @@ const MedicalAppointment = () => {
 };
 
 export default MedicalAppointment;
+
+
+
+
 
 
 
