@@ -16,6 +16,10 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS, cross_origin
 from flask_mail import Mail, Message
+from datetime import datetime, time
+from api.models import DoctorAvailability
+
+
 
 
 # from models import Person
@@ -230,7 +234,7 @@ def register_patient():
 
     db.session.add(new_patient)
     db.session.commit()
-    return jsonify({"message": "User registered successfully"}), 201
+    return jsonify({"message": "Patient registered successfully"}), 201
 
 # Login Patient
 @app.route("/api/login/patient", methods=["POST"])
@@ -337,9 +341,8 @@ def delete_patient(patient_id):
 
 #Register doctors    
 @app.route("/api/register/doctor", methods=["POST"])
-
 def register_doctor():
-    body = request.get_json (silent = True)
+    body = request.get_json(silent=True)
     
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
@@ -351,18 +354,45 @@ def register_doctor():
     new_doctor = Doctor()
     new_doctor.name = body['name']
     new_doctor.surname = body['surname']
-    # new_doctor.age = body['age']
-    # new_doctor.identification = body['identification']
-    # new_doctor.medical_license = body['medical_license']
     new_doctor.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_doctor.password = pw_hash
-    # new_doctor.speciality = body['speciality']
     new_doctor.is_active = True
+
+    # Verificar si el email ya está registrado
+    existing_doctor = Doctor.query.filter_by(email=new_doctor.email).first()
+    if existing_doctor:
+        return jsonify({'msg': "El email ya está registrado"}), 400
+
+    # Guardar el nuevo doctor en la base de datos
     db.session.add(new_doctor)
     db.session.commit()
 
+    # Crear una instancia de DoctorAvailability usando el id del nuevo doctor
+    default_availability = DoctorAvailability(
+        doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+        day_of_week=0,  # por defecto para el domingo
+        start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+        end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    )
+
+    # Verificar si el horario de disponibilidad ya está ocupado
+    existing_availability = DoctorAvailability.query.filter_by(
+        doctor_id=new_doctor.id,
+        day_of_week=default_availability.day_of_week,
+        start_time=default_availability.start_time,
+        end_time=default_availability.end_time
+    ).first()
+
+    if existing_availability:
+        return jsonify({'msg': "El horario de disponibilidad ya está ocupado"}), 400
+
+    # Guardar la disponibilidad del doctor en la base de datos
+    db.session.add(default_availability)
+    db.session.commit()
+
     return jsonify({"message": "Doctor registered successfully"}), 201
+
 
 # Login Doctors
 @app.route("/api/login/doctor", methods=["POST"])
@@ -457,15 +487,16 @@ def delete_doctor(doctor_id):
         return jsonify({"message": "Doctor deleted"}), 200
     return jsonify({"message": "Doctor not found"}), 404
 
+
+
+
 #Register Speciality    
 @app.route("/api/register/speciality", methods=["POST"])
-
 def register_speciality():
-    body = request.get_json (silent = True)
+    body = request.get_json(silent=True)
     
-    if body is None:
-        return jsonify({'msg': "Debes enviar info al body"}), 400
-    
+    if body is None or 'name' not in body:
+        return jsonify({'msg': "Debes enviar el nombre de la especialidad en el cuerpo de la solicitud"}), 400
     
     new_speciality = Speciality()
     new_speciality.name = body['name']
@@ -473,7 +504,7 @@ def register_speciality():
     db.session.add(new_speciality)
     db.session.commit()
 
-    return jsonify({"message": "Speciality registered successfully"}), 201
+    return jsonify({"message": "Speciality registered successfully", "speciality": new_speciality.serialize()}), 201
 
 #GET Speciality
 @app.route('/specialities', methods=['GET'])
@@ -528,6 +559,7 @@ def delete_speciality(speciality_id):
     return jsonify({"message": "Speciality not found"}), 404
 
 #Register Medical Appoinment    
+
 @app.route("/api/register/medical_appointment", methods=["POST"])
 @jwt_required()
 def register_medical_appointment():
@@ -537,22 +569,48 @@ def register_medical_appointment():
         return jsonify({'msg': "Debes enviar info al body"}), 400
     
     patient = get_jwt_identity()
-    print(patient)
     patient_info = Patient.query.filter_by(email=patient).first()
-    print(patient_info)
-    print(patient_info.id)
-    new_medical_appointment = Medical_Appointment()
-    new_medical_appointment.speciality_id = body['speciality'],
-    new_medical_appointment.patient_id = patient_info.id,
-    new_medical_appointment.doctor_id = body['doctor'],
-    new_medical_appointment.appointment_date = body['date'],
-    new_medical_appointment.is_active=True
-    
+
+    if 'doctor_id' not in body or 'appointment_time' not in body or 'speciality' not in body:  # Agregar verificación para speciality
+        return jsonify({'msg': "Los campos doctor_id, appointment_time y speciality son obligatorios"}), 400
+
+    doctor_id = body['doctor_id']
+    appointment_time = datetime.strptime(body['appointment_time'], '%Y-%m-%d %H:%M:%S')
+
+    # Verificar si el doctor existe
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'msg': "El doctor especificado no existe"}), 404
+
+    # Verificar disponibilidad del doctor
+    if not doctor.is_available(appointment_time):
+        return jsonify({'msg': "La fecha y hora seleccionadas no están disponibles"}), 400
+
+    # Verificar si la cita ya está ocupada por otro paciente
+    existing_appointment = Medical_Appointment.query.filter_by(
+        doctor_id=doctor_id,
+        appointment_date=appointment_time
+    ).first()
+
+    if existing_appointment:
+        return jsonify({'msg': "La cita ya está reservada"}), 400
+
+    # Guardar la nueva cita
+    new_medical_appointment = Medical_Appointment(
+        speciality_id=body['speciality'],
+        patient_id=patient_info.id,
+        doctor_id=doctor_id,
+        appointment_date=appointment_time,
+        is_active=True
+    )
     
     db.session.add(new_medical_appointment)
     db.session.commit()
 
     return jsonify({"message": "Medical Appointment registered successfully"}), 201
+
+
+
 
 #GET medical_appoinments
 @app.route('/medical_appoinments', methods=['GET'])
@@ -753,6 +811,72 @@ def send_mail():
     msg.html = "<h1> Hola desde el correo</h1>"
     mail.send(msg)
     return jsonify ({"msg": "Mail enviado!!!"})
+
+
+# Meetings
+@app.route("/meetings", methods=["POST"])
+def create_meeting():
+    data = request.json
+    meeting = {
+        "meetingId": str(len(meetings) + 1),
+        "endDate": data["endDate"],
+        "roomUrl": f"https://subdomain.whereby.com/{data['roomNamePrefix']}",
+        "startDate": "2020-05-12T16:42:49Z",  
+        "roomName": f"{data['roomNamePrefix']}-{data['meetingId']}",
+        "hostRoomUrl": f"https://subdomain.whereby.com/{data['roomNamePrefix']}/host",
+        "viewerRoomUrl": f"https://subdomain.whereby.com/{data['roomNamePrefix']}/viewer"
+    }
+    meetings.append(meeting)
+    return jsonify(meeting)
+
+@app.route("/meetings", methods=["GET"])
+def get_meetings():
+    return jsonify(meetings)
+
+@app.route("/meetings/<meetingId>", methods=["GET"])
+def get_meeting(meetingId):
+    for meeting in meetings:
+        if meeting["meetingId"] == meetingId:
+            return jsonify(meeting)
+    return jsonify({"message": "Meeting not found"}), 404
+
+@app.route("/meetings/<meetingId>", methods=["DELETE"])
+def delete_meeting(meetingId):
+    global meetings
+    meetings = [meeting for meeting in meetings if meeting["meetingId"] != meetingId]
+    return jsonify({"message": "Meeting deleted successfully"})
+
+# Summaries
+summaries = []
+
+@app.route("/summaries", methods=["GET"])
+def get_summaries():
+    return jsonify(summaries)
+
+@app.route("/summaries", methods=["POST"])
+def create_summary():
+    data = request.json
+    summary = {
+        "summaryId": str(len(summaries) + 1),
+        "transcriptionId": data["transcriptionId"],
+        "summary": f"This is a summary for transcription {data['transcriptionId']}",
+        "template": data["template"]
+    }
+    summaries.append(summary)
+    return jsonify(summary)
+
+@app.route("/summaries/<summaryId>", methods=["GET"])
+def get_summary(summaryId):
+    for summary in summaries:
+        if summary["summaryId"] == summaryId:
+            return jsonify(summary)
+    return jsonify({"message": "Summary not found"}), 404
+
+@app.route("/summaries/<summaryId>", methods=["DELETE"])
+def delete_summary(summaryId):
+    global summaries
+    summaries = [summary for summary in summaries if summary["summaryId"] != summaryId]
+    return jsonify({"message": "Summary deleted successfully"})
 
 # Favorite Routes
 

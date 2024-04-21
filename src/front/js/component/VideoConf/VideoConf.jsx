@@ -1,16 +1,16 @@
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./../../component/VideoConf/VideoConf.css";
 import { useRoomConnection } from "@whereby.com/browser-sdk/react";
-import IconButton from "./IconButton";
-import ChatInput from "./ChatInput";
+import IconButton from "./IconButton.jsx";
+import ChatInput from "./ChatInput.jsx";
 
-const ROOM_URL = "https://mediconecta.whereby.com/mediconectad2c06dd5-8e34-4da3-8b4e-1468e7807bfb?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI4NDkzNzE3OSIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvbWVkaWNvbmVjdGFkMmMwNmRkNS04ZTM0LTRkYTMtOGI0ZS0xNDY4ZTc4MDdiZmIiLCJvcmdhbml6YXRpb25JZCI6IjIyNTUxMyJ9LCJpc3MiOiJodHRwczovL2FjY291bnRzLnNydi53aGVyZWJ5LmNvbSIsImlhdCI6MTcxMzI3ODkxMSwicm9vbUtleVR5cGUiOiJtZWV0aW5nSG9zdCJ9.M1tQeshKHldm9RnEeTT9MAKfs24FJrefJy75VMYwynk";
+const ROOM_URL = "https://mediconecta.whereby.com/b5aed3b1-50a6-4f90-af67-8e125f587558";
 
 function VideoConf() {
-    const [isCameraActive, setIsCameraActive] = React.useState(true);
-    const [isMicrophoneActive, setIsMicrophoneActive] = React.useState(true);
-    const [isLocalScreenshareActive, setIsLocalScreenshareActive] = React.useState(false);
-    const chatMessageBottomRef = React.useRef<HTMLDivElement>(null);
+    const [isCameraActive, setIsCameraActive] = useState(true);
+    const [isMicrophoneActive, setIsMicrophoneActive] = useState(true);
+    const [isLocalScreenshareActive, setIsLocalScreenshareActive] = useState(false);
+    const chatMessageBottomRef = useRef(null);
 
     const roomConnection = useRoomConnection(ROOM_URL, {
         localMediaOptions: {
@@ -24,7 +24,7 @@ function VideoConf() {
     const { VideoView } = components;
     const { toggleCamera, toggleMicrophone, startScreenshare, stopScreenshare, sendChatMessage } = actions;
 
-    function getDisplayName(id: string) {
+    function getDisplayName(id) {
         return remoteParticipants.find((p) => p.id === id)?.displayName || "Guest";
     }
 
@@ -32,7 +32,7 @@ function VideoConf() {
         chatMessageBottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         scrollToBottom();
     }, [chatMessages]);
 
@@ -108,5 +108,6 @@ function VideoConf() {
 }
 
 export default VideoConf;
+
 
 

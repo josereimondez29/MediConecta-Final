@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const SpecialitySelection = ({ handleSpecialitySelect }) => {
   const [specialities, setSpecialities] = useState([]);
+  const [selectedSpeciality, setSelectedSpeciality] = useState(""); // Estado para almacenar la especialidad seleccionada
 
   useEffect(() => {
-    fetch(process.env.BACKEND_URL + '/specialities') // Hace una solicitud GET a la ruta '/specialities'
+    fetch(process.env.BACKEND_URL + '/specialities')
       .then(response => {
         if (!response.ok) {
           throw new Error('Error fetching specialities');
@@ -12,20 +13,27 @@ const SpecialitySelection = ({ handleSpecialitySelect }) => {
         return response.json();
       })
       .then(data => {
-        setSpecialities(data.result)
-        console.log(data)
+        setSpecialities(data.result);
       })
       .catch(error => {
         console.error('Error fetching specialities:', error);
       });
   }, []);
 
+  const handleChange = (e) => {
+    const selectedSpecialityId = e.target.value;
+    console.log('Selected speciality id:', selectedSpecialityId); // Log del valor seleccionado
+    setSelectedSpeciality(selectedSpecialityId); // Actualizar el estado con el ID de la especialidad seleccionada
+    handleSpecialitySelect(selectedSpecialityId);
+  };
+
   return (
     <div>
       <h2>Seleccione Especialidad</h2>
-      <select onChange={(e) => handleSpecialitySelect(e.target.value)}>
-        {specialities.map((Speciality) => (
-          <option key={Speciality.id} value={Speciality.id}>{Speciality.name}</option>
+      <select value={selectedSpeciality} onChange={handleChange}>
+        <option value="">Seleccionar Especialidad</option>
+        {specialities.map((speciality) => (
+          <option key={speciality.id} value={speciality.id}>{speciality.name}</option>
         ))}
       </select>
     </div>
@@ -33,6 +41,9 @@ const SpecialitySelection = ({ handleSpecialitySelect }) => {
 };
 
 export default SpecialitySelection;
+
+
+
 
 
 

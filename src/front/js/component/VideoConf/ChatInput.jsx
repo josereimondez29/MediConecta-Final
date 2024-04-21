@@ -1,11 +1,7 @@
-import * as React from "react";
+import React, { useState } from "react";
 
-interface Props {
-    sendChatMessage: (text: string) => void;
-}
-
-function ChatInput({ sendChatMessage }: Props) {
-    const [text, setText] = React.useState("");
+function ChatInput({ sendChatMessage }) {
+    const [text, setText] = useState("");
 
     return (
         <form
@@ -23,3 +19,4 @@ function ChatInput({ sendChatMessage }: Props) {
 }
 
 export default ChatInput;
+

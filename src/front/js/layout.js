@@ -17,6 +17,7 @@ import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Private } from "./pages/private";
 import MedicalAppointment from "./component/CitaMedica";
+import VideoConf from "./component/VideoConf/VideoConf.jsx"
 
 //create your first component
 const Layout = () => {
@@ -37,7 +38,7 @@ const Layout = () => {
             <Route element={<Private />} path="/private" />
 
             <Route element={<MedicalAppointment />} path="/register/medical_appointment" />
-
+            <Route element={<VideoConf />} path="/meetings" /> 
             <Route element={<Login/>} path="/login"/>
             <Route element={<Register />} path="/register" />
 

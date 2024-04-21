@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const AvailabilityCalendar = ({ handleAppointment }) => {
+const AvailabilityCalendar = ({ handleAppointment, doctorId }) => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDateChange = date => {
     setSelectedDate(date);
     handleAppointment(date); // Pasar la fecha seleccionada al componente padre
   };
+
+  useEffect(() => {
+    // Aquí puedes implementar la lógica para obtener la disponibilidad del doctor
+    // utilizando el doctorId y actualizando el estado según corresponda
+    // Esto podría involucrar una solicitud a una ruta en tu API que maneje la disponibilidad del doctor
+    // Por ahora, supondrémos que la disponibilidad del doctor se obtiene correctamente
+  }, [doctorId]);
 
   return (
     <div>
@@ -28,3 +35,5 @@ const AvailabilityCalendar = ({ handleAppointment }) => {
 };
 
 export default AvailabilityCalendar;
+
+

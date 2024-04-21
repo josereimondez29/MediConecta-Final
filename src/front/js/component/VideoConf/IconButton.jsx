@@ -1,14 +1,6 @@
-import * as React from "react";
+import React from "react";
 
-type ButtonVariant = "camera" | "microphone" | "share";
-
-function getIconProps(variant: ButtonVariant): {
-    alt: string;
-    activeBgColor: string;
-    bgColor: string;
-    iconSource: string;
-    offIcon: string;
-} {
+const getIconProps = (variant) => {
     switch (variant) {
         case "camera":
             return {
@@ -43,15 +35,9 @@ function getIconProps(variant: ButtonVariant): {
                 offIcon: "/cam-off.svg",
             };
     }
-}
+};
 
-interface IconButtonProps {
-    variant: ButtonVariant;
-    isActive?: boolean;
-    onClick?: () => void;
-}
-
-export default function IconButton({ variant, isActive = true, onClick }: IconButtonProps) {
+const IconButton = ({ variant, isActive = true, onClick }) => {
     const { alt, activeBgColor, bgColor, iconSource, offIcon } = getIconProps(variant);
 
     return (
@@ -67,5 +53,8 @@ export default function IconButton({ variant, isActive = true, onClick }: IconBu
             </button>
         </div>
     );
-}
+};
+
+export default IconButton;
+
 
