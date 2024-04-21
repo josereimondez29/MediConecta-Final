@@ -9,15 +9,20 @@ import { Single } from "./pages/single";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { EditDoctor } from "./pages/EditDoctor"
-import { Private } from "./pages/private";
 
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import PrivateDoctor from "./pages/PrivateDoctor";
+import { PrivateMedico } from "./pages/PrivateMedico";
 import { AllDoctors } from "./component/AllDoctors";
+import { AllPatients } from "./component/AllPatients"
 import { IsLogin } from "./component/IsLogin";
+import { PrivatePatient } from "./pages/PrivatePatient";
+import Prices from "./component/Prices";
+import MedicinaGeneral from "./component/MedicinaGeneral";
+
 
 //create your first component
 const Layout = () => {
@@ -35,14 +40,18 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
-            <Route element={<Private />} path="/private" />
-            <Route element={<Login/>} path="/login"/>
+            <Route element={<PrivateMedico />} path="/PrivateMedico" />
+            <Route element={<Login />} path="/login" />
             <Route element={<Register />} path="/register" />
             <Route element={<Single />} path="/single/:theid" />
-            <Route element={<PrivateDoctor />} path="/doctor/:id"/>
-            <Route element={<AllDoctors />} path="/alldoctors"/>
-            <Route element={<IsLogin />} path="/log"/>
-            <Route element={<EditDoctor />} path="/editDoctor"/>
+            <Route element={<PrivateDoctor />} path="/doctor/:id" />
+            <Route element={<AllDoctors />} path="/alldoctors" />
+            <Route element={<AllPatients />} path="/allpatients" />
+            <Route element={<PrivatePatient />} path="/privatepatient" />
+            <Route element={<Prices />} path="/prices" />
+            <Route element={<IsLogin />} path="/log" />
+            <Route element={<EditDoctor />} path="/editDoctor" />
+            <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
             <Route element={<h1>Not found</h1>} />
           </Routes>
           <Footer />

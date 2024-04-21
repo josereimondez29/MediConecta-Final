@@ -262,8 +262,37 @@ def get_patients():
     return jsonify(response_body), 200
 
 #GET Patient by id
+
 @app.route('/patient/<int:patient_id>', methods=['GET'])
 def get_patient(patient_id):
+    patient = Patient.query.get(patient_id)
+    if patient:
+        patient_data = { 
+            "id": patient.id,
+            "name": patient.name,
+            "surname": patient.surname,
+            "email": patient.email,
+        }
+        return jsonify({"message": "Patient found", "patient": patient_data}), 200
+    return jsonify({"message": "Patient not found"}), 404
+
+
+# @app.route('/patient/<int:patient>', methods=['GET'])
+# def get_patient(patient):
+#     patient_data = Patient.query.get(patient)
+#     if patient_data:
+#         patient_info = { 
+#             "id": patient_data.id,
+#             "name": patient_data.name,
+#             "surname": patient_data.surname,
+#             "email": patient_data.email,
+#         }
+#         return jsonify({"message": "Patient found", "patient": patient_info}), 200
+#     return jsonify({"message": "Patient not found"}), 404
+
+
+@app.route('/patient/<int:patient_id>/details', methods=['GET'])
+def get_patient_details(patient_id):
     patient = Patient.query.get(patient_id)
     if patient:
         patient_data = {
@@ -406,6 +435,21 @@ def get_doctor(doctor_id):
         }
         return jsonify({"message": "Doctor found", "doctor": doctor_data}), 200
     return jsonify({"message": "Doctor not found"}), 404
+
+#PRUEBA METODO GET PARA REGISTER DOCTOR
+# @app.route('/doctor/<int:doctor>', methods=['GET'])
+# def get_doctort(doctor):
+#     doctor_data = Doctor.query.get(doctor)
+#     if doctor_data:
+#         doctor_info = { 
+#             "id": doctor_data.id,
+#             "name": doctor_data.name,
+#             "surname": doctor_data.surname,
+#             "email": doctor_data.email,
+#         }
+#         return jsonify({"message": "Doctor found", "patient": doctor_info}), 200
+#     return jsonify({"message": "Doctor not found"}), 404
+
 
 @app.route('/doctor/<int:doctor_id>/details', methods=['GET'])
 def get_doctor_details(doctor_id):
