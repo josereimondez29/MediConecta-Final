@@ -1,51 +1,74 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
-    const params = useParams();
+    const { id } = useParams();
     const [loading, setLoading] = useState(true);
+    const [speciality, setSpeciality] = useState(null);
+    const [doctor, setDoctor] = useState(null);
 
-     useEffect(() => {
-        actions.getinfoDoctor(params.id)
-            .then(() => setLoading(false))
-            .catch(() => setLoading(false));
-    }, [params.id]);
+
+    useEffect(() => {
+        if (id && store.doctors && store.doctors.length > 0) {
+            const selectedDoctor = store.doctors.find(doctor => doctor.id.toString() === id);
+            if (selectedDoctor) {
+                setDoctor(selectedDoctor);
+                setLoading(false);
     
+                // Buscar la especialidad correspondiente al médico
+                const foundSpeciality = store.specialities.find(speciality => speciality.id === selectedDoctor.speciality_id);
+                setSpeciality(foundSpeciality);
+            } else {
+                setLoading(false);
+            }
+        }
+    }, [id, store.doctors, store.specialities]);
+
 
     if (loading) {
         return <p>Cargando...</p>;
     }
 
-    const doctor = store.doctors[params.id];
-
     if (!doctor) {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
+
+     
+    console.log("DOCTORDATA PRIVATE DOCTOR-->", doctor)
+    console.log("STORE PRIVATE DOCTOR-->", store.doctors)
+    console.log("STORE.ESPECIALITY PRIVATE DOCTOR-->", store.specialities)
+
+
     return (
         <>
-            Estoy aquí
-            <div className="container" style={{ paddingTop: "10px" }}>
+            
+            <div className="container-fluid">
                 <ul className="list-group">
-                    <li key={params.id} className="list-group-item d-flex justify-content-between">
-                        <div className='container card-button'>
+                    <li key={id} className="list-group-item d-flex justify-content-between">
+                        <div className='container-fluid card-button'>
                             <div className="cardInfo d-flex">
-                                <Link to={"/"}>
-                                    <img src="https://i.pinimg.com/236x/60/8a/7d/608a7d2de0cf6898c3869b116c4231be.jpg" className="card-img-top" alt="img contact" style={{ margin: "10px" }} />
-                                </Link>
+                                <img src="https://i.pinimg.com/236x/60/8a/7d/608a7d2de0cf6898c3869b116c4231be.jpg" className="card-img-top" alt="img contact" style={{ borderRadius:"50%" , width:"150px", height:"150px", marginRight:"30px"}} />
                                 <div className="card-body">
                                     <div className="card-tittle d-flex">
-                                        <h5>{doctor.name}</h5>
-                                        <h5>{doctor.surname}</h5>
+                                        <h5>NOMBRE Y APELLIDOS: {doctor.name}</h5>&nbsp;<h5>{doctor.surname}</h5>
                                     </div>
-                                    <div className="card-text d-flex" style={{ textAlign: "left" }}>
-                                        <div className='info_contact'>
-                                            <span style={{ fontSize: "medium "}}>{doctor.bio}</span><br/>
-                                            <span style={{ fontSize: "small "}}>{doctor.speciality}</span><br/>
-                                            <span style={{ fontSize: "x-small "}}>{doctor.email}</span>
+                                    <div className="card-text" style={{ textAlign: "left" }}>
+                                        <div className='info_contact' style={{marginBottom: "15px"}}>
+                                            <span style={{ fontSize: "medium "}}>ESPECIALIDAD:&nbsp;{speciality.name}</span><br/>
+                                            <span style={{ fontSize: "small "}}>EMAIL:&nbsp;{doctor.email}</span><br/>
+                                            <span style={{ fontSize: "small "}}>Nº COLEGIADO:&nbsp;{doctor.medical_license}</span><br/>
+                                            <span style={{ fontSize: "small "}}>DNI/NIE:&nbsp;{doctor.identification}</span><br/>
+                                            <span style={{ fontSize: "small "}}>BIO:&nbsp;{doctor.bio}</span>
                                         </div>
+                                        <div className="container-fluid justify-content-between" >
+                                            <Link to={`/editDoctor/${id}`}>
+                                                <button className="btn btn-info">Modificar perfil</button>
+                                            </Link>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

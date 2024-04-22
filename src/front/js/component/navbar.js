@@ -1,85 +1,88 @@
-
-import React, { useContext, useEffect }  from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import './../../styles/navbar.css';
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-  const navigate = useNavigate();
-  const { store, actions } = useContext(Context);
-  const handleLoginButtonClickMedicos = () => {
-    // Redirige al componente Login
-    navigate('/register');
-  };
+    const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
 
-  const handleLoginButtonClickPacientes = () => {
-    // Redirige al componente Login
-    navigate('/login');
-  };
+    const handleLoginButtonClickMedicos = () => {
+        // Redirige al componente de registro
+        navigate('/register');
+    };
 
-  function submitlogout() {
-    actions.logout();
-    localStorage.removeItem("authentication"); // Elimina la autenticación del localStorage al cerrar sesión
-    navigate("/"); // Cambia "/login" por la ruta correcta si es diferente
-}
+    const handleLoginButtonClickPacientes = () => {
+        // Redirige al componente de inicio de sesión
+        navigate('/login');
+    };
 
-  useEffect (()=>{
-    console.log("cambió el token")
-    console.log(localStorage.getItem("token"))
-  },[store.authentication])
+    const submitLogout = () => {
+        actions.logout();
+        localStorage.removeItem("authentication");
+        navigate("/");
+    };
 
-  return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container-fluid">
-        <div className="d-flex ms-3">
-          <a className="navbar-brand text-center" href="#">MediConecta</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-        </div>
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <div className="d-flex ms-3">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item pe-5 ms-3">
-                <a className="nav-link active p-2" aria-current="page" href="#">Home</a>
-              </li>
-              <li className="nav-item pe-5 ms-3">
-                <a className="nav-link p-2" href="#">Blog</a>
-              </li>
-              <li className="nav-item dropdown pe-5 ms-3">
-                <a className="nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Especialidades
-                </a>
-                <ul className="dropdown-menu">
-                  <li><a className="dropdown-item" href="#">Medicina General</a></li>
-                  <li><a className="dropdown-item" href="#">Dermatología</a></li>
-                  <li><a className="dropdown-item" href="#">Pediatría</a></li>
-                  <li><a className="dropdown-item" href="#">Psicología</a></li>
-                  <li><a className="dropdown-item" href="#">Nutrición</a></li>
-                  <li><a className="dropdown-item" href="#">Fisioterapia</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-          <div className="d-flex ms-auto">
-                <form className="d-flex p-2" role="register">
-                    <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="submit">Registrate</button>
-                </form>
-                <form className="d-flex p-2" role="log in">
-                    <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="submit">Login</button>
-                </form>
 
-                {store.authentication === true ? (
-                    <form className="d-flex p-2" role="log out">
-                        <button onClick={submitlogout} className="btn btn-outline-danger">Logout</button>
-                    </form> 
-                ): " "}
-                
-          </div>
-        </div>
-      </div>
-    </nav>
+    // console.log("STORE NAVBAR", store.authentication)
 
+    // console.log("LOCAL STORE NAVBAR", localStorage)
+
+    // console.log("SESION STORE NAVBAR", sessionStorage)
+
+    return (
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <div className="container-fluid">
+                <div className="d-flex ms-3">
+                    <a className="navbar-brand text-center" href="#">MediConecta</a>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                    <div className="d-flex ms-3">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item pe-5 ms-3">
+                                <a className="nav-link active p-2" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li className="nav-item pe-5 ms-3">
+                                <a className="nav-link p-2" href="#">Blog</a>
+                            </li>
+                            <li className="nav-item dropdown pe-5 ms-3">
+                                <a className="nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Especialidades
+                                </a>
+                                <ul className="dropdown-menu">
+                                    <li><a className="dropdown-item" href="#">Medicina General</a></li>
+                                    <li><a className="dropdown-item" href="#">Dermatología</a></li>
+                                    <li><a className="dropdown-item" href="#">Pediatría</a></li>
+                                    <li><a className="dropdown-item" href="#">Psicología</a></li>
+                                    <li><a className="dropdown-item" href="#">Nutrición</a></li>
+                                    <li><a className="dropdown-item" href="#">Fisioterapia</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    {sessionStorage.authentication ? (
+                        <div className="d-flex ms-auto">
+                            <form className="d-flex p-2" role="log out">
+                                <button onClick={submitLogout} className="btn btn-outline-danger" type="button">Logout</button>
+                            </form>
+                        </div>
+                    ) : (
+                        <div className="d-flex ms-auto">
+                            <form className="d-flex p-2" role="register">
+                                <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="button">Registrate</button>
+                            </form>
+                            <form className="d-flex p-2" role="log in">
+                                <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="button">Login</button>
+                            </form>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </nav>
+    );
+};
 
     // <div>
     //   <div data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
@@ -143,5 +146,5 @@ export const Navbar = () => {
     //     </nav>
     //   </div>
     // </div>
-  );
-};
+//   );
+// };

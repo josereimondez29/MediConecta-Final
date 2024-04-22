@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate,  Link } from "react-router-dom";
 import './../../styles/Private.css';
 
 export const Private = ( ) => {
-
+  
     const navigate = useNavigate();
     const user = localStorage.getItem('name')
+    const id = localStorage.getItem('id')
     
     useEffect (()=>{
         console.log("cambió el name")
@@ -21,7 +22,7 @@ export const Private = ( ) => {
           
                     <p className="text-center">¡Gracias por iniciar sesión!</p>
                    
-                   <Link to={"/doctor/" + 3}>
+                   <Link to={"/doctor/" + `${id}`}>
                         <button className="Doctors">Acceder a Doctors</button>
                    </Link>
 

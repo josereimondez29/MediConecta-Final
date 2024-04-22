@@ -393,6 +393,7 @@ def get_doctors():
 
     return jsonify(response_body), 200
 
+
 #GET Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
 def get_doctor(doctor_id):
@@ -428,14 +429,17 @@ def get_doctor_details(doctor_id):
     #         "is_active": doctor.is_active
     #     }
     return jsonify({"message": "Doctor details found", "speciality": speciality_serialized}), 200
-    return jsonify({"message": "Doctor not found"}), 404
+    # return jsonify({"message": "Doctor not found"}), 404
 
 #PUT Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
 def update_doctor(doctor_id):   
+    # Obtener el doctor que se desea actualizar
     doctor = Doctor.query.get(doctor_id)
+    
     if doctor:
-        data = request.json
+        data = request.json(silent=True)
+        # Actualizar los atributos del doctor según los datos recibidos en la solicitud
         doctor.name = data.get('name', doctor.name)
         doctor.surname = data.get('surname', doctor.surname)
         doctor.age = data.get('age', doctor.age)
@@ -443,13 +447,16 @@ def update_doctor(doctor_id):
         doctor.medical_license = data.get('medical_license', doctor.medical_license)
         doctor.email = data.get('email', doctor.email)
         doctor.bio = data.get('bio', doctor.bio)
-        doctor.password = data.get('password', doctor.password)
-        doctor.speciality_id = data.get('speciality', doctor.speciality_id)
+        # Actualizar la especialidad del doctor si es necesario
+        doctor.speciality_id = data.get('speciality_id', doctor.speciality_id)
         doctor.is_active = data.get('is_active', doctor.is_active)
+        
+        # Guardar los cambios en la base de datos 
         db.session.commit()
-        return jsonify({"message": "User updated"}), 200
-    return jsonify({"message": "User not found"}), 404
-
+        
+        return jsonify({"message": "Doctor updated", "doctor": doctor.serialize()}), 200
+    else:
+        return jsonify({"message": "Doctor not found"}), 404
 #DELETE Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['DELETE'])
 def delete_doctor(doctor_id):

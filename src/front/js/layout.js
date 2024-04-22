@@ -42,7 +42,7 @@ const Layout = () => {
             <Route element={<PrivateDoctor />} path="/doctor/:id"/>
             <Route element={<AllDoctors />} path="/alldoctors"/>
             <Route element={<IsLogin />} path="/log"/>
-            <Route element={<EditDoctor />} path="/editDoctor"/>
+            <Route element={<EditDoctor />} path="/editDoctor/:id"/>
             <Route element={<h1>Not found</h1>} />
           </Routes>
           <Footer />
