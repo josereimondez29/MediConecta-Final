@@ -15,15 +15,14 @@ const MedicalAppointment = () => {
 
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
-      console.log("Doctor seleccionado:", selectedDoctor);  // Agregar información de depuración
-      console.log("Fecha y hora seleccionadas:", selectedDate);  // Agregar información de depuración
-  
+      console.log("Doctor seleccionado:", selectedDoctor);
+      console.log("Fecha y hora seleccionadas:", selectedDate);
+
       const token = localStorage.getItem('token');
       const formattedDate = selectedDate.toISOString().slice(0, 19).replace('T', ' ');
-  
-      // Agregar el console.log aquí para verificar el formato de fecha y hora
+
       console.log("Fecha y hora formateadas:", formattedDate);
-  
+
       const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
         method: "POST",
         headers: {
@@ -38,7 +37,7 @@ const MedicalAppointment = () => {
       });
       const data = await response.json();
       console.log("Respuesta del backend:", data);
-  
+
       if (response.ok) {
         navigate('/success');
       } else {
@@ -48,7 +47,6 @@ const MedicalAppointment = () => {
       alert("Por favor, selecciona una especialidad, un médico y una fecha para programar la cita.");
     }
   };
-
 
   const isButtonDisabled = !(selectedSpeciality && selectedDoctor && selectedDate);
 
@@ -91,6 +89,8 @@ const MedicalAppointment = () => {
 };
 
 export default MedicalAppointment;
+
+
 
 
 

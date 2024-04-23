@@ -131,6 +131,7 @@ class Doctor(db.Model):
     speciality_id = db.Column(db.Integer, db.ForeignKey("speciality.id"), nullable=True)
     speciality_relationship = db.relationship('Speciality')
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    #availabilities = db.Column(db.Integer, db.ForeignKey("doctoravailability.id"), nullable=True)
     availabilities = db.relationship('DoctorAvailability')
 
     def __repr__(self):
@@ -155,7 +156,8 @@ class Doctor(db.Model):
 
         appointment_day_of_week = appointment_time.weekday()
         appointment_time_of_day = appointment_time.time()
-
+        print("dia de la cita", appointment_day_of_week)
+        print("hora de la cita", appointment_time_of_day)
         for availability in self.availabilities:
             print("Disponibilidad:", availability)
             if availability.day_of_week == appointment_day_of_week and \
@@ -170,6 +172,7 @@ class DoctorAvailability(db.Model):
     __tablename__ = 'doctor_availability'
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
+    doctor_id_relationship = db.relationship('Doctor')
     day_of_week = db.Column(db.Integer, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
@@ -229,7 +232,6 @@ class Medical_Appointment(db.Model):
             "speciality": self.speciality_id,
             "is_active": self.is_active
         }
-
 """class FavoriteSpeciality(db.Model):
     __tablename__ = 'favorite_speciality'
     id = db.Column(db.Integer, primary_key=True)

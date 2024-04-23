@@ -6,7 +6,7 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 
   useEffect(() => {
     if (selectedSpeciality) {
-      fetch(process.env.BACKEND_URL + `/doctors?speciality=${selectedSpeciality}`)
+      fetch(`${process.env.BACKEND_URL}/doctors?speciality=${selectedSpeciality}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Error fetching doctors');
@@ -42,5 +42,6 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 };
 
 export default DoctorSelection;
+
 
 

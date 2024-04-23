@@ -600,7 +600,7 @@ def register_medical_appointment():
     doctor = Doctor.query.get(doctor_id)
     if doctor is None:
         return jsonify({'msg': "El doctor especificado no existe"}), 404
-
+    print(doctor.is_available(appointment_time))
     if not doctor.is_available(appointment_time):
         return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
 
