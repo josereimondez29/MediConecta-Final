@@ -5,6 +5,7 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+import requests
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
 from api.admin import setup_admin
@@ -18,6 +19,7 @@ from flask_cors import CORS, cross_origin
 from flask_mail import Mail, Message
 from datetime import datetime, time
 from api.models import DoctorAvailability
+import uuid
 
 
 
@@ -620,19 +622,35 @@ def register_medical_appointment():
     db.session.add(new_medical_appointment)
     db.session.commit()
 
-    # Envío de correos electrónicos al paciente y al doctor
-    send_emails(patient_info.email, doctor.email, appointment_time)
+    # Genera los enlaces de videoconferencia para la cita médica
+    meeting_data = {
+        "endDate": appointment_time.isoformat(),
+        "roomNamePrefix": f"appointment_{new_medical_appointment.id}",
+        "meetingId": new_medical_appointment.id
+    }
+    meeting_links = create_meeting_links(meeting_data)
+
+    # Envía correos electrónicos al paciente y al doctor
+    send_emails(patient_info.email, patient_info.id, doctor.email, appointment_time, meeting_links)
 
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
 
-def send_emails(patient_email, doctor_email, appointment_time):
-    # Construye el mensaje de correo electrónico con los detalles de la cita
+def create_meeting_links(data):
+    # Simulación de la generación de enlaces de videoconferencia
+    room_url = f"https://mediconecta.whereby.com/{data['roomNamePrefix']}"
+    host_room_url = f"https://mediconecta.whereby.com/{data['roomNamePrefix']}/host"
+    return room_url, host_room_url
+
+def send_emails(patient_email, patient_id, doctor_email, appointment_time, meeting_links):
+    room_url, host_room_url = meeting_links
+    
+    # Construye el mensaje de correo electrónico con los detalles de la cita y los enlaces de videoconferencia
     msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
-    msg_patient.html = f"<h1>Detalles de tu cita médica</h1><p>Fecha y hora: {appointment_time}</p>"
+    msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
     mail.send(msg_patient)
     
-    msg_doctor = Message(subject="Detalles de la cita médica de un paciente", sender='mediconecta1@gmail.com', recipients=[doctor_email])
-    msg_doctor.html = f"<h1>Detalles de la cita médica de un paciente</h1><p>Fecha y hora: {appointment_time}</p>"
+    msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
+    msg_doctor.html = f"<h1>Detalles de la cita médica con paciente {patient_id}:</h1><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
 
 
@@ -870,20 +888,47 @@ def send_mail():
 
 
 # Meetings
+
+
 @app.route("/meetings", methods=["POST"])
 def create_meeting():
     data = request.json
-    meeting = {
-        "meetingId": str(len(meetings) + 1),
+
+    # Llama a la API de Whereby para crear una reunión
+    api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmFwcGVhci5pbiIsImF1ZCI6Imh0dHBzOi8vYXBpLmFwcGVhci5pbi92MSIsImV4cCI6OTAwNzE5OTI1NDc0MDk5MSwiaWF0IjoxNzEzNDU3NDAyLCJvcmdhbml6YXRpb25JZCI6MjI1NTEzLCJqdGkiOiI2NGUwNjlkNi1mYjBhLTRhYjMtYjkyOC1mYjFhY2NiOTM5OGYifQ.T5y4YmndKiciCuKqDsTZtyPCH1hqpDB4WsHbF--zNK8"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json"
+    }
+    create_meeting_url = "https://api.whereby.dev/v1/meetings"
+    payload = {
+        "startDate": data["startDate"],
         "endDate": data["endDate"],
-        "roomUrl": f"https://subdomain.whereby.com/{data['roomNamePrefix']}",
-        "startDate": "2020-05-12T16:42:49Z",  
-        "roomName": f"{data['roomNamePrefix']}-{data['meetingId']}",
-        "hostRoomUrl": f"https://subdomain.whereby.com/{data['roomNamePrefix']}/host",
-        "viewerRoomUrl": f"https://subdomain.whereby.com/{data['roomNamePrefix']}/viewer"
+        "name": data["roomName"],
+        "roomMode": "normal"
+    }
+    response = requests.post(create_meeting_url, json=payload, headers=headers)
+
+    if response.status_code != 201:
+        return jsonify({"error": "Error al crear la reunión"}), response.status_code
+
+    # Obtiene la respuesta de la API de Whereby
+    room_data = response.json()
+    
+    # Actualiza la respuesta con el enlace correcto
+    meeting = {
+        "meetingId": room_data["meetingId"],
+        "endDate": room_data["endDate"],
+        "roomUrl": room_data["roomUrl"],
+        "startDate": room_data["startDate"],
+        "roomName": room_data["roomName"],
+        "hostRoomUrl": f"{room_data['roomUrl']}/host",
+        "viewerRoomUrl": f"{room_data['roomUrl']}/viewer"
     }
     meetings.append(meeting)
-    return jsonify(meeting)
+
+    return jsonify(meeting), 201
+
 
 @app.route("/meetings", methods=["GET"])
 def get_meetings():
