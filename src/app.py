@@ -589,9 +589,6 @@ def register_medical_appointment():
     doctor_id = body.get('doctor_id')
     appointment_time_str = body.get('appointment_time')
 
-    print("Doctor ID recibido:", doctor_id)  
-    print("Fecha y hora de la cita recibida:", appointment_time_str)  
-
     try:
         appointment_time = datetime.fromisoformat(appointment_time_str)
     except ValueError:
@@ -600,7 +597,7 @@ def register_medical_appointment():
     doctor = Doctor.query.get(doctor_id)
     if doctor is None:
         return jsonify({'msg': "El doctor especificado no existe"}), 404
-    print(doctor.is_available(appointment_time))
+
     if not doctor.is_available(appointment_time):
         return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
 
@@ -623,7 +620,20 @@ def register_medical_appointment():
     db.session.add(new_medical_appointment)
     db.session.commit()
 
+    # Envío de correos electrónicos al paciente y al doctor
+    send_emails(patient_info.email, doctor.email, appointment_time)
+
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
+
+def send_emails(patient_email, doctor_email, appointment_time):
+    # Construye el mensaje de correo electrónico con los detalles de la cita
+    msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
+    msg_patient.html = f"<h1>Detalles de tu cita médica</h1><p>Fecha y hora: {appointment_time}</p>"
+    mail.send(msg_patient)
+    
+    msg_doctor = Message(subject="Detalles de la cita médica de un paciente", sender='mediconecta1@gmail.com', recipients=[doctor_email])
+    msg_doctor.html = f"<h1>Detalles de la cita médica de un paciente</h1><p>Fecha y hora: {appointment_time}</p>"
+    mail.send(msg_doctor)
 
 
 
@@ -823,13 +833,40 @@ def delete_medicated(medicated_id):
     return jsonify({"message": "Alergic not found"}), 404
 
 #SEND EMAIL
-@app.route('/send_mail', methods=['GET'])
+# @app.route('/send_mail', methods=['GET'])
+# def send_mail():
+#     msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
+#                   recipients=['mediconecta1@gmail.com'])
+#     msg.html = "<h1> Hola desde el correo</h1>"
+#     mail.send(msg)
+#     return jsonify ({"msg": "Mail enviado!!!"})
+
+
+
+@app.route('/send_mail', methods=['POST'])
 def send_mail():
-    msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
-                  recipients=['mediconecta1@gmail.com'])
-    msg.html = "<h1> Hola desde el correo</h1>"
-    mail.send(msg)
-    return jsonify ({"msg": "Mail enviado!!!"})
+    data = request.json
+    
+    if data is None:
+        return jsonify({"msg": "Debes enviar la información del correo electrónico en el cuerpo de la solicitud"}), 400
+
+    patient_email = data.get('patient_email')
+    doctor_email = data.get('doctor_email')
+    appointment_time = data.get('appointment_time')
+
+    if not all([patient_email, doctor_email, appointment_time]):
+        return jsonify({"msg": "Falta información requerida para enviar el correo electrónico"}), 400
+
+    msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
+    msg_patient.html = f"<h1>Detalles de tu cita médica</h1><p>Fecha y hora: {appointment_time}</p>"
+    mail.send(msg_patient)
+    
+    msg_doctor = Message(subject="Detalles de la cita médica de un paciente", sender='mediconecta1@gmail.com', recipients=[doctor_email])
+    msg_doctor.html = f"<h1>Detalles de la cita médica de un paciente</h1><p>Fecha y hora: {appointment_time}</p>"
+    mail.send(msg_doctor)
+
+    return jsonify({"msg": "Correos electrónicos enviados correctamente"}), 200
+
 
 
 # Meetings
