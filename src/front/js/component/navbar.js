@@ -62,7 +62,7 @@ export const Navbar = () => {
                             </li>
                         </ul>
                     </div>
-                    {sessionStorage.authentication ? (
+                    {localStorage.getItem("token") ? (
                         <div className="d-flex ms-auto">
                             <form className="d-flex p-2" role="log out">
                                 <button onClick={submitLogout} className="btn btn-outline-danger" type="button">Logout</button>

@@ -1,22 +1,38 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import PropTypes from "prop-types";
 
-const PrivateDoctor = (props) => {
+export const SingleDoctor = (props) =>{
     const { store, actions } = useContext(Context);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
-    
+   
+   
     useEffect(() => {
+        const loadSpecialities = async () => {
+            try {
+                await actions.loadSpecialities();
+            } catch (error) {
+                console.error("Error loading specialities:", error);
+            }
+        };
+
+        loadSpecialities(); 
+   
+    }, [])
+ 
+    useEffect(() => {
+       
         if (id && store.doctors && store.doctors.length > 0) {
-            const selectedDoctor = store.doctors.find(doctor => doctor.id === parseInt(id));
+            const selectedDoctor = store.doctors.find(doctor => doctor.id.toString() === id);
             if (selectedDoctor) {
                 setDoctor(selectedDoctor);
                 setLoading(false);
-                
+    
+                // Buscar la especialidad correspondiente al médico
                 const foundSpeciality = store.specialities.find(speciality => speciality.id === selectedDoctor.speciality_id);
                 setSpeciality(foundSpeciality);
             } else {
@@ -25,7 +41,6 @@ const PrivateDoctor = (props) => {
         }
     }, [id, store.doctors, store.specialities]);
 
-  
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -35,8 +50,15 @@ const PrivateDoctor = (props) => {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
 
+     
+    // console.log("DOCTORDATA SINGLE DOCTOR-->", doctor)
+    // console.log("STORE SINGLE DOCTOR-->", store.doctors)
+    // console.log("STORE.ESPECIALITY SINGLE DOCTOR-->", store.specialities)
+
+
     return (
         <>
+            
             <div className="container-fluid">
                 <ul className="list-group">
                     <li key={id} className="list-group-item d-flex justify-content-between">
@@ -55,11 +77,7 @@ const PrivateDoctor = (props) => {
                                             <span style={{ fontSize: "small "}}>DNI/NIE:&nbsp;{doctor.identification}</span><br/>
                                             <span style={{ fontSize: "small "}}>BIO:&nbsp;{doctor.bio}</span>
                                         </div>
-                                        <div className="container-fluid justify-content-between" >
-                                            <Link to={`/editDoctor/${id}`}>
-                                                <button className="btn btn-info">Modificar perfil</button>
-                                            </Link>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -71,4 +89,6 @@ const PrivateDoctor = (props) => {
     );
 }
 
-export default PrivateDoctor
+SingleDoctor.propTypes = {
+	match: PropTypes.object
+};

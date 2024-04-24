@@ -1,13 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Context } from '../store/appContext';
+import { Context } from "../store/appContext";
 
 export const EditDoctor = () => {
         const { store, actions } = useContext(Context);
         const { id } = useParams();
         const idFromUrl = parseInt(id);
         const navigate = useNavigate();
-        const [speciality, setSpeciality] = useState([]); 
+        const [speciality, setSpeciality] = useState({});
         const [specialities, setSpecialities] = useState([]);
     
         // Utilizamos useState para mantener el estado del doctor que se está editando
@@ -19,9 +19,23 @@ export const EditDoctor = () => {
             bio: "",
             identification: "",
             medical_license: "",
-            speciality_id: ""
+            speciality_id: "" // Inicializar correctamente el ID de la especialidad
         });
-    
+
+     
+        useEffect(() => {
+            const loadSpecialities = async () => {
+                try {
+                    await actions.loadSpecialities();
+                } catch (error) {
+                    console.error("Error loading specialities:", error);
+                }
+            };
+
+            loadSpecialities();
+   
+        }, [])
+
         useEffect(() => {
             // Obtener las especialidades del almacén y actualizar el estado
             setSpecialities(store.specialities);
@@ -34,7 +48,7 @@ export const EditDoctor = () => {
             
             // Si encontramos el doctor, actualizamos el estado de editDoctor con sus datos
             if (editDoctor) {
-                setEditDoctor({
+                setEditDoctor({ 
                     name: editDoctor.name || "",
                     surname: editDoctor.surname || "",
                     email: editDoctor.email || "",
@@ -53,17 +67,26 @@ export const EditDoctor = () => {
                 const foundSpeciality = specialities.find(speciality => speciality.id === editDoctor.speciality_id);
                 setSpeciality(foundSpeciality);
             }
-        }, [editDoctor, specialities]); // Cambiado a specialities
+        }, [editDoctor, specialities]); 
     
         // Función para manejar el envío del formulario
-        const handleSubmit = (e) => {
+        const handleSubmit = async (e) => {
             e.preventDefault();
-            actions.updateDoctor(editDoctor);
-            navigate("/doctor/" + id);
+        
+            try {
+                // Llamar a la función de actualización del doctor de manera asíncrona
+                await actions.updateDoctor(editDoctor, id);
+                
+                // Después de la actualización exitosa, navegar a la página del doctor
+                navigate("/doctor/" + id);
+            } catch (error) {
+                // Manejar cualquier error que pueda ocurrir durante la actualización
+                console.error("Error updating doctor:", error);
+            }
         };
 
     return (
-        
+         
             <>
              <div className='content' style={{ padding: "50px" }}>
                 <form onSubmit={handleSubmit}>
@@ -124,15 +147,21 @@ export const EditDoctor = () => {
                             className="form-select"
                             id="inputspeciality"
                             name="speciality"
-                            value={speciality ? speciality.id : ""} // Cambiado a speciality.id
-                            onChange={(e) => setSpeciality(specialities.find(spec => spec.id === parseInt(e.target.value)))} // Manejador de cambio
+                            value={speciality ? speciality.id : ""}
+                            onChange={(e) => {
+                                const selectedSpecialityId = parseInt(e.target.value);
+                                const selectedSpeciality = specialities.find(spec => spec.id === selectedSpecialityId);
+                                setSpeciality(selectedSpeciality);
+                                setEditDoctor({ ...editDoctor, speciality_id: selectedSpecialityId });
+                            }}
                         >
+                            <option value="">Elige una opción</option> {/* Opción por defecto */}
                             {specialities.map(speciality => (
                                 <option key={speciality.id} value={speciality.id}>{speciality.name}</option>
                             ))}
                         </select>
                     </div>
-                
+                 
                     <div className='d-grid gap-2'>
                         <button  className="btn btn-primary" type="submit" >Update</button>
                     </div>

@@ -157,13 +157,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					setStore({ doctors: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados
-					// console.log("UPDATE FLUX", updatedDoctors); // Muestra los médicos actualizados en la consola
+					
 				});
 			},
 
 			updateDoctor: (editDoctor, id) => {
-				// console.log("Hola desed flux")
-				// console.log("EDITDOCTOR FLUX", editDoctor)
+
 				const requestOptions = {
 					method: "PUT",
 					body: JSON.stringify(editDoctor),
@@ -184,18 +183,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				.catch((error) => console.error("Fetch error:", error));
 
-
-				// .then((response) => response.text())
-				// .then((result) => {
-				// 	console.log("RESULTADOS UPDATE FLUX", result)
-				// 	fetch(process.env.BACKEND_URL + `/doctor/${id}`)
-				// 	.then((response) => response.json())
-				// 	.then((data) => {
-				// 		console.log("Data result update FLUX", data),
-				// 		setStore({ doctors: data.result })
-				// 	})
-				// 	.catch((error) => console.error(error))    
-				//});
 			}
 			
 		},
