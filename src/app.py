@@ -17,9 +17,10 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS, cross_origin
 from flask_mail import Mail, Message
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from api.models import DoctorAvailability
 import uuid
+
 
 
 
@@ -572,6 +573,57 @@ def delete_speciality(speciality_id):
         return jsonify({"message": "Speciality deleted"}), 200
     return jsonify({"message": "Speciality not found"}), 404
 
+
+# @app.route("/meetings", methods=["POST"])
+def create_meeting():
+    # Get the current date
+    current_date = datetime.now()
+    isoformat = current_date + timedelta(weeks=2)
+    data = {
+        "isLocked": False,
+        "roomNamePrefix": "",
+        "roomNamePattern": "uuid",
+        "roomMode": "normal",
+        "endDate": isoformat.isoformat(),
+        "fields": [
+            "hostRoomUrl"
+        ]
+    }
+
+    # Llama a la API de Whereby para crear una reunión
+    api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmFwcGVhci5pbiIsImF1ZCI6Imh0dHBzOi8vYXBpLmFwcGVhci5pbi92MSIsImV4cCI6OTAwNzE5OTI1NDc0MDk5MSwiaWF0IjoxNzEzNDU3NDAyLCJvcmdhbml6YXRpb25JZCI6MjI1NTEzLCJqdGkiOiI2NGUwNjlkNi1mYjBhLTRhYjMtYjkyOC1mYjFhY2NiOTM5OGYifQ.T5y4YmndKiciCuKqDsTZtyPCH1hqpDB4WsHbF--zNK8"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json"
+    }
+    create_meeting_url = "https://api.whereby.dev/v1/meetings"
+    
+    response = requests.post(create_meeting_url, json=data, headers=headers)
+
+    # if response.status_code != 201:
+    #     return jsonify({"error": "Error al crear la reunión"}), response.status_code
+    # print(response)
+
+    # Obtiene la respuesta de la API de Whereby
+    room_data = response.json()
+    # print("despues de aqui room_data")
+    # print(room_data)
+    # Actualiza la respuesta con el enlace correcto
+    # meeting = {
+    #     "meetingId": room_data["meetingId"],
+    #     "endDate": room_data["endDate"],
+    #     "roomUrl": room_data["roomUrl"],
+    #     "startDate": room_data["startDate"],
+    #     "roomName": room_data["roomName"],
+    #     "hostRoomUrl": f"{room_data['roomUrl']}/host",
+    #     "viewerRoomUrl": f"{room_data['roomUrl']}/viewer"
+    # }
+    # # meetings.append(meeting)
+    # print(meeting)
+    return (room_data)
+
+
+
 #Register Medical Appoinment    
 
 @app.route("/api/register/medical_appointment", methods=["POST"])
@@ -616,6 +668,7 @@ def register_medical_appointment():
         patient_id=patient_info.id,
         doctor_id=doctor_id,
         appointment_date=appointment_time,
+        
         is_active=True
     )
     
@@ -629,7 +682,13 @@ def register_medical_appointment():
         "meetingId": new_medical_appointment.id
     }
     meeting_links = create_meeting_links(meeting_data)
-
+    meeting_room_data = create_meeting()
+    print(meeting_room_data) 
+    # {'startDate': '2024-04-24T18:41:59.339Z', 'endDate': '2024-05-08T18:41:59.077Z', 
+    # 'roomName': '/d982ce3c-2688-45b4-ad29-d3859542a15e', 'roomUrl': 'https://mediconecta.whereby.com/d982ce3c-2688-45b4-ad29-d3859542a15e', 
+    # 'meetingId': '85448936', 'hostRoomUrl': 'https://mediconecta.whereby.com/d982ce3c-2688-45b4-ad29-d3859542a15e?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI4NTQ0ODkzNiIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvZDk4MmNlM2MtMjY4OC00NWI0LWFkMjktZDM4NTk1NDJhMTVlIiwib3JnYW5pemF0aW9uSWQiOiIyMjU1MTMifSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5zcnYud2hlcmVieS5jb20iLCJpYXQiOjE3MTM5ODQxMTksInJvb21LZXlUeXBlIjoibWVldGluZ0hvc3QifQ.sPeLAhlSlHqqfe0k8LRSfODRuDQ97L3sDGr0inkdIow'}
+    
+    
     # Envía correos electrónicos al paciente y al doctor
     send_emails(patient_info.email, patient_info.id, doctor.email, appointment_time, meeting_links)
 
@@ -890,44 +949,7 @@ def send_mail():
 # Meetings
 
 
-@app.route("/meetings", methods=["POST"])
-def create_meeting():
-    data = request.json
 
-    # Llama a la API de Whereby para crear una reunión
-    api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmFwcGVhci5pbiIsImF1ZCI6Imh0dHBzOi8vYXBpLmFwcGVhci5pbi92MSIsImV4cCI6OTAwNzE5OTI1NDc0MDk5MSwiaWF0IjoxNzEzNDU3NDAyLCJvcmdhbml6YXRpb25JZCI6MjI1NTEzLCJqdGkiOiI2NGUwNjlkNi1mYjBhLTRhYjMtYjkyOC1mYjFhY2NiOTM5OGYifQ.T5y4YmndKiciCuKqDsTZtyPCH1hqpDB4WsHbF--zNK8"
-    headers = {
-        "Authorization": f"Bearer {api_token}",
-        "Content-Type": "application/json"
-    }
-    create_meeting_url = "https://api.whereby.dev/v1/meetings"
-    payload = {
-        "startDate": data["startDate"],
-        "endDate": data["endDate"],
-        "name": data["roomName"],
-        "roomMode": "normal"
-    }
-    response = requests.post(create_meeting_url, json=payload, headers=headers)
-
-    if response.status_code != 201:
-        return jsonify({"error": "Error al crear la reunión"}), response.status_code
-
-    # Obtiene la respuesta de la API de Whereby
-    room_data = response.json()
-    
-    # Actualiza la respuesta con el enlace correcto
-    meeting = {
-        "meetingId": room_data["meetingId"],
-        "endDate": room_data["endDate"],
-        "roomUrl": room_data["roomUrl"],
-        "startDate": room_data["startDate"],
-        "roomName": room_data["roomName"],
-        "hostRoomUrl": f"{room_data['roomUrl']}/host",
-        "viewerRoomUrl": f"{room_data['roomUrl']}/viewer"
-    }
-    meetings.append(meeting)
-
-    return jsonify(meeting), 201
 
 
 @app.route("/meetings", methods=["GET"])
