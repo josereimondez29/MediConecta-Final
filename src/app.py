@@ -433,12 +433,13 @@ def get_doctor_details(doctor_id):
 
 #PUT Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
+
 def update_doctor(doctor_id):   
     # Obtener el doctor que se desea actualizar
     doctor = Doctor.query.get(doctor_id)
     
     if doctor:
-        data = request.json(silent=True)
+        data = request.json 
         # Actualizar los atributos del doctor según los datos recibidos en la solicitud
         doctor.name = data.get('name', doctor.name)
         doctor.surname = data.get('surname', doctor.surname)

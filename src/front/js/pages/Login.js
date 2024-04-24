@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 import { Context } from "../store/appContext";
 
@@ -8,19 +8,26 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
- 
+
   const handleSubmit = (e) => {
     e.preventDefault()
     actions.login(email, password, userType);
 
   };
 
+  useEffect(()=>{
+    if (store.authentication === true)
+    {
+      if(userType === "patient"){navigate("/private")} else {navigate("/log")}
+    } 
+  },[store.authentication])
+
   return (
    
     <div className="container mt-5">
-    {store.authentication === true ? 
-      (userType === 'patient' ? <Navigate to="/log"/> : <Navigate to="/log"/>) :
+  
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Login</h2>
@@ -64,7 +71,7 @@ export const Login = () => {
           </form>
         {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
         </div>
-      </div>}
+      </div>
      
     </div>
   );
