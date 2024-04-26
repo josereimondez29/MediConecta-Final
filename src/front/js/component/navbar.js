@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, Link } from "react-router-dom";
+import React, { useContext, useEffect }  from "react";
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
@@ -11,77 +12,78 @@ export const Navbar = () => {
         navigate('/register');
     };
 
-    const handleLoginButtonClickPacientes = () => {
-        // Redirige al componente de inicio de sesión
-        navigate('/login');
-    };
 
-    const submitLogout = () => {
-        actions.logout();
-        localStorage.removeItem("authentication");
-        navigate("/");
-    };
+  function submitLogout() {
+    actions.logout();
+    localStorage.removeItem("authentication"); // Elimina la autenticación del localStorage al cerrar sesión
+    navigate("/"); // Cambia "/login" por la ruta correcta si es diferente
+}
 
 
-    // console.log("STORE NAVBAR", store.authentication)
-
-    // console.log("LOCAL STORE NAVBAR", localStorage)
-
-    // console.log("SESION STORE NAVBAR", sessionStorage)
+  useEffect (()=>{
+    console.log("cambió el token")
+    console.log(localStorage.getItem("token"))
+  },[store.authentication])
 
     return (
-        <nav className="navbar navbar-expand-lg bg-body-tertiary">
-            <div className="container-fluid">
-                <div className="d-flex ms-3">
-                    <a className="navbar-brand text-center" href="#">MediConecta</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                </div>
-                <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <div className="d-flex ms-3">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item pe-5 ms-3">
-                                <a className="nav-link active p-2" aria-current="page" href="#">Home</a>
-                            </li>
-                            <li className="nav-item pe-5 ms-3">
-                                <a className="nav-link p-2" href="#">Blog</a>
-                            </li>
-                            <li className="nav-item dropdown pe-5 ms-3">
-                                <a className="nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Especialidades
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li><a className="dropdown-item" href="#">Medicina General</a></li>
-                                    <li><a className="dropdown-item" href="#">Dermatología</a></li>
-                                    <li><a className="dropdown-item" href="#">Pediatría</a></li>
-                                    <li><a className="dropdown-item" href="#">Psicología</a></li>
-                                    <li><a className="dropdown-item" href="#">Nutrición</a></li>
-                                    <li><a className="dropdown-item" href="#">Fisioterapia</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    {localStorage.getItem("token") ? (
-                        <div className="d-flex ms-auto">
-                            <form className="d-flex p-2" role="log out">
-                                <button onClick={submitLogout} className="btn btn-outline-danger" type="button">Logout</button>
-                            </form>
-                        </div>
-                    ) : (
-                        <div className="d-flex ms-auto">
-                            <form className="d-flex p-2" role="register">
-                                <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="button">Registrate</button>
-                            </form>
-                            <form className="d-flex p-2" role="log in">
-                                <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="button">Login</button>
-                            </form>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </nav>
-    ); 
+      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+          <div className="container-fluid">
+              <div className="d-flex ms-3">
+                  <a className="navbar-brand text-center" href="#">MediConecta</a>
+                  <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                      <span className="navbar-toggler-icon"></span>
+                  </button>
+              </div>
+              <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                  <div className="d-flex ms-3">
+                      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                          <li className="nav-item pe-5 ms-3">
+                              <a className="nav-link active p-2" aria-current="page" href="#">Home</a>
+                          </li>
+                          <li className="nav-item pe-5 ms-3">
+                              <a className="nav-link p-2" href="#">Blog</a>
+                          </li>
+                          <li className="nav-item dropdown pe-5 ms-3">
+                              <a className="nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Especialidades
+                              </a>
+                              <ul className="dropdown-menu">
+                                  <li><a className="dropdown-item" href="/MedicinaGeneral">Medicina General</a></li>
+                                  <li><a className="dropdown-item" href="/Dermatologia">Dermatología</a></li>
+                                  <li><a className="dropdown-item" href="#">Pediatría</a></li>
+                                  <li><a className="dropdown-item" href="#">Psicología</a></li>
+                                  <li><a className="dropdown-item" href="#">Nutrición</a></li>
+                                  <li><a className="dropdown-item" href="#">Fisioterapia</a></li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </div>
+                  {localStorage.getItem("token") ? (
+                      <div className="d-flex ms-auto">
+                          <form className="d-flex p-2" role="log out">
+                              <button onClick={submitLogout} className="btn btn-outline-danger" type="button">Logout</button>
+                          </form>
+                      </div>
+                  ) : (
+                      <div className="d-flex ms-auto">
+                          <form className="d-flex p-2" role="register">
+                              <button className="btn btn-outline-secondary me-2" onClick={handleLoginButtonClickMedicos} type="button">Registrate</button>
+                          </form>
+                          <form className="d-flex p-2" role="log in">
+                              <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="button">Login</button>
+                          </form>
+                          <form className="d-flex p-2" role="log in">
+                            <Link to = {"/register/medical_appointment"}>
+                              <button className="btn btn-success" >Registrar cita</button>
+                            </Link>
+                          </form>
+                      </div>
+                  )}
+              </div>
+          </div>
+      </nav>
+  );
+
 };
 
     // <div>

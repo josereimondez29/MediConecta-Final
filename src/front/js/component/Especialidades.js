@@ -29,7 +29,7 @@ const Especialidades = () => {
   return (
     <>
       <div className="d-flex justify-content-center mt-4">
-        <button className="btn btn-outline-secondary" style={{ color: "#83a8b1" }}>Especialidades</button>
+        <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83a8b1", color: "#fff" }}>Especialidades</button>
       </div>
       <div id="carouselExampleControlsNoTouching" className="carousel slide" data-bs-touch="false">
         <div className="carousel-inner">

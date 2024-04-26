@@ -8,6 +8,7 @@ import dept1 from "../../img/dept-1.jpg"
 import Especialidades from "../component/Especialidades";
 import ListDoctors from "../component/ListDoctors";
 import "./../../styles/listDoctor.css"
+import Prices from "../component/Prices";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -247,7 +248,12 @@ export const Home = () => {
          </div>
          </div> 
         
-     
+         <div className="container-fluid px-5 "  >
+            <div className="row justify-content-center mx-5"  >
+              <Prices  />
+            </div>
+         </div>
+          
       
           
       </section>
