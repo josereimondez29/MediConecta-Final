@@ -685,21 +685,16 @@ def register_medical_appointment():
     db.session.commit()
 
     # Genera los enlaces de videoconferencia para la cita médica
+    meeting_room_data = create_meeting()
     meeting_data = {
         "endDate": appointment_time.isoformat(),
-        "roomNamePrefix": f"appointment_{new_medical_appointment.id}",
-        # "roomNamePrefix": meeting_room_data['roomUrl'],
-        # "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
-        "meetingId": new_medical_appointment.id,
-        # "meetingId": meeting_room_data['meetingId']
+        "roomNamePrefix": meeting_room_data['roomUrl'],
+        "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
+        "meetingId": meeting_room_data['meetingId']
     }
     meeting_links = create_meeting_links(meeting_data)
-    meeting_room_data = create_meeting()
-    print(meeting_room_data) 
-    # {'startDate': '2024-04-24T18:41:59.339Z', 'endDate': '2024-05-08T18:41:59.077Z', 
-    # 'roomName': '/d982ce3c-2688-45b4-ad29-d3859542a15e', 'roomUrl': 'https://mediconecta.whereby.com/d982ce3c-2688-45b4-ad29-d3859542a15e', 
-    # 'meetingId': '85448936', 'hostRoomUrl': 'https://mediconecta.whereby.com/d982ce3c-2688-45b4-ad29-d3859542a15e?roomKey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtZWV0aW5nSWQiOiI4NTQ0ODkzNiIsInJvb21SZWZlcmVuY2UiOnsicm9vbU5hbWUiOiIvZDk4MmNlM2MtMjY4OC00NWI0LWFkMjktZDM4NTk1NDJhMTVlIiwib3JnYW5pemF0aW9uSWQiOiIyMjU1MTMifSwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5zcnYud2hlcmVieS5jb20iLCJpYXQiOjE3MTM5ODQxMTksInJvb21LZXlUeXBlIjoibWVldGluZ0hvc3QifQ.sPeLAhlSlHqqfe0k8LRSfODRuDQ97L3sDGr0inkdIow'}
     
+    print(meeting_room_data) 
     
     # Envía correos electrónicos al paciente y al doctor
     send_emails(patient_info.email, patient_info.id, doctor.email, appointment_time, meeting_links)
@@ -723,7 +718,6 @@ def send_emails(patient_email, patient_id, doctor_email, appointment_time, meeti
     msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
     msg_doctor.html = f"<h1>Detalles de la cita médica con paciente {patient_id}:</h1><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
-
 
 
 
