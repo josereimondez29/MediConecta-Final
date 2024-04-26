@@ -16,6 +16,10 @@ export const PrivatePatient = () => {
         }
     }, []); // Ejecutar solo una vez al cargar el componente
 
+    useEffect(()=>{
+        console.log("Estoy pendiente")
+    }, [store.currentPatient])
+
     console.log(store.currentPatient)
     return (
         <div className="container">
