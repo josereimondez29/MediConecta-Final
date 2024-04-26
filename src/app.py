@@ -379,6 +379,15 @@ def register_doctor():
         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
     )
 
+    # Iterar sobre los días de la semana
+    # for day in range(5):  # 0 es el lunes, 1 es el martes, ..., 4 es el viernes
+    #     default_availability = DoctorAvailability(
+    #         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #         day_of_week=day,  # El día de la semana actual en la iteración
+    #         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    # )
+
     # Verificar si el horario de disponibilidad ya está ocupado
     existing_availability = DoctorAvailability.query.filter_by(
         doctor_id=new_doctor.id,
