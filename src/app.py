@@ -400,12 +400,12 @@ def register_doctor():
           end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
       )
 
-    # default_availability = DoctorAvailability(
-    #      doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-    #      day_of_week=4,  # por defecto para el domingo
-    #      start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-    #      end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-    #  )
+    default_availability = DoctorAvailability(
+          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+          day_of_week=4,  # por defecto para el domingo
+          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+      )
 
 
      # Crear una instancia de DoctorAvailability para cada día de la semana
