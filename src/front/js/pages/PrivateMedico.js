@@ -49,7 +49,11 @@ export const PrivateMedico = () => {
         }
     }, []); // Ejecutar solo una vez al cargar el componente
 
-    console.log(store.currentMedico);
+    // console.log(store.currentMedico);
+
+    useEffect(()=>{
+        console.log("Estoy pendiente")
+    }, [store.currentMedico])
 
     return (
         <div className="container">

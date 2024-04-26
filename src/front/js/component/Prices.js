@@ -34,7 +34,7 @@ const Prices = () => {
                             <h4>Acceso a cualquier especialidad</h4>
                             <h4>Atención total las 24 horas</h4>
                             <h4>1 consulta al mes</h4>
-                            <h4>Incluye videollamada o consulta por mensaje</h4>
+                            <h4>Incluye videollamada o consulta</h4>
                         </div>
                         <a href='#'>Seleccionar</a>
                     </div>
@@ -47,8 +47,7 @@ const Prices = () => {
                             <h4>Acceso a cualquier especialidad</h4>
                             <h4>Atención total las 24 horas</h4>
                             <h4>2 consultas al mes</h4>
-                            <h4>Incluye videollamada o consulta por mensaje</h4>
-                            <h4>Posibilidad de....?</h4>
+                            <h4>Incluye videollamada o consulta</h4>
                         </div>
                         <a href='#'>Seleccionar</a>
                     </div>
@@ -61,8 +60,7 @@ const Prices = () => {
                             <h4>Acceso a cualquier especialidad</h4>
                             <h4>Atención total las 24 horas</h4>
                             <h4>Consultas ilimitadas</h4>
-                            <h4>Incluye videollamada o consulta por mensaje</h4>
-                            <h4>......</h4>
+                            <h4>Incluye videollamada o consulta</h4>
                         </div>
                         <a href='#'>Seleccionar</a>
                     </div>

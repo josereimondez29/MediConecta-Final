@@ -21,6 +21,9 @@ import { IsLogin } from "./component/IsLogin";
 import { PrivatePatient } from "./pages/PrivatePatient";
 import Prices from "./component/Prices";
 import MedicinaGeneral from "./component/MedicinaGeneral";
+import Dermatologia from "./component/Dermatologia";
+import Pediatria from "./component/Pediatria";
+
 
 
 
@@ -54,6 +57,8 @@ const Layout = () => {
             <Route element={<IsLogin />} path="/log" />
             <Route element={<EditDoctor />} path="/editDoctor" />
             <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
+            <Route element={<Dermatologia />} path="/Dermatologia" />
+            <Route element={<Pediatria />} path="/Pediatria" />
             <Route element={<h1>Not found</h1>} />
           </Routes>
           <Footer />

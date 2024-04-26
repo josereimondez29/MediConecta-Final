@@ -51,8 +51,8 @@ export const Navbar = () => {
                                   Especialidades
                               </a>
                               <ul className="dropdown-menu">
-                                  <li><a className="dropdown-item" href="#">Medicina General</a></li>
-                                  <li><a className="dropdown-item" href="#">Dermatología</a></li>
+                                  <li><a className="dropdown-item" href="/MedicinaGeneral">Medicina General</a></li>
+                                  <li><a className="dropdown-item" href="/Dermatologia">Dermatología</a></li>
                                   <li><a className="dropdown-item" href="#">Pediatría</a></li>
                                   <li><a className="dropdown-item" href="#">Psicología</a></li>
                                   <li><a className="dropdown-item" href="#">Nutrición</a></li>
@@ -61,7 +61,7 @@ export const Navbar = () => {
                           </li>
                       </ul>
                   </div>
-                  {store.authentication ? (
+                  {localStorage.getItem("token") ? (
                       <div className="d-flex ms-auto">
                           <form className="d-flex p-2" role="log out">
                               <button onClick={submitLogout} className="btn btn-outline-danger" type="button">Logout</button>
