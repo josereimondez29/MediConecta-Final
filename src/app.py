@@ -371,22 +371,55 @@ def register_doctor():
     db.session.add(new_doctor)
     db.session.commit()
 
-    # Crear una instancia de DoctorAvailability usando el id del nuevo doctor
+    # Crear una instancia de DoctorAvailability usando el id del nuevo doctor por dia
     default_availability = DoctorAvailability(
-        doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-        day_of_week=0,  # por defecto para el domingo
-        start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-        end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-    )
+         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+         day_of_week=0,  # por defecto para el domingo
+         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+     )
 
-    # Iterar sobre los días de la semana
-    # for day in range(5):  # 0 es el lunes, 1 es el martes, ..., 4 es el viernes
-    #     default_availability = DoctorAvailability(
-    #         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-    #         day_of_week=day,  # El día de la semana actual en la iteración
-    #         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-    #         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-    # )
+    # default_availability = DoctorAvailability(
+    #      doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #      day_of_week=1,  # por defecto para el domingo
+    #      start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #      end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #  )
+
+    # default_availability = DoctorAvailability(
+    #      doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #      day_of_week=2,  # por defecto para el domingo
+    #      start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #      end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #  )
+
+    # default_availability = DoctorAvailability(
+    #      doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #      day_of_week=3,  # por defecto para el domingo
+    #      start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #      end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #  )
+
+    # default_availability = DoctorAvailability(
+    #      doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #      day_of_week=4,  # por defecto para el domingo
+    #      start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #      end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #  )
+
+
+     # Crear una instancia de DoctorAvailability para cada día de la semana
+    #  for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
+    #      # Crear una instancia de DoctorAvailability para el día actual
+    #      default_availability = DoctorAvailability(
+    #          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #          day_of_week=day_of_week,  # Día de la semana actual en la iteración
+    #          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #      )
+
+    
+    
 
     # Verificar si el horario de disponibilidad ya está ocupado
     existing_availability = DoctorAvailability.query.filter_by(
