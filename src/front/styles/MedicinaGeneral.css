@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 1500px; /* Aumentamos la anchura máxima del contenedor principal */
+  max-width: 1500px;
   margin: 0 auto;
   padding: 40px;
   background-color: #fff;
@@ -33,20 +33,12 @@
   margin-bottom: 20px;
 }
 
-.description {
-  color: #555;
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 20px;
+.text {
+  font-family: Arial, sans-serif; /* Cambia Arial por la fuente que desees */
+  font-size: 18px; /* Tamaño de fuente común */
+  color: #555; /* Color de texto común */
+  line-height: 1.6; /* Altura de línea común */
 }
-
-.services {
-  color: #333;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
 .service-list {
   color: #555;
   font-size: 18px;
@@ -55,12 +47,9 @@
 }
 
 .service-list li {
-  list-style: none;
+  position: relative;
   margin-bottom: 10px;
+  padding-left: 30px; /* Espacio para el ícono */
+  line-height: 1.6; /* Altura de línea */
 }
 
-.call-to-action {
-  color: #333;
-  font-size: 20px;
-  line-height: 1.6;
-}
