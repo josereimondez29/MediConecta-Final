@@ -10,7 +10,7 @@ export const IsLogin = () => {
         const idFromStorage = localStorage.getItem("id");
         console.log("ID recuperado de localStorage:", idFromStorage);
         setId(idFromStorage);
-    }, []);
+    }, [id]);
 
     return (
         <>
@@ -19,7 +19,7 @@ export const IsLogin = () => {
                 <p>Para la correcta funcionalidad de la web, debes tener completo la información del perfil</p>
                 
                 <div className="container-fluid d-flex justify-content-between">
-                    <Link to="/private">
+                    <Link to={`/doctor/${id}`}>
                         <button className="btn btn-info">Ir a zona privada</button>
                     </Link>
                     {/* Utilizamos el valor actualizado de id */}

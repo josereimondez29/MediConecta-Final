@@ -79,6 +79,17 @@ export const SingleDoctor = (props) =>{
                                         </div>
 
                                     </div>
+                                    <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
+                                        <Link to={"/"}>
+                                            <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Volver a Home</button>
+                                        </Link> 
+                                        <Link to={"/"}>
+                                            <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Pedir cita</button>
+                                        </Link>
+                                        <Link to={"/"}>
+                                            <button className="btn btn-primary" style={{  marginBottom:"10px"}}>Añador a favorito</button>
+                                        </Link>
+                                </div>
                                 </div>
                             </div>
                         </div>

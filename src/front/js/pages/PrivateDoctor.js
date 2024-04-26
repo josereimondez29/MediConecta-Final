@@ -9,14 +9,21 @@ const PrivateDoctor = (props) => {
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
-    
+
+    useEffect(() => {
+        actions.loadDoctors()
+	    actions.loadSpecialities()
+    }, []);
+
+
     useEffect(() => {
         if (id && store.doctors && store.doctors.length > 0) {
-            const selectedDoctor = store.doctors.find(doctor => doctor.id === parseInt(id));
+            const selectedDoctor = store.doctors.find(doctor => doctor.id.toString() === id);
             if (selectedDoctor) {
                 setDoctor(selectedDoctor);
                 setLoading(false);
-                
+    
+                // Buscar la especialidad correspondiente al médico
                 const foundSpeciality = store.specialities.find(speciality => speciality.id === selectedDoctor.speciality_id);
                 setSpeciality(foundSpeciality);
             } else {
@@ -25,7 +32,6 @@ const PrivateDoctor = (props) => {
         }
     }, [id, store.doctors, store.specialities]);
 
-  
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -35,8 +41,16 @@ const PrivateDoctor = (props) => {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
 
+
+     
+    console.log("DOCTORDATA PRIVATE DOCTOR-->", doctor)
+    console.log("STORE PRIVATE DOCTOR-->", store.doctors)
+    console.log("STORE.ESPECIALITY PRIVATE DOCTOR-->", store.specialities)
+
+
     return (
         <>
+            
             <div className="container-fluid">
                 <ul className="list-group">
                     <li key={id} className="list-group-item d-flex justify-content-between">
@@ -60,6 +74,7 @@ const PrivateDoctor = (props) => {
                                                 <button className="btn btn-info">Modificar perfil</button>
                                             </Link>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -70,5 +85,9 @@ const PrivateDoctor = (props) => {
         </>
     );
 }
+
+PrivateDoctor.propTypes = {
+    match: PropTypes.object
+};
 
 export default PrivateDoctor

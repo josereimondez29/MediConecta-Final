@@ -78,7 +78,12 @@ export const EditDoctor = () => {
                 await actions.updateDoctor(editDoctor, id);
                 
                 // Después de la actualización exitosa, navegar a la página del doctor
-                navigate("/doctor/" + id);
+                
+                navigate("/changelog/");
+                // setTimeout(() => {
+                //     navigate(`/doctor/${id}`);
+                //   }, 3000);
+
             } catch (error) {
                 // Manejar cualquier error que pueda ocurrir durante la actualización
                 console.error("Error updating doctor:", error);

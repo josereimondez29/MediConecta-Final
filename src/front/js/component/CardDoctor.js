@@ -35,21 +35,21 @@ const CardDoctor = (props) => {
     }
 
 
-    console.log("DOCTORDATA CARD DOCTOR-->", doctorData)
-    console.log("SPECIALITYRDATA CARD DOCTOR-->", setSpeciality)
-    console.log("STORE CARD DOCTOR-->", store.doctors)
-    console.log("STORE.ESPECIALITY CARD DOCTOR-->", store.specialities)
+    // console.log("DOCTORDATA CARD DOCTOR-->", doctorData)
+    // console.log("SPECIALITYRDATA CARD DOCTOR-->", setSpeciality)
+    // console.log("STORE CARD DOCTOR-->", store.doctors)
+    // console.log("STORE.ESPECIALITY CARD DOCTOR-->", store.specialities)
 
     return (
         <>  
         <div className="col-md-4 mb-3" > 
             <div className="card text-center" >
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw_qLv_ueyszEkB_U0nWQxsPujgcsZe89czAjeWa5S7Q&s"
-                     className="card-img-top mx-auto object-fit-sm-contain" alt="img_doc" style={{width:"18rem", objectFit:"contain"}}/>
+                     className="card-img-top mx-auto object-fit-sm-contain" alt="img_doc" style={{width:"18rem", objectFit:"fill"}}/>
                 <div className="card-body justify-content-center ">
                     <h5 className="card-title aling-text-center">{doctorData.name}&nbsp;{doctorData.surname}</h5>
                     <h6>{speciality ? speciality.name : "Sin especialidad"}</h6>
-                    <p>{doctorData.bio}</p>
+                    {/* <p>{doctorData.bio}</p> */}
                 </div>
                 <hr/>
                 <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>

@@ -518,6 +518,7 @@ def get_speciality(speciality_id):
 
 #PUT Speciality by id
 @app.route('/speciality/<int:speciality_id>', methods=['PUT'])
+@jwt_required()
 def update_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:
@@ -530,6 +531,7 @@ def update_speciality(speciality_id):
 
 #DELETE Speciality by id
 @app.route('/speciality/<int:speciality_id>', methods=['DELETE'])
+@jwt_required()
 def delete_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:

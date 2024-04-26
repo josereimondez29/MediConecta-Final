@@ -1,20 +1,23 @@
-import React from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 
 export const ChangeLog = () => {
-    const navigate = useNavigate();
-    const id = localStorage.getItem("id");
+   
+    const [id, setId] = useState(() => localStorage.getItem("id"));
 
-    const handleNavigate = () => {
-        navigate("/doctor/" + id);
-    };
+
+    useEffect(() => {
+        const idFromStorage = localStorage.getItem("id");
+        console.log("ID recuperado de localStorage:", idFromStorage);
+        setId(idFromStorage);
+    }, []);
 
     return (
         <div className="container">
             <p>Cambios actualizados con éxito</p>
-            <button className="btn btn-success" onClick={handleNavigate}>
-                Ir a página de doctor
-            </button>
+            <Link to={`/doctor/${id}`}>
+                <button className="btn btn-info">Ir a zona privada</button>
+            </Link>
         </div>
     );
 };
