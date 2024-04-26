@@ -408,15 +408,24 @@ def register_doctor():
       )
 
 
-     # Crear una instancia de DoctorAvailability para cada día de la semana
-    #  for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
-    #      # Crear una instancia de DoctorAvailability para el día actual
-    #      default_availability = DoctorAvailability(
-    #          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-    #          day_of_week=day_of_week,  # Día de la semana actual en la iteración
-    #          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-    #          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-    #      )
+    # Crear una lista para almacenar las instancias de DoctorAvailability
+    # availabilities = []
+
+    # Crear una instancia de DoctorAvailability para cada día de la semana
+    # for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
+    #     # Crear una instancia de DoctorAvailability para el día actual
+    #     default_availability = DoctorAvailability(
+    #         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #         day_of_week=day_of_week,  # Día de la semana actual en la iteración
+    #         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #     )
+        
+    #     # Agregar la instancia a la lista
+    #     availabilities.append(default_availability)
+
+    # Agregar todas las instancias de DoctorAvailability a la sesión de la base de datos
+    # db.session.add_all(availabilities)
 
     
     
