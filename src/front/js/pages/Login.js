@@ -3,7 +3,10 @@ import { Link, Navigate } from "react-router-dom";
 import "../../styles/login.css";
 import { Context } from "../store/appContext";
 
+
+
 export const Login = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('patient');

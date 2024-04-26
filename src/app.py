@@ -5,6 +5,7 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+import requests
 from api.utils import APIException, generate_sitemap
 from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
 from api.admin import setup_admin
@@ -15,6 +16,13 @@ from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS, cross_origin
+from flask_mail import Mail, Message
+from datetime import datetime, time, timedelta
+from api.models import DoctorAvailability
+import uuid
+
+
+
 
 
 # from models import Person
@@ -23,6 +31,20 @@ ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
+
+
+app.config.update(dict(
+    DEBUG=False,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME="mediconecta1@gmail.com",
+    MAIL_PASSWORD= os.getenv("MAIL_PASSWORD")
+))
+
+mail= Mail(app)
+
 CORS(app)
 app.url_map.strict_slashes = False
 
@@ -215,7 +237,7 @@ def register_patient():
 
     db.session.add(new_patient)
     db.session.commit()
-    return jsonify({"message": "User registered successfully"}), 201
+    return jsonify({"message": "Patient registered successfully"}), 201
 
 # Login Patient
 @app.route("/api/login/patient", methods=["POST"])
@@ -351,9 +373,8 @@ def delete_patient(patient_id):
 
 #Register doctors    
 @app.route("/api/register/doctor", methods=["POST"])
-
 def register_doctor():
-    body = request.get_json (silent = True)
+    body = request.get_json(silent=True)
     
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
@@ -365,18 +386,97 @@ def register_doctor():
     new_doctor = Doctor()
     new_doctor.name = body['name']
     new_doctor.surname = body['surname']
-    # new_doctor.age = body['age']
-    # new_doctor.identification = body['identification']
-    # new_doctor.medical_license = body['medical_license']
     new_doctor.email = body['email']
     pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
     new_doctor.password = pw_hash
-    # new_doctor.speciality = body['speciality']
     new_doctor.is_active = True
+
+    # Verificar si el email ya está registrado
+    existing_doctor = Doctor.query.filter_by(email=new_doctor.email).first()
+    if existing_doctor:
+        return jsonify({'msg': "El email ya está registrado"}), 400
+
+    # Guardar el nuevo doctor en la base de datos
     db.session.add(new_doctor)
     db.session.commit()
 
+    # Crear una instancia de DoctorAvailability usando el id del nuevo doctor por dia
+    default_availability = DoctorAvailability(
+         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+         day_of_week=0,  # por defecto para el domingo
+         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+     )
+
+    default_availability = DoctorAvailability(
+          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+          day_of_week=1,  # por defecto para el domingo
+          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+      )
+
+    default_availability = DoctorAvailability(
+          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+          day_of_week=2,  # por defecto para el domingo
+          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+      )
+
+    default_availability = DoctorAvailability(
+          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+          day_of_week=3,  # por defecto para el domingo
+          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+      )
+
+    default_availability = DoctorAvailability(
+          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+          day_of_week=4,  # por defecto para el domingo
+          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+      )
+
+
+    # Crear una lista para almacenar las instancias de DoctorAvailability
+    # availabilities = []
+
+    # Crear una instancia de DoctorAvailability para cada día de la semana
+    # for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
+    #     # Crear una instancia de DoctorAvailability para el día actual
+    #     default_availability = DoctorAvailability(
+    #         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+    #         day_of_week=day_of_week,  # Día de la semana actual en la iteración
+    #         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+    #         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+    #     )
+        
+    #     # Agregar la instancia a la lista
+    #     availabilities.append(default_availability)
+
+    # Agregar todas las instancias de DoctorAvailability a la sesión de la base de datos
+    # db.session.add_all(availabilities)
+
+    
+    
+
+    # Verificar si el horario de disponibilidad ya está ocupado
+    existing_availability = DoctorAvailability.query.filter_by(
+        doctor_id=new_doctor.id,
+        day_of_week=default_availability.day_of_week,
+        start_time=default_availability.start_time,
+        end_time=default_availability.end_time
+    ).first()
+
+    if existing_availability:
+        return jsonify({'msg': "El horario de disponibilidad ya está ocupado"}), 400
+
+    # Guardar la disponibilidad del doctor en la base de datos
+    db.session.add(default_availability)
+    db.session.commit()
+
     return jsonify({"message": "Doctor registered successfully"}), 201
+
+
 
 # Login Doctors
 @app.route("/api/login/doctor", methods=["POST"])
@@ -498,15 +598,27 @@ def delete_doctor(doctor_id):
         return jsonify({"message": "Doctor deleted"}), 200
     return jsonify({"message": "Doctor not found"}), 404
 
+#Doctor Availability
+@app.route("/api/doctor_availability/<int:doctor_id>", methods=["GET"])
+def get_doctor_availability(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'error': "El doctor especificado no existe", 'doctor_id': doctor_id}), 404
+
+    availability = [availability.serialize() for availability in doctor.availabilities]
+    return jsonify({'availability': availability}), 200
+
+
+
+
+
 #Register Speciality    
 @app.route("/api/register/speciality", methods=["POST"])
-
 def register_speciality():
-    body = request.get_json (silent = True)
+    body = request.get_json(silent=True)
     
-    if body is None:
-        return jsonify({'msg': "Debes enviar info al body"}), 400
-    
+    if body is None or 'name' not in body:
+        return jsonify({'msg': "Debes enviar el nombre de la especialidad en el cuerpo de la solicitud"}), 400
     
     new_speciality = Speciality()
     new_speciality.name = body['name']
@@ -514,7 +626,7 @@ def register_speciality():
     db.session.add(new_speciality)
     db.session.commit()
 
-    return jsonify({"message": "Speciality registered successfully"}), 201
+    return jsonify({"message": "Speciality registered successfully", "speciality": new_speciality.serialize()}), 201
 
 #GET Speciality
 @app.route('/specialities', methods=['GET'])
@@ -568,23 +680,147 @@ def delete_speciality(speciality_id):
         return jsonify({"message": "Speciality deleted"}), 200
     return jsonify({"message": "Speciality not found"}), 404
 
-#Register Medical Appoinment    
-@app.route("/api/register/medical_appoinment", methods=["POST"])
 
-def register_medical_appoinment():
-    body = request.get_json (silent = True)
+# @app.route("/meetings", methods=["POST"])
+def create_meeting():
+    # Get the current date
+    current_date = datetime.now()
+    isoformat = current_date + timedelta(weeks=2)
+    data = {
+        "isLocked": False,
+        "roomNamePrefix": "",
+        "roomNamePattern": "uuid",
+        "roomMode": "normal",
+        "endDate": isoformat.isoformat(),
+        "fields": [
+            "hostRoomUrl"
+        ]
+    }
+
+    # Llama a la API de Whereby para crear una reunión
+    api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmFwcGVhci5pbiIsImF1ZCI6Imh0dHBzOi8vYXBpLmFwcGVhci5pbi92MSIsImV4cCI6OTAwNzE5OTI1NDc0MDk5MSwiaWF0IjoxNzEzNDU3NDAyLCJvcmdhbml6YXRpb25JZCI6MjI1NTEzLCJqdGkiOiI2NGUwNjlkNi1mYjBhLTRhYjMtYjkyOC1mYjFhY2NiOTM5OGYifQ.T5y4YmndKiciCuKqDsTZtyPCH1hqpDB4WsHbF--zNK8"
+    headers = {
+        "Authorization": f"Bearer {api_token}",
+        "Content-Type": "application/json"
+    }
+    create_meeting_url = "https://api.whereby.dev/v1/meetings"
+    
+    response = requests.post(create_meeting_url, json=data, headers=headers)
+
+    # if response.status_code != 201:
+    #     return jsonify({"error": "Error al crear la reunión"}), response.status_code
+    # print(response)
+
+    # Obtiene la respuesta de la API de Whereby
+    room_data = response.json()
+    # print("despues de aqui room_data")
+    # print(room_data)
+    # Actualiza la respuesta con el enlace correcto
+    # meeting = {
+    #     "meetingId": room_data["meetingId"],
+    #     "endDate": room_data["endDate"],
+    #     "roomUrl": room_data["roomUrl"],
+    #     "startDate": room_data["startDate"],
+    #     "roomName": room_data["roomName"],
+    #     "hostRoomUrl": f"{room_data['roomUrl']}/host",
+    #     "viewerRoomUrl": f"{room_data['roomUrl']}/viewer"
+    # }
+    # # meetings.append(meeting)
+    # print(meeting)
+    return (room_data)
+
+
+
+#Register Medical Appoinment    
+
+@app.route("/api/register/medical_appointment", methods=["POST"])
+@jwt_required()
+def register_medical_appointment():
+    body = request.get_json(silent=True)
     
     if body is None:
         return jsonify({'msg': "Debes enviar info al body"}), 400
     
+    patient = get_jwt_identity()
+    patient_info = Patient.query.filter_by(email=patient).first()
+
+    if 'doctor_id' not in body or 'appointment_time' not in body or 'speciality' not in body:  
+        return jsonify({'msg': "Los campos doctor_id, appointment_time y speciality son obligatorios"}), 400
+
+    doctor_id = body.get('doctor_id')
+    appointment_time_str = body.get('appointment_time')
+
+    try:
+        appointment_time = datetime.fromisoformat(appointment_time_str)
+    except ValueError:
+        return jsonify({'msg': "Formato de fecha y hora incorrecto"}), 400
+
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'msg': "El doctor especificado no existe"}), 404
+
+    if not doctor.is_available(appointment_time):
+        return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
+
+    existing_appointment = Medical_Appointment.query.filter_by(
+        doctor_id=doctor_id,
+        appointment_date=appointment_time
+    ).first()
+
+    if existing_appointment:
+        return jsonify({'msg': "La cita ya está reservada"}), 400
+
+    new_medical_appointment = Medical_Appointment(
+        speciality_id=body['speciality'],
+        patient_id=patient_info.id,
+        doctor_id=doctor_id,
+        appointment_date=appointment_time,
+        
+        is_active=True
+    )
     
-    new_medical_appoinment = Medical_Appointment()
-    new_medical_appoinment.id = body['id']
-    new_medical_appoinment.is_active = True
-    db.session.add(new_medical_appoinment)
+    db.session.add(new_medical_appointment)
     db.session.commit()
 
-    return jsonify({"message": "Medical Appoinment registered successfully"}), 201
+    # Genera los enlaces de videoconferencia para la cita médica
+    meeting_room_data = create_meeting()
+    meeting_data = {
+        "endDate": appointment_time.isoformat(),
+        "roomNamePrefix": meeting_room_data['roomUrl'],
+        "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
+        "meetingId": meeting_room_data['meetingId']
+    }
+    meeting_links = create_meeting_links(meeting_data)
+    
+    print(meeting_room_data) 
+    
+    # Envía correos electrónicos al paciente y al doctor
+    send_emails(patient_info.email, patient_info.id, doctor.email, appointment_time, meeting_links)
+
+    return jsonify({"message": "La cita médica se registró correctamente"}), 201
+
+def create_meeting_links(data):
+    # Simulación de la generación de enlaces de videoconferencia
+    room_url = f"{data['roomNamePrefix']}"
+    host_room_url = f"{data['HostroomNamePrefix']}"
+    return room_url, host_room_url
+
+def send_emails(patient_email, patient_id, doctor_email, appointment_time, meeting_links):
+    room_url, host_room_url = meeting_links
+    
+    # Construye el mensaje de correo electrónico con los detalles de la cita y los enlaces de videoconferencia
+    msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
+    msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
+    mail.send(msg_patient)
+    
+    msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
+    msg_doctor.html = f"<h1>Detalles de la cita médica con paciente {patient_id}:</h1><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
+    mail.send(msg_doctor)
+
+
+
+
+
 
 #GET medical_appoinments
 @app.route('/medical_appoinments', methods=['GET'])
@@ -776,6 +1012,98 @@ def delete_medicated(medicated_id):
         db.session.commit()
         return jsonify({"message": "Alergic deleted"}), 200
     return jsonify({"message": "Alergic not found"}), 404
+
+#SEND EMAIL
+# @app.route('/send_mail', methods=['GET'])
+# def send_mail():
+#     msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
+#                   recipients=['mediconecta1@gmail.com'])
+#     msg.html = "<h1> Hola desde el correo</h1>"
+#     mail.send(msg)
+#     return jsonify ({"msg": "Mail enviado!!!"})
+
+
+
+@app.route('/send_mail', methods=['POST'])
+def send_mail():
+    data = request.json
+    
+    if data is None:
+        return jsonify({"msg": "Debes enviar la información del correo electrónico en el cuerpo de la solicitud"}), 400
+
+    patient_email = data.get('patient_email')
+    doctor_email = data.get('doctor_email')
+    appointment_time = data.get('appointment_time')
+
+    if not all([patient_email, doctor_email, appointment_time]):
+        return jsonify({"msg": "Falta información requerida para enviar el correo electrónico"}), 400
+
+    msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
+    msg_patient.html = f"<h1>Detalles de tu cita médica</h1><p>Fecha y hora: {appointment_time}</p>"
+    mail.send(msg_patient)
+    
+    msg_doctor = Message(subject="Detalles de la cita médica de un paciente", sender='mediconecta1@gmail.com', recipients=[doctor_email])
+    msg_doctor.html = f"<h1>Detalles de la cita médica de un paciente</h1><p>Fecha y hora: {appointment_time}</p>"
+    mail.send(msg_doctor)
+
+    return jsonify({"msg": "Correos electrónicos enviados correctamente"}), 200
+
+
+
+# Meetings
+
+
+
+
+
+@app.route("/meetings", methods=["GET"])
+def get_meetings():
+    return jsonify(meetings)
+
+@app.route("/meetings/<meetingId>", methods=["GET"])
+def get_meeting(meetingId):
+    for meeting in meetings:
+        if meeting["meetingId"] == meetingId:
+            return jsonify(meeting)
+    return jsonify({"message": "Meeting not found"}), 404
+
+@app.route("/meetings/<meetingId>", methods=["DELETE"])
+def delete_meeting(meetingId):
+    global meetings
+    meetings = [meeting for meeting in meetings if meeting["meetingId"] != meetingId]
+    return jsonify({"message": "Meeting deleted successfully"})
+
+# Summaries
+summaries = []
+
+@app.route("/summaries", methods=["GET"])
+def get_summaries():
+    return jsonify(summaries)
+
+@app.route("/summaries", methods=["POST"])
+def create_summary():
+    data = request.json
+    summary = {
+        "summaryId": str(len(summaries) + 1),
+        "transcriptionId": data["transcriptionId"],
+        "summary": f"This is a summary for transcription {data['transcriptionId']}",
+        "template": data["template"]
+    }
+    summaries.append(summary)
+    return jsonify(summary)
+
+@app.route("/summaries/<summaryId>", methods=["GET"])
+def get_summary(summaryId):
+    for summary in summaries:
+        if summary["summaryId"] == summaryId:
+            return jsonify(summary)
+    return jsonify({"message": "Summary not found"}), 404
+
+@app.route("/summaries/<summaryId>", methods=["DELETE"])
+def delete_summary(summaryId):
+    global summaries
+    summaries = [summary for summary in summaries if summary["summaryId"] != summaryId]
+    return jsonify({"message": "Summary deleted successfully"})
 
 # Favorite Routes
 

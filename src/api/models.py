@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime
+from sqlalchemy.orm import relationship
+#from your_database_module import db  # Importa tu objeto de base de datos, como db
 
 
 db = SQLAlchemy()
@@ -59,6 +62,7 @@ class Patient(db.Model):
             "alergic": self.alergic,
             "medicated": self.medicated
         }
+
 
 
 class Alergic(db.Model):
@@ -120,22 +124,19 @@ class Doctor(db.Model):
     surname = db.Column(db.String(120), nullable=False)
     age = db.Column(db.Integer, nullable=True)
     bio = db.Column(db.String(500), unique=True, nullable=True)
-    # review = ???
     identification = db.Column(db.Integer)
     medical_license = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
-    speciality_id = db.Column(db.ForeignKey("speciality.id"), nullable=True)
-    speciality_id_relationship = db.relationship(Speciality)
-    
+    speciality_id = db.Column(db.Integer, db.ForeignKey("speciality.id"), nullable=True)
+    speciality_relationship = db.relationship('Speciality')
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-
-
-    #REVISAR SI LA LLAVE DE SPECIALIDAD Y DOCTOR 
+    #availabilities = db.Column(db.Integer, db.ForeignKey("doctoravailability.id"), nullable=True)
+    availabilities = db.relationship('DoctorAvailability')
 
     def __repr__(self):
         return f"ID{self.id}: {self.name} {self.surname}"
-    
+
     def serialize(self):
         return {
             "id": self.id,
@@ -147,6 +148,46 @@ class Doctor(db.Model):
             "identification": self.identification,
             "is_active": self.is_active,
             "bio": self.bio
+        }
+
+    def is_available(self, appointment_time):
+        print("Verificando disponibilidad del doctor...")
+        print("Doctor ID:", self.id)
+        print("Fecha y hora de la cita:", appointment_time)
+
+        appointment_day_of_week = appointment_time.weekday()
+        appointment_time_of_day = appointment_time.time()
+        print("dia de la cita", appointment_day_of_week)
+        print("hora de la cita", appointment_time_of_day)
+        for availability in self.availabilities:
+            print("Disponibilidad:", availability)
+            if availability.day_of_week == appointment_day_of_week and \
+                availability.start_time <= appointment_time_of_day <= availability.end_time:
+                print("El doctor está disponible en la fecha y hora especificadas.")
+                return True
+        
+        print("El doctor NO está disponible en la fecha y hora especificadas.")
+        return False
+
+class DoctorAvailability(db.Model):
+    __tablename__ = 'doctor_availability'
+    id = db.Column(db.Integer, primary_key=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
+    doctor_id_relationship = db.relationship('Doctor')
+    day_of_week = db.Column(db.Integer, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+
+    def __repr__(self):
+        return f"Doctor Availability ID: {self.id}, Doctor ID: {self.doctor_id}, Day of Week: {self.day_of_week}, Start Time: {self.start_time}, End Time: {self.end_time}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "doctor_id": self.doctor_id,
+            "day_of_week": self.day_of_week,
+            "start_time": self.start_time.strftime('%H:%M'),
+            "end_time": self.end_time.strftime('%H:%M')
         }
 
     
@@ -172,12 +213,12 @@ class Medical_Appointment(db.Model):
     __tablename__ = 'medical_appointment'
     id = db.Column(db.Integer, primary_key=True)
     speciality_id = db.Column(db.Integer, db.ForeignKey('speciality.id'))
-    speciality_relationship = db.relationship(Speciality) 
+    speciality_relationship = db.relationship('Speciality')  
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.id'))
-    patient_relationship = db.relationship(Patient) 
+    patient_relationship = db.relationship('Patient')  
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
-    doctor_id_relationship = db.relationship(Doctor) 
-    appointment_date = db.Column((db.DateTime), nullable=False)
+    doctor_id_relationship = db.relationship('Doctor')  
+    appointment_date = db.Column(db.DateTime, nullable=False)  
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
 
     def __repr__(self):
@@ -192,7 +233,6 @@ class Medical_Appointment(db.Model):
             "speciality": self.speciality_id,
             "is_active": self.is_active
         }
-
 """class FavoriteSpeciality(db.Model):
     __tablename__ = 'favorite_speciality'
     id = db.Column(db.Integer, primary_key=True)

@@ -1,7 +1,5 @@
-
+import { useNavigate, Link } from "react-router-dom";
 import React, { useContext, useEffect }  from "react";
-import { useNavigate } from "react-router-dom";
-// import './../../styles/navbar.css';
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
@@ -17,11 +15,13 @@ export const Navbar = () => {
     navigate('/login');
   };
 
+
   function submitLogout() {
     actions.logout();
     localStorage.removeItem("authentication"); // Elimina la autenticación del localStorage al cerrar sesión
     navigate("/"); // Cambia "/login" por la ruta correcta si es diferente
 }
+
 
   useEffect (()=>{
     console.log("cambió el token")
@@ -74,6 +74,11 @@ export const Navbar = () => {
                           </form>
                           <form className="d-flex p-2" role="log in">
                               <button className="btn btn-outline-secondary" onClick={handleLoginButtonClickPacientes} type="button">Login</button>
+                          </form>
+                          <form className="d-flex p-2" role="log in">
+                            <Link to = {"/register/medical_appointment"}>
+                              <button className="btn btn-success" >Registrar cita</button>
+                            </Link>
                           </form>
                       </div>
                   )}
