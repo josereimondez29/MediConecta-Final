@@ -2,25 +2,25 @@ import React, {useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link, useParams  } from "react-router-dom";
 
-const CardDoctor = (props) => {
+const CardPatient = (props) => {
     const { store, actions } = useContext(Context);
-    const [doctorData, setDoctorData] = useState(null);
-    const { id } = useParams(); // Obtener los parámetros de la URL correctamente
+    const [patientData, setPatientData] = useState(null);
+   const { id } = useParams(); // Obtener los parámetros de la URL correctamente
 
     useEffect(() => {
-        // Obtener la información del doctor solo si aún no se ha cargado
-        if (!doctorData) {
-            actions.getinfoDoctor(id);
+        // Obtener la información del patient solo si aún no se ha cargado
+        if (!patientData) {
+            actions.getinfoPatient(id);
         }
-    }, [doctorData]);
+    }, [patientData]);
 
     useEffect(() => {
-        // Cuando se actualice el contexto con la información del médico, actualizar el estado local
-        setDoctorData(store.doctors.find(doctor => doctor.id === props.id));
-    }, [store.doctors]);
+        // Cuando se actualice el contexto con la información del paciente, actualizar el estado local
+        setPatientData(store.patients.find(patient => patient.id === props.id));
+    }, [store.patients]);
 
-    // Esperar hasta que doctorData tenga valor antes de renderizar el componente
-    if (!doctorData) {
+    // Esperar hasta que patientData tenga valor antes de renderizar el componente
+    if (!patientData) {
         return <div>Cargando...</div>;
     }
 
@@ -31,13 +31,13 @@ const CardDoctor = (props) => {
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw_qLv_ueyszEkB_U0nWQxsPujgcsZe89czAjeWa5S7Q&s"
                      className="card-img-top mx-auto object-fit-sm-contain" alt="img_doc" style={{width:"18rem", objectFit:"contain"}}/>
                 <div className="card-body justify-content-center ">
-                    <h5 className="card-title aling-text-center">{doctorData.name}&nbsp;{doctorData.surname}</h5>
-                    <h6>{doctorData.speciality}</h6>
-                    <p>{doctorData.bio}</p>
+                    <h5 className="card-title aling-text-center">{patientData.name}&nbsp;{patientData.surname}</h5>
+                    <h6>{patientData.speciality}</h6>
+                    <p>{patientData.bio}</p>
                 </div>
                 <hr/>
                 <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
-                    <Link to={"/doctor/" + props.id + "/details"}>
+                    <Link to={"/patient/" + props.id + "/details"}>
                         <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Leer más</button>
                     </Link> 
                     <Link to={"/"}>
@@ -56,4 +56,4 @@ const CardDoctor = (props) => {
 };
 
 
-export default CardDoctor;
+export default CardPatient;

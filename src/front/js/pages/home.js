@@ -7,7 +7,8 @@ import bg_3 from "../../img/bg_3.jpg";
 import dept1 from "../../img/dept-1.jpg"
 import Especialidades from "../component/Especialidades";
 import ListDoctors from "../component/ListDoctors";
-
+import "./../../styles/listDoctor.css"
+import Prices from "../component/Prices";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -47,7 +48,7 @@ export const Home = () => {
       </section>
       {/*segundo*/}
       <section className="section" id="about-section">
-        {/* <div className="container">
+        {/* <div className="container"> 
           <div className="row d-flex">
             <div className="col-md-6 col-lg-5 d-flex">
               <div
@@ -135,7 +136,7 @@ export const Home = () => {
       </section>
 
       {/* Cuarto */}
-      <section className="img" style={{ backgroundImage: "url('img/bg_2.jpg')" }}>
+      {/* <section className="img" style={{ backgroundImage: "url('img/bg_2.jpg')" }}>
         <div className="overlay"></div>
         <div className="container">
           <div className="row justify-content-center">
@@ -153,7 +154,7 @@ export const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Quinto */}
       {/* <section className="section" id="department-section">
@@ -196,16 +197,13 @@ export const Home = () => {
 
       {/* Sexto */}
       <section className="section" id="doctor-section">
-        <div className="container-fluid px-5">
-          <div className="row justify-content-center mb-5 pb-2">
-            <div className="col-md-8 text-center heading-section">
-              <h2 className="mb-4">Nuestros doctores calificados</h2>
-              <p>
-                Viven separados. Un pequeño río llamado Duden fluye por su lugar
-                y le suministra la regelialia necesaria. Es un país paradisiaco.
-              </p>
-            </div>
-          </div>
+        <div className="container-fluid" >
+          <div className="row justify-content-center mb-5 pb-2" >
+            <div className="col-md-8 text-center heading-section" >
+              <h2 className="mb-4 text-center">Nuestros doctores cualificados</h2>
+              <p>Conoce a nuestro equipo</p>
+             </div>
+         {/* </div>
           <div className="row">
             <div className="col-md-6 col-lg-3">
               <div className="staff">
@@ -229,7 +227,7 @@ export const Home = () => {
                           <span className="icon-twitter"></span>
                         </a>
                       </li>
-                      {/* Repite esta estructura para los otros iconos sociales */}
+                      Repite esta estructura para los otros iconos sociales
                     </ul>
                     <p>
                       <a href="#" className="btn btn-primary">
@@ -240,9 +238,24 @@ export const Home = () => {
                 </div>
               </div>
             </div>
-            {/* Repite esta estructura para los otros doctores */}
-          </div>
-        </div>
+            Repite esta estructura para los otros doctores*/}
+           
+         </div>
+         <div className="container-fluid px-5 "  >
+            <div className="row justify-content-center mx-5"  >
+              <ListDoctors  />
+            </div>
+         </div>
+         </div> 
+        
+         <div className="container-fluid px-5 "  >
+            <div className="row justify-content-center mx-5"  >
+              <Prices  />
+            </div>
+         </div>
+          
+      
+          
       </section>
 
       {/* Séptimo */}

@@ -40,7 +40,7 @@ class Patient(db.Model):
     age = db.Column(db.Integer, nullable=True)
     identification = db.Column(db.Integer, unique=True)
     social_security = db.Column(db.Integer, unique=True)
-    email = db.Column(db.String(120), unique=True,)
+    email = db.Column(db.String(120), unique=True) 
     password = db.Column(db.String(80))
     is_active = db.Column(db.Boolean(), default=True)
     alergic = db.Column(db.Boolean())
@@ -141,6 +141,7 @@ class Doctor(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "surname":self.surname,
             "age": self.age,
             "speciality_id": self.speciality_id,
             "medical_license": self.medical_license,
