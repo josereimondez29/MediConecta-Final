@@ -688,7 +688,10 @@ def register_medical_appointment():
     meeting_data = {
         "endDate": appointment_time.isoformat(),
         "roomNamePrefix": f"appointment_{new_medical_appointment.id}",
-        "meetingId": new_medical_appointment.id
+        # "roomNamePrefix": meeting_room_data['roomUrl'],
+        # "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
+        "meetingId": new_medical_appointment.id,
+        # "meetingId": meeting_room_data['meetingId']
     }
     meeting_links = create_meeting_links(meeting_data)
     meeting_room_data = create_meeting()
@@ -705,8 +708,8 @@ def register_medical_appointment():
 
 def create_meeting_links(data):
     # Simulación de la generación de enlaces de videoconferencia
-    room_url = f"https://mediconecta.whereby.com/{data['roomNamePrefix']}"
-    host_room_url = f"https://mediconecta.whereby.com/{data['roomNamePrefix']}/host"
+    room_url = f"{data['roomNamePrefix']}"
+    host_room_url = f"{data['HostroomNamePrefix']}"
     return room_url, host_room_url
 
 def send_emails(patient_email, patient_id, doctor_email, appointment_time, meeting_links):
