@@ -21,7 +21,7 @@ export const EditDoctor = () => {
             medical_license: "",
             speciality_id: "" // Inicializar correctamente el ID de la especialidad
         });
-
+  
      
         useEffect(() => {
             const loadSpecialities = async () => {

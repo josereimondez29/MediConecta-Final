@@ -21,7 +21,7 @@ const LoginPageJumbotron = () => {
             <p>¡Conoce más sobre nosotros y nuestra misión!</p>
         </div>
     );
-};
+};   
 
 const ContactPageJumbotron = () => {
     return (

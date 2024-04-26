@@ -168,7 +168,7 @@ def get_user(user_id):
 def update_user(user_id):
     user = User.query.get(user_id)
     if user:
-        data = request.json
+        data = request.json 
         user.email = data.get('email', user.email)
         user.password = data.get('password', user.password)
         user.is_active = data.get('is_active', user.is_active)
@@ -184,7 +184,7 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         return jsonify({"message": "User deleted"}), 200
-    return jsonify({"message": "User not found"}), 404
+    return jsonify({"message": "User not found"}), 404   
 
 
 #Register Patients
