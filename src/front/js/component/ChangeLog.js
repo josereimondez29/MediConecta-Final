@@ -15,7 +15,7 @@ export const ChangeLog = () => {
     return (
         <div className="container">
             <p>Cambios actualizados con éxito</p>
-            <Link to={`/doctor/${id}`}>
+            <Link to={`/privatedoctor/${id}`}>
                 <button className="btn btn-info">Ir a zona privada</button>
             </Link>
         </div>

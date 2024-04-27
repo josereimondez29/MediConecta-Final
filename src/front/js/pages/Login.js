@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 import { Context } from "../store/appContext";
 export const Login = () => {
@@ -7,16 +7,8 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   actions.login(email, password, userType)
-  //   .then((data) => {
-  //     localStorage.setItem("id", data.doctor.id);
-  //     localStorage.setItem("name", data.doctor.name);
-  //     localStorage.setItem("id", data.patient.id); // o data.doctor.id dependiendo del tipo de usuario
-  //     sessionStorage.setItem("id", data.patient.id); // o data.doctor.id dependiendo del tipo de usuario
-  // });
-  // };
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault()
     actions.login(email, password, userType)
@@ -44,10 +36,18 @@ export const Login = () => {
       });
   };
 
+
+  useEffect(()=>{
+    if (store.authentication === true)
+    {
+      if(userType === "patient"){navigate("/PrivatePatient")} else {navigate("/log")}
+    } 
+  },[store.authentication])
+
   return (
     <div className="container mt-5">
     {store.authentication === true ?
-      (userType === 'doctor' ? <Navigate to="/PrivateMedico"/> : <Navigate to="/PrivatePatient"/>) :
+      (userType === 'doctor' ? <Navigate to="/log" /> : <Navigate to="/PrivatePatient"/>) :
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Login</h2>

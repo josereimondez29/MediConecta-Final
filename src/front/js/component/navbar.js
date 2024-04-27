@@ -13,6 +13,13 @@ export const Navbar = () => {
     };
 
 
+    const handleLoginButtonClickPacientes = () => {
+        // Redirige al componente de inicio de sesión
+        navigate('/login');
+    };
+
+
+
   function submitLogout() {
     actions.logout();
     localStorage.removeItem("authentication"); // Elimina la autenticación del localStorage al cerrar sesión
