@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 // import React, { useContext } from "react";
 // import CardPatient from "../component/CardPatient";
 // import { Context } from "../store/appContext";
@@ -93,6 +94,13 @@ export const PrivatePatient = () => {
             ) : (
                 <p>No se encontró información del paciente.</p>
             )}
+            <div>
+            <form className="d-flex p-2" role="log in">
+                <Link to = {"/register/medical_appointment"}>
+                    <button className="btn btn-success" >Registrar cita</button>
+                </Link>
+            </form>
+            </div>
         </div>
     );
 };

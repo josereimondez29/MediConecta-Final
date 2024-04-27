@@ -10,7 +10,7 @@ import { EditDoctor } from "./pages/EditDoctor"
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-import { Private } from "./pages/private";
+// import { Private } from "./pages/private";
 import MedicalAppointment from "./component/CitaMedica";
 import VideoConf from "./component/VideoConf/VideoConf.jsx"
 import PrivateDoctor from "./pages/PrivateDoctor";
@@ -43,7 +43,7 @@ const Layout = () => {
           <Navbar />
           <Routes>
             <Route element={<Home />} path="/" />
-            <Route element={<Private />} path="/private" />
+            {/* <Route element={<Private />} path="/private" /> */}
             <Route element={<MedicalAppointment />} path="/register/medical_appointment" />
             <Route element={<Login />} path="/login" />
             <Route element={<PrivateMedico />} path="/PrivateMedico" />
