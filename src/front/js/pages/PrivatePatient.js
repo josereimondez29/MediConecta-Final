@@ -60,6 +60,7 @@
 
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
@@ -93,6 +94,13 @@ export const PrivatePatient = () => {
             ) : (
                 <p>No se encontró información del paciente.</p>
             )}
+            <div className="">
+            <form className="d-flex p-2" role="log in">
+                            <Link to = {"/register/medical_appointment"}>
+                              <button className="btn btn-success" >Registrar cita</button>
+                            </Link>
+                          </form>
+                </div>
         </div>
     );
 };
