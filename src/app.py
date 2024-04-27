@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 import requests
 from api.utils import APIException, generate_sitemap
-from api.models import db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
+from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -400,81 +400,33 @@ def register_doctor():
     db.session.add(new_doctor)
     db.session.commit()
 
-    # Crear una instancia de DoctorAvailability usando el id del nuevo doctor por dia
-    default_availability = DoctorAvailability(
-         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-         day_of_week=0,  # por defecto para el domingo
-         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-     )
-
-    default_availability = DoctorAvailability(
-          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-          day_of_week=1,  # por defecto para el domingo
-          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-      )
-
-    default_availability = DoctorAvailability(
-          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-          day_of_week=2,  # por defecto para el domingo
-          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-      )
-
-    default_availability = DoctorAvailability(
-          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-          day_of_week=3,  # por defecto para el domingo
-          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-      )
-
-    default_availability = DoctorAvailability(
-          doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-          day_of_week=4,  # por defecto para el domingo
-          start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-          end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-      )
-
-
-    # Crear una lista para almacenar las instancias de DoctorAvailability
-    # availabilities = []
-
     # Crear una instancia de DoctorAvailability para cada día de la semana
-    # for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
-    #     # Crear una instancia de DoctorAvailability para el día actual
-    #     default_availability = DoctorAvailability(
-    #         doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-    #         day_of_week=day_of_week,  # Día de la semana actual en la iteración
-    #         start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-    #         end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-    #     )
+    for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
+        # Crear una instancia de DoctorAvailability para el día actual
+        availability = DoctorAvailability(
+             doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+             day_of_week=day_of_week,  # Día de la semana actual en la iteración
+             start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
+             end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
+         )
         
-    #     # Agregar la instancia a la lista
-    #     availabilities.append(default_availability)
+        # Verificar si el horario de disponibilidad ya está ocupado
+        existing_availability = DoctorAvailability.query.filter_by(
+            doctor_id=new_doctor.id,
+            day_of_week=availability.day_of_week,
+            start_time=availability.start_time,
+            end_time=availability.end_time
+        ).first()
 
-    # Agregar todas las instancias de DoctorAvailability a la sesión de la base de datos
-    # db.session.add_all(availabilities)
+        if existing_availability:
+            return jsonify({'msg': "El horario de disponibilidad ya está ocupado"}), 400
 
-    
-    
-
-    # Verificar si el horario de disponibilidad ya está ocupado
-    existing_availability = DoctorAvailability.query.filter_by(
-        doctor_id=new_doctor.id,
-        day_of_week=default_availability.day_of_week,
-        start_time=default_availability.start_time,
-        end_time=default_availability.end_time
-    ).first()
-
-    if existing_availability:
-        return jsonify({'msg': "El horario de disponibilidad ya está ocupado"}), 400
-
-    # Guardar la disponibilidad del doctor en la base de datos
-    db.session.add(default_availability)
-    db.session.commit()
+        # Guardar la disponibilidad del doctor en la base de datos
+        db.session.add(availability)
+        db.session.commit()
 
     return jsonify({"message": "Doctor registered successfully"}), 201
+
 
 
 
@@ -708,17 +660,12 @@ def create_meeting():
         "roomNamePattern": "uuid",
         "roomMode": "normal",
         "endDate": isoformat.isoformat(),
-        "fields": [
-            "hostRoomUrl"
-        ]
+        "fields": ["hostRoomUrl"]
     }
 
     # Llama a la API de Whereby para crear una reunión
     api_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmFwcGVhci5pbiIsImF1ZCI6Imh0dHBzOi8vYXBpLmFwcGVhci5pbi92MSIsImV4cCI6OTAwNzE5OTI1NDc0MDk5MSwiaWF0IjoxNzEzNDU3NDAyLCJvcmdhbml6YXRpb25JZCI6MjI1NTEzLCJqdGkiOiI2NGUwNjlkNi1mYjBhLTRhYjMtYjkyOC1mYjFhY2NiOTM5OGYifQ.T5y4YmndKiciCuKqDsTZtyPCH1hqpDB4WsHbF--zNK8"
-    headers = {
-        "Authorization": f"Bearer {api_token}",
-        "Content-Type": "application/json"
-    }
+    headers = {"Authorization": f"Bearer {api_token}", "Content-Type": "application/json"}
     create_meeting_url = "https://api.whereby.dev/v1/meetings"
     
     response = requests.post(create_meeting_url, json=data, headers=headers)
@@ -728,7 +675,7 @@ def create_meeting():
     # print(response)
 
     # Obtiene la respuesta de la API de Whereby
-    room_data = response.json()
+    room_data = response.json() 
     # print("despues de aqui room_data")
     # print(room_data)
     # Actualiza la respuesta con el enlace correcto
@@ -743,7 +690,7 @@ def create_meeting():
     # }
     # # meetings.append(meeting)
     # print(meeting)
-    return (room_data)
+    return room_data
 
 
 
@@ -791,7 +738,6 @@ def register_medical_appointment():
         patient_id=patient_info.id,
         doctor_id=doctor_id,
         appointment_date=appointment_time,
-        
         is_active=True
     )
     
@@ -800,18 +746,25 @@ def register_medical_appointment():
 
     # Genera los enlaces de videoconferencia para la cita médica
     meeting_room_data = create_meeting()
+    meeting_id = meeting_room_data.get('meetingId')
     meeting_data = {
         "endDate": appointment_time.isoformat(),
         "roomNamePrefix": meeting_room_data['roomUrl'],
         "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
-        "meetingId": meeting_room_data['meetingId']
+        "meetingId": meeting_id
     }
     meeting_links = create_meeting_links(meeting_data)
     
     print(meeting_room_data) 
     
+    # Almacena la información de la reunión en la base de datos
+    room_url = meeting_data.get('roomNamePrefix')  # Obtener la URL de la sala
+    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time, room_url=room_url)
+    db.session.add(new_meeting)
+    db.session.commit()
+    
     # Envía correos electrónicos al paciente y al doctor
-    send_emails(patient_info.email, patient_info.id, doctor.email, appointment_time, meeting_links)
+    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time, meeting_links)
 
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
 
@@ -821,7 +774,7 @@ def create_meeting_links(data):
     host_room_url = f"{data['HostroomNamePrefix']}"
     return room_url, host_room_url
 
-def send_emails(patient_email, patient_id, doctor_email, appointment_time, meeting_links):
+def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor_email, appointment_time, meeting_links):
     room_url, host_room_url = meeting_links
     
     # Construye el mensaje de correo electrónico con los detalles de la cita y los enlaces de videoconferencia
@@ -830,9 +783,8 @@ def send_emails(patient_email, patient_id, doctor_email, appointment_time, meeti
     mail.send(msg_patient)
     
     msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
-    msg_doctor.html = f"<h1>Detalles de la cita médica con paciente {patient_id}:</h1><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
+    msg_doctor.html = f"<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
-
 
 
 
