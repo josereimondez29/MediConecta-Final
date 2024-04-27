@@ -24,7 +24,7 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
 
   return (
     <div>
-      <h2>Seleccione una fecha y hora disponibles</h2>
+      <h4>Seleccione una fecha y hora disponibles</h4>
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}

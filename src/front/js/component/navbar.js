@@ -1,19 +1,23 @@
+
 import { useNavigate, Link } from "react-router-dom";
 import React, { useContext, useEffect }  from "react";
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-  const navigate = useNavigate();
-  const { store, actions } = useContext(Context);
-  const handleLoginButtonClickMedicos = () => {
-    // Redirige al componente Login
-    navigate('/register');
-  };
+    const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
 
-  const handleLoginButtonClickPacientes = () => {
-    // Redirige al componente Login
-    navigate('/login');
-  };
+    const handleLoginButtonClickMedicos = () => {
+        // Redirige al componente de registro
+        navigate('/register');
+    };
+
+
+    const handleLoginButtonClickPacientes = () => {
+        // Redirige al componente de inicio de sesión
+        navigate('/login');
+    };
+
 
 
   function submitLogout() {
@@ -77,7 +81,7 @@ export const Navbar = () => {
                           </form>
                           <form className="d-flex p-2" role="log in">
                             <Link to = {"/register/medical_appointment"}>
-                              <button className="btn btn-success" >Registrar cita</button>
+                              <button style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn" >Registrar cita</button>
                             </Link>
                           </form>
                       </div>
@@ -86,6 +90,7 @@ export const Navbar = () => {
           </div>
       </nav>
   );
+
 };
 
     // <div>

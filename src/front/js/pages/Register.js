@@ -111,7 +111,7 @@ export const Register = () => {
                 <option value="doctor">Médico</option>
               </select>
             </div>
-            <button type="submit" className="btn btn-primary btn-block">Register</button>
+            <button type="submit" style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn">Register</button>
             {error && <div className="mt-3 text-danger">{error}</div>}
             {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
           </form>
