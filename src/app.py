@@ -190,7 +190,7 @@ def get_user(user_id):
 def update_user(user_id):
     user = User.query.get(user_id)
     if user:
-        data = request.json
+        data = request.json 
         user.email = data.get('email', user.email)
         user.password = data.get('password', user.password)
         user.is_active = data.get('is_active', user.is_active)
@@ -206,7 +206,7 @@ def delete_user(user_id):
         db.session.delete(user)
         db.session.commit()
         return jsonify({"message": "User deleted"}), 200
-    return jsonify({"message": "User not found"}), 404
+    return jsonify({"message": "User not found"}), 404   
 
 
 #Register Patients
@@ -522,6 +522,7 @@ def get_doctors():
 
     return jsonify(response_body), 200
 
+
 #GET Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
 def get_doctor(doctor_id):
@@ -555,39 +556,52 @@ def get_doctor(doctor_id):
 def get_doctor_details(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     print(doctor)
-    if doctor:
-        doctor_data = { 
-            "id": doctor.id,
-            "name": doctor.name,
-            "surname": doctor.surname,
-            "email": doctor.email,
-            "bio": doctor.bio,
-            "speciality_id": doctor.speciality_id,
-            "speciality": doctor.speciality,
-            "is_active": doctor.is_active
-        }
-        return jsonify({"message": "Doctor details found", "doctor": doctor_data}), 200
-    return jsonify({"message": "Doctor not found"}), 404
+    speciality = db.session.query(Doctor, Speciality).join(Doctor).filter(Speciality.id == doctor.speciality_id).all()
+    speciality_serialized = []
+    for Doctor_item, Speciality_item in speciality:
+        speciality_serialized.append({'Doctor': Doctor_item.serialize(), 'Speciality': Speciality_item.serialize()})
+    print(speciality)
+    # if doctor:
+    #     doctor_data = { 
+    #         "id": doctor.id,
+    #         "name": doctor.name,
+    #         "surname": doctor.surname,
+    #         "email": doctor.email,
+    #         "bio": doctor.bio,
+    #         "speciality_id": doctor.speciality_id,
+    #         "speciality": doctor.speciality,
+    #         "is_active": doctor.is_active
+    #     }
+    return jsonify({"message": "Doctor details found", "speciality": speciality_serialized}), 200
+    # return jsonify({"message": "Doctor not found"}), 404
 
 #PUT Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
+
 def update_doctor(doctor_id):   
+    # Obtener el doctor que se desea actualizar
     doctor = Doctor.query.get(doctor_id)
+    
     if doctor:
-        data = request.json
+        data = request.json 
+        # Actualizar los atributos del doctor según los datos recibidos en la solicitud
         doctor.name = data.get('name', doctor.name)
         doctor.surname = data.get('surname', doctor.surname)
         doctor.age = data.get('age', doctor.age)
         doctor.identification = data.get('identification', doctor.identification)
         doctor.medical_license = data.get('medical_license', doctor.medical_license)
         doctor.email = data.get('email', doctor.email)
-        doctor.password = data.get('password', doctor.password)
-        doctor.speciality_id = data.get('speciality', doctor.speciality_id)
+        doctor.bio = data.get('bio', doctor.bio)
+        # Actualizar la especialidad del doctor si es necesario
+        doctor.speciality_id = data.get('speciality_id', doctor.speciality_id)
         doctor.is_active = data.get('is_active', doctor.is_active)
+        
+        # Guardar los cambios en la base de datos 
         db.session.commit()
-        return jsonify({"message": "User updated"}), 200
-    return jsonify({"message": "User not found"}), 404
-
+        
+        return jsonify({"message": "Doctor updated", "doctor": doctor.serialize()}), 200
+    else:
+        return jsonify({"message": "Doctor not found"}), 404
 #DELETE Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['DELETE'])
 def delete_doctor(doctor_id):
@@ -660,6 +674,7 @@ def get_speciality(speciality_id):
 
 #PUT Speciality by id
 @app.route('/speciality/<int:speciality_id>', methods=['PUT'])
+@jwt_required()
 def update_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:
@@ -672,6 +687,7 @@ def update_speciality(speciality_id):
 
 #DELETE Speciality by id
 @app.route('/speciality/<int:speciality_id>', methods=['DELETE'])
+@jwt_required()
 def delete_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:

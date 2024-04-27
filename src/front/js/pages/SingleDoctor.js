@@ -1,22 +1,31 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import PropTypes from "prop-types";
 
-const PrivateDoctor = (props) => {
+export const SingleDoctor = (props) =>{
     const { store, actions } = useContext(Context);
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
-
+   
+   
     useEffect(() => {
-        actions.loadDoctors()
-	    actions.loadSpecialities()
-    }, []);
+        const loadSpecialities = async () => {
+            try {
+                await actions.loadSpecialities();
+            } catch (error) {
+                console.error("Error loading specialities:", error);
+            }
+        };
 
-
+        loadSpecialities(); 
+   
+    }, [])
+ 
     useEffect(() => {
+       
         if (id && store.doctors && store.doctors.length > 0) {
             const selectedDoctor = store.doctors.find(doctor => doctor.id.toString() === id);
             if (selectedDoctor) {
@@ -41,11 +50,10 @@ const PrivateDoctor = (props) => {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
 
-
      
-    console.log("DOCTORDATA PRIVATE DOCTOR-->", doctor)
-    console.log("STORE PRIVATE DOCTOR-->", store.doctors)
-    console.log("STORE.ESPECIALITY PRIVATE DOCTOR-->", store.specialities)
+    // console.log("DOCTORDATA SINGLE DOCTOR-->", doctor)
+    // console.log("STORE SINGLE DOCTOR-->", store.doctors)
+    // console.log("STORE.ESPECIALITY SINGLE DOCTOR-->", store.specialities)
 
 
     return (
@@ -69,13 +77,19 @@ const PrivateDoctor = (props) => {
                                             <span style={{ fontSize: "small "}}>DNI/NIE:&nbsp;{doctor.identification}</span><br/>
                                             <span style={{ fontSize: "small "}}>BIO:&nbsp;{doctor.bio}</span>
                                         </div>
-                                        <div className="container-fluid justify-content-between" >
-                                            <Link to={`/editDoctor/${id}`}>
-                                                <button className="btn btn-info">Modificar perfil</button>
-                                            </Link>
-                                        </div>
 
                                     </div>
+                                    <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
+                                        <Link to={"/"}>
+                                            <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Volver a Home</button>
+                                        </Link> 
+                                        <Link to={"/"}>
+                                            <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Pedir cita</button>
+                                        </Link>
+                                        <Link to={"/"}>
+                                            <button className="btn btn-primary" style={{  marginBottom:"10px"}}>Añador a favorito</button>
+                                        </Link>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -86,8 +100,6 @@ const PrivateDoctor = (props) => {
     );
 }
 
-PrivateDoctor.propTypes = {
-    match: PropTypes.object
+SingleDoctor.propTypes = {
+	match: PropTypes.object
 };
-
-export default PrivateDoctor

@@ -1,28 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../../styles/login.css";
 import { Context } from "../store/appContext";
-
-
-
 export const Login = () => {
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
-
- 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   actions.login(email, password, userType)
-  //   .then((data) => {
-  //     localStorage.setItem("id", data.doctor.id);
-  //     localStorage.setItem("name", data.doctor.name);
-  //     localStorage.setItem("id", data.patient.id); // o data.doctor.id dependiendo del tipo de usuario
-  //     sessionStorage.setItem("id", data.patient.id); // o data.doctor.id dependiendo del tipo de usuario
-  // });
-  // };
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -32,10 +17,8 @@ export const Login = () => {
         if (data.doctor) {
           // Almacena el token en localStorage
           localStorage.setItem("token", data.token);
-  
           // Almacena el ID del doctor en localStorage
           localStorage.setItem("id", data.doctor.id);
-  
           // Almacena el nombre del doctor en localStorage
           localStorage.setItem("name", data.doctor.name);
           console.log("Doctor Data:", data.doctor);
@@ -53,11 +36,18 @@ export const Login = () => {
       });
   };
 
+
+  useEffect(()=>{
+    if (store.authentication === true)
+    {
+      if(userType === "patient"){navigate("/PrivatePatient")} else {navigate("/log")}
+    } 
+  },[store.authentication])
+
   return (
-   
     <div className="container mt-5">
-    {store.authentication === true ? 
-      (userType === 'doctor' ? <Navigate to="/PrivateMedico"/> : <Navigate to="/PrivatePatient"/>) :
+    {store.authentication === true ?
+      (userType === 'doctor' ? <Navigate to="/log" /> : <Navigate to="/PrivatePatient"/>) :
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Login</h2>
@@ -94,7 +84,6 @@ export const Login = () => {
               </select>
             </div>
             <button type="submit" className="btn btn-primary btn-block">Login</button>
-             
             <Link to={"/"}>
                 <button type="btn" className='btn btn-secondary'>Back home</button>
             </Link>
@@ -102,7 +91,6 @@ export const Login = () => {
         {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
         </div>
       </div>}
-     
     </div>
   );
 };
