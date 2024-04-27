@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 
 // import './../../styles/home.css'
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+// import rigoImageUrl from "../../img/rigo-baby.jpg";
 import bg_3 from "../../img/bg_3.jpg";
-import dept1 from "../../img/dept-1.jpg"
+// import dept1 from "../../img/dept-1.jpg"
 import Especialidades from "../component/Especialidades";
 import ListDoctors from "../component/ListDoctors";
 import "./../../styles/listDoctor.css"
@@ -17,10 +17,10 @@ export const Home = () => {
     <div>
       {/* Banner inicial */}
       <section className="hero-wrap">
-        <div
+        {/* <div
           className="hero-img"
           style={{ backgroundImage: `url(${bg_3})` }}
-        ></div>
+        ></div> */}
         {/* <div className="overlay"></div> */}
         {/* <div className="container">
           <div className="row align-items-center justify-content-start">
@@ -258,8 +258,8 @@ export const Home = () => {
           
       </section>
 
-      {/* Séptimo */}
-      <section className="facts" style={{ backgroundImage: "url('img/bg_3.jpg')" }}>
+      {/* Séptimo  style={{ backgroundImage: "url('img/bg_3.jpg')" }}*/}
+      <section className="facts" >
         <div className="overlay"></div>
         <div className="container">
           <div className="row d-flex align-items-center">
@@ -306,7 +306,7 @@ export const Home = () => {
           <div className="row d-flex">
             <div className="col-md-4 animate">
               <div className="blog-entry">
-                <a href="blog-single.html" className="block-20" style={{ backgroundImage: "url('img/image_1.jpg')" }}></a>
+                {/* <a href="blog-single.html" className="block-20" style={{ backgroundImage: "url('img/image_1.jpg')" }}></a> */}
                 {/* Repite esta estructura para los otros elementos del blog */}
               </div>
             </div>
@@ -314,8 +314,8 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* Noveno */}
-      <section className="section testimony-section img" style={{ backgroundImage: "url('img/bg_3.jpg')" }}>
+      {/* Noveno style={{ backgroundImage: "url('img/bg_3.jpg')" }}*/}
+      <section className="section testimony-section img" >
         <div className="overlay"></div>
         <div className="container">
           <div className="row justify-content-center pb-3">

@@ -17,13 +17,15 @@ import { AllDoctors } from "./component/AllDoctors";
 import { AllPatients } from "./component/AllPatients";
 import { IsLogin } from "./component/IsLogin";
 import Jumbotron from "./component/Jumbotron";
-import { ChangeLog } from "./component/ChangeLog";
+// import { ChangeLog } from "./component/ChangeLog";
 import { PrivatePatient } from "./pages/PrivatePatient";
 import Prices from "./component/Prices";
 import MedicinaGeneral from "./component/MedicinaGeneral";
 import Dermatologia from "./component/Dermatologia";
 import Pediatria from "./component/Pediatria";
-import NotFound from "./component/NotFound";  
+import NotFound from "./component/NotFound"; 
+
+
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -42,6 +44,7 @@ const Layout = () => {
 const LayoutContent = () => {
   const location = useLocation();
   const [page, setPage] = useState("");
+  const id = localStorage.getItem("id")
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -53,11 +56,40 @@ const LayoutContent = () => {
       case "/login":
         setPage("login");
         break;
-      case "/contact":
-        setPage("contact");
+      case "/register":
+        setPage("register");
         break;
+      case `/privateDoctor/${id}`:
+        setPage("private");
+        break;
+      case "/privatepatient":
+          setPage("private");
+          break;
+      case "/register/medical_appointment":
+        setPage("appointment");
+      break;
+        case `/doctor/${id}/details`:
+        setPage("singleDoctor");
+      break;
+        case "/alldoctors":
+        setPage("allDoctor");
+      break;
+        case "/prices":
+        setPage("price");
+      break;
+        case `/editDoctor/${id}`:
+        setPage("edit");
+      break;
+        case "/log":
+        setPage("info");
+      break;
+        case "/MedicinaGeneral":
+        setPage("specialty");
+        break;
+     
+
       default:
-        setPage("");
+        setPage(" ");
         break;
     }
   }, [location.pathname]);
@@ -79,7 +111,7 @@ const LayoutContent = () => {
         <Route element={<PrivatePatient />} path="/privatepatient" />
         <Route element={<Prices />} path="/prices" />
         <Route element={<IsLogin />} path="/log" />
-        <Route element={<ChangeLog/>} path="/changelog" />
+        {/* <Route element={<ChangeLog/>} path="/changelog" /> */}
         <Route element={<EditDoctor />} path="/editDoctor/:id" />
         <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
         <Route element={<Dermatologia />} path="/Dermatologia" />

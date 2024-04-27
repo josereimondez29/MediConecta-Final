@@ -22,9 +22,6 @@ from api.models import DoctorAvailability
 import uuid
 
 
-
-
-
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -525,6 +522,7 @@ def get_doctors():
 
 #GET Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
+@jwt_required()
 def get_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:
@@ -579,6 +577,7 @@ def get_doctor_details(doctor_id):
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
 
 def update_doctor(doctor_id):   
+
     # Obtener el doctor que se desea actualizar
     doctor = Doctor.query.get(doctor_id)
     
@@ -604,6 +603,7 @@ def update_doctor(doctor_id):
         return jsonify({"message": "Doctor not found"}), 404
 #DELETE Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['DELETE'])
+@jwt_required()
 def delete_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:

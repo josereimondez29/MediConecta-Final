@@ -1,1 +1,46 @@
+/* JUMBOTRON */
 
+/*  <uniquifier>: Use a unique and descriptive class name
+    <weight>: Use a value from 200 to 800 
+
+.manrope-<uniquifier> {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+// <uniquifier>: Use a unique and descriptive class name
+// <weight>: Use a value from 400 to 900
+
+.playfair-display-<uniquifier> {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+
+*/
+
+.jumbotron {
+    background-image: url('https://i.postimg.cc/LsJtq9nG/fond-Jumbo.jpg');
+    color: white;
+    text-align: center;
+    padding-top: 45px;
+    padding-bottom: 30px;
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.lead{
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 650;
+    font-style: normal;
+ 
+}

@@ -3,92 +3,81 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Context } from "../store/appContext";
 
 export const EditDoctor = () => {
-        const { store, actions } = useContext(Context);
-        const { id } = useParams();
-        const idFromUrl = parseInt(id);
-        const navigate = useNavigate();
-        const [speciality, setSpeciality] = useState({});
-        const [specialities, setSpecialities] = useState([]);
-    
-        // Utilizamos useState para mantener el estado del doctor que se está editando
-        const [editDoctor, setEditDoctor] = useState({
-            name: "",
-            surname: "",
-            email: "",
-            age: "",
-            bio: "",
-            identification: "",
-            medical_license: "",
-            speciality_id: "" // Inicializar correctamente el ID de la especialidad
-        });
-  
-     
-        useEffect(() => {
-            const loadSpecialities = async () => {
-                try {
-                    await actions.loadSpecialities();
-                } catch (error) {
-                    console.error("Error loading specialities:", error);
-                }
-            };
+    const { store, actions } = useContext(Context);
+    const { id } = useParams();
+    const idFromUrl = parseInt(id);
+    const navigate = useNavigate();
+    const [speciality, setSpeciality] = useState({});
+    const [specialities, setSpecialities] = useState([]);
+    const [formSubmitted, setFormSubmitted] = useState(false); // Nuevo estado
+    const [editDoctor, setEditDoctor] = useState({
+        name: "",
+        surname: "",
+        email: "",
+        age: "",
+        bio: "",
+        identification: "",
+        medical_license: "",
+        speciality_id: ""
+    });
 
-            loadSpecialities();
-   
-        }, [])
-
-        useEffect(() => {
-            // Obtener las especialidades del almacén y actualizar el estado
-            setSpecialities(store.specialities);
-        }, [store.specialities]);
-    
-        // Utilizamos useEffect para cargar los datos del doctor una vez que se renderiza el componente
-        useEffect(() => {
-            // Buscamos el doctor en el store por su ID
-            const editDoctor = store.doctors.find(doctor => doctor.id === idFromUrl);
-            
-            // Si encontramos el doctor, actualizamos el estado de editDoctor con sus datos
-            if (editDoctor) {
-                setEditDoctor({ 
-                    name: editDoctor.name || "",
-                    surname: editDoctor.surname || "",
-                    email: editDoctor.email || "",
-                    age: editDoctor.age || "",
-                    bio: editDoctor.bio || "",
-                    identification: editDoctor.identification || "",
-                    medical_license: editDoctor.medical_license || "",
-                    speciality_id: editDoctor.speciality_id || ""
-                });
-            }
-        }, [idFromUrl, store.doctors]); // Dependencias del efecto: idFromUrl y store.doctors
-    
-        useEffect(() => {
-            // Cuando se actualice el doctorData, obtener la especialidad correspondiente y establecerla en el estado
-            if (editDoctor && editDoctor.speciality_id) {
-                const foundSpeciality = specialities.find(speciality => speciality.id === editDoctor.speciality_id);
-                setSpeciality(foundSpeciality);
-            }
-        }, [editDoctor, specialities]); 
-    
-        // Función para manejar el envío del formulario
-        const handleSubmit = async (e) => {
-            e.preventDefault();
-        
+    useEffect(() => {
+        const loadSpecialities = async () => {
             try {
-                // Llamar a la función de actualización del doctor de manera asíncrona
-                await actions.updateDoctor(editDoctor, id);
-                
-                // Después de la actualización exitosa, navegar a la página del doctor
-                
-                navigate("/changelog/");
-                // setTimeout(() => {
-                //     navigate(`/doctor/${id}`);
-                //   }, 3000);
-
+                await actions.loadSpecialities();
             } catch (error) {
-                // Manejar cualquier error que pueda ocurrir durante la actualización
-                console.error("Error updating doctor:", error);
+                console.error("Error loading specialities:", error);
             }
         };
+        loadSpecialities();
+    }, []);
+
+    useEffect(() => {
+        setSpecialities(store.specialities);
+    }, [store.specialities]);
+
+    useEffect(() => {
+        const editDoctor = Array.isArray(store.doctors) ? store.doctors.find(doctor => doctor.id === idFromUrl) : null;
+        if (editDoctor) {
+            setEditDoctor({ 
+                name: editDoctor.name || "",
+                surname: editDoctor.surname || "",
+                email: editDoctor.email || "",
+                age: editDoctor.age || "",
+                bio: editDoctor.bio || "",
+                identification: editDoctor.identification || "",
+                medical_license: editDoctor.medical_license || "",
+                speciality_id: editDoctor.speciality_id || ""
+            });
+        }
+    }, [idFromUrl, store.doctors]);
+
+    useEffect(() => {
+        if (editDoctor && editDoctor.speciality_id) {
+            const foundSpeciality = specialities.find(speciality => speciality.id === editDoctor.speciality_id);
+            setSpeciality(foundSpeciality);
+        }
+    }, [editDoctor, specialities]); 
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        // Verificar si todos los campos están completados
+        if (editDoctor.name && editDoctor.surname && editDoctor.email && editDoctor.age && editDoctor.bio && editDoctor.identification && editDoctor.medical_license && editDoctor.speciality_id) {
+            try {
+                await actions.updateDoctor(editDoctor, id);
+                setFormSubmitted(true); // Marcar el formulario como enviado
+                setTimeout(() => {
+                    navigate(`/privatedoctor/${idFromUrl}`);
+                }, 3000);
+            } catch (error) {
+                console.error("Error updating doctor:", error);
+            }
+        } else {
+            // Mostrar mensaje de error o alerta si no todos los campos están completados
+            alert("Por favor complete todos los campos antes de enviar el formulario.");
+        }
+    };
+
 
     return (
          
@@ -167,15 +156,21 @@ export const EditDoctor = () => {
                         </select>
                     </div>
                  
+                    {/* Botón de enviar */}
                     <div className='d-grid gap-2'>
-                        <button  className="btn btn-primary" type="submit" >Update</button>
+                        <button className="btn btn-primary" type="submit" >Update</button>
                     </div>
-                    
-                    <Link to={"/"}>
-                        <button className='btn buttonContact' type="submit" >Cancel, get back to contacts</button>
-                    </Link>
-                    </form>
-                </div>
-            </>
-        )
-    }
+                    {/* Mensaje de éxito */}
+                    {formSubmitted && (
+                        <div className="popup text-center">
+                            <p>¡Actualización exitosa!</p>
+                        </div>
+                    )}
+                </form>
+                <Link to={"/"}>
+                    <button className='btn buttonContact' type="submit" >Cancel, get back to contacts</button>
+                </Link>
+            </div>
+        </>
+    );
+};

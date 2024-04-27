@@ -39,7 +39,7 @@ const MedicalAppointment = () => {
       console.log("Respuesta del backend:", data);
 
       if (response.ok) {
-        navigate('/success');
+        navigate('/privatepatient');
       } else {
         console.error('Error al registrar la cita:', data.msg);
       }

@@ -1,13 +1,13 @@
 import React from "react";
+import './../../styles/style.css';
 
 // Definir los componentes de los jumbotrons fuera de Jumbotron
 const HomePageJumbotron = () => {
     return (
         <div className="jumbotron">
-            <h1 className="display-4">¡Bienvenido a nuestra aplicación!</h1>
-            <p className="lead">Esto es un mensaje de bienvenida para la página de inicio.</p>
-            <hr className="my-4" />
-            <p>¡Explora todas las funcionalidades que tenemos para ofrecerte!</p>
+            <h1 className="display-4">CUIDAMOS SIN QUE SALGAS DE TU HOGAR</h1>
+            <p className="lead">Obten una atención médica con nuestro equipo de profesionales</p>
+
         </div>
     );
 };
@@ -15,24 +15,98 @@ const HomePageJumbotron = () => {
 const LoginPageJumbotron = () => {
     return (
         <div className="jumbotron">
-            <h1 className="display-4">Acerca de nosotros</h1>
-            <p className="lead">Aquí puedes encontrar información sobre nuestra empresa o proyecto.</p>
-            <hr className="my-4" />
-            <p>¡Conoce más sobre nosotros y nuestra misión!</p>
+            <h1 className="display-4">LOGIN</h1>
+            <p className="lead">Accede a tu perfil</p>
         </div>
     );
 };   
 
-const ContactPageJumbotron = () => {
+const RegisterPageJumbotron = () => {
     return (
         <div className="jumbotron">
-            <h1 className="display-4">¡Contáctanos!</h1>
-            <p className="lead">¡No dudes en contactarnos si tienes alguna pregunta o comentario!</p>
+            <h1 className="display-4">REGISTRATE</h1>
+            <p className="lead">Es el momento de cambiar tu salud a algo más positivo</p>
             <hr className="my-4" />
             <p>¡Estamos aquí para ayudarte!</p>
         </div>
     );
 };
+
+const PrivatePageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">ZONA PRIVADA</h1>
+            <p className="lead">Donde encontrar tus datos personales y tus citas pendientes</p>
+        </div>
+    );
+};
+
+const AppointmentPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">Pide una cita</h1>
+            <p className="lead">No dudes en pedir una cita con tu medico de confianza</p>
+        </div>
+    );
+};
+
+const SingleDoctorPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">EUIPO MÉDICO</h1>
+            <p className="lead">El experto</p>
+        </div>
+    );
+};
+
+const AllDoctorPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">EQUIPO MÉDICO</h1>
+            <p className="lead">Profesionales que no dudarán de darte lo mejor</p>
+            <hr className="my-4" />
+            <p>¡Estamos aquí para ayudarte!</p>
+        </div>
+    );
+};
+
+const PricePageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">PRECIOS</h1>
+            <p className="lead">Consulta nuestras tarifas</p>
+        </div>
+    );
+};
+
+const EditPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">EDITAR PERFIL</h1>
+            <p className="lead">Modifica los campos que necesites</p>
+        </div>
+    );
+};
+const InfoPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">AVISOS</h1>
+        </div>
+    );
+};
+
+const SpecialtyPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">NUESTRAS ESPECIALIDADES</h1>
+            <p className="lead"></p>
+            <hr className="my-4" />
+            <p>¡Explora todas las funcionalidades que tenemos para ofrecerte!</p>
+        </div>
+    );
+};
+
+
 
 // Ahora exportar Jumbotron como un componente separado
 const Jumbotron = ({ page }) => {
@@ -42,8 +116,24 @@ const Jumbotron = ({ page }) => {
             return <HomePageJumbotron />;
         case 'login':
             return <LoginPageJumbotron />;
-        case 'contact':
-            return <ContactPageJumbotron />;
+        case 'register':
+            return <RegisterPageJumbotron />;
+        case 'private':
+            return <PrivatePageJumbotron />;
+        case 'appointment':
+            return <AppointmentPageJumbotron />;
+        case 'singleDoctor':
+            return <SingleDoctorPageJumbotron />;
+        case 'allDoctor':
+             return <AllDoctorPageJumbotron />;
+        case 'price':
+             return <PricePageJumbotron />;
+        case 'edit':
+            return <EditPageJumbotron />;    
+        case 'info':
+            return <InfoPageJumbotron />;   
+        case 'specialty':
+            return <SpecialtyPageJumbotron />;                                                         
         default:
             return null;
     }

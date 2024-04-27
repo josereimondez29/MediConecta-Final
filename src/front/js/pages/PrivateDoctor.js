@@ -12,7 +12,7 @@ const PrivateDoctor = (props) => {
 
     useEffect(() => {
         actions.loadDoctors()
-	    actions.loadSpecialities()
+        actions.loadSpecialities()
     }, []);
 
 
@@ -22,7 +22,7 @@ const PrivateDoctor = (props) => {
             if (selectedDoctor) {
                 setDoctor(selectedDoctor);
                 setLoading(false);
-    
+
                 // Buscar la especialidad correspondiente al médico
                 const foundSpeciality = store.specialities.find(speciality => speciality.id === selectedDoctor.speciality_id);
                 setSpeciality(foundSpeciality);
@@ -42,7 +42,7 @@ const PrivateDoctor = (props) => {
     }
 
 
-     
+
     console.log("DOCTORDATA PRIVATE DOCTOR-->", doctor)
     console.log("STORE PRIVATE DOCTOR-->", store.doctors)
     console.log("STORE.ESPECIALITY PRIVATE DOCTOR-->", store.specialities)
@@ -50,7 +50,6 @@ const PrivateDoctor = (props) => {
 
     return (
         <>
-            
             <div className="container-fluid">
                 <ul className="list-group">
                     <li key={id} className="list-group-item d-flex justify-content-between">
@@ -61,23 +60,30 @@ const PrivateDoctor = (props) => {
                                     <div className="card-tittle d-flex">
                                         <h5>NOMBRE Y APELLIDOS: {doctor.name}</h5>&nbsp;<h5>{doctor.surname}</h5>
                                     </div>
-                                    <div className="card-text" style={{ textAlign: "left" }}>
-                                        <div className='info_contact' style={{marginBottom: "15px"}}>
-                                            <span style={{ fontSize: "medium "}}>ESPECIALIDAD:&nbsp;{speciality.name}</span><br/>
-                                            <span style={{ fontSize: "small "}}>EMAIL:&nbsp;{doctor.email}</span><br/>
-                                            <span style={{ fontSize: "small "}}>Nº COLEGIADO:&nbsp;{doctor.medical_license}</span><br/>
-                                            <span style={{ fontSize: "small "}}>DNI/NIE:&nbsp;{doctor.identification}</span><br/>
-                                            <span style={{ fontSize: "small "}}>BIO:&nbsp;{doctor.bio}</span>
-                                        </div>
-                                        <div className="container-fluid justify-content-between" >
-                                            <Link to={`/editDoctor/${id}`}>
-                                                <button className="btn btn-info">Modificar perfil</button>
-                                            </Link>
+                                        <div className="card-text" style={{ textAlign: "left" }}>
+                                            <div className='info_contact' style={{ marginBottom: "15px" }}>
+                                                {speciality ? (
+                                                    <span style={{ fontSize: "medium " }}>ESPECIALIDAD:&nbsp;{speciality.name}</span>
+                                                ) : (
+                                                    <span style={{ fontSize: "medium " }}>ESPECIALIDAD: No definida</span>
+                                                )}
+                                                <br />
+                                                <span style={{ fontSize: "small " }}>EMAIL:&nbsp;{doctor.email}</span><br />
+                                                <span style={{ fontSize: "small " }}>Nº COLEGIADO:&nbsp;{doctor.medical_license}</span><br />
+                                                <span style={{ fontSize: "small " }}>DNI/NIE:&nbsp;{doctor.identification}</span><br />
+                                                <span style={{ fontSize: "small " }}>BIO:&nbsp;{doctor.bio}</span><br />
+                                                <span style={{ fontSize: "small " }}>EDAD:&nbsp;{doctor.age}</span>
+                                            </div>
+                                            <div className="container-fluid justify-content-between" >
+                                                <Link to={`/editDoctor/${id}`}>
+                                                    <button className="btn btn-info">Modificar perfil</button>
+                                                </Link>
+                                            </div>
                                         </div>
 
                                     </div>
                                 </div>
-                            </div>
+                          
                         </div>
                     </li>
                 </ul>

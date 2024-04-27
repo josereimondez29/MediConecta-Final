@@ -99,49 +99,49 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// },
 
 			login: (email, password, userType) => {
-				const requestOptions = {
-				  method: "POST",
-				  headers: { "Content-Type": "application/json" },
-				  body: JSON.stringify({
-					"email": email,
-					"password": password
-				  })
-				};
-				
-				fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
-				.then((response) => {
-				  console.log(response.status)
-				  if (response.status === 200){
-					setStore({ authentication: true });
-				  }
-				  return response.json();
-				})
-				.then((data) => {
-				  localStorage.setItem("token", data.token);
-				  sessionStorage.setItem("token", data.token);
-				  localStorage.setItem("authentication", true);
-				  sessionStorage.setItem("authentication", true);
-			  
-				  if (userType === 'patient') {
-					localStorage.setItem("id", data.patient.id);
-					sessionStorage.setItem("id", data.patient.id);
-					localStorage.setItem("name", data.patient.name);
-					sessionStorage.setItem("name", data.patient.name);
-				  } else if (userType === 'doctor') {
-					localStorage.setItem("id", data.doctor.id);
-					sessionStorage.setItem("id", data.doctor.id);
-					localStorage.setItem("name", data.doctor.name);
-					sessionStorage.setItem("name", data.doctor.name);
-				  }
-				  
-				  console.log("DATA LOGIN ->", data);
-				})
-				.catch((error) => {
-				  console.error( error);
-				  setStore({ messageError: error.message });
-				});
-			  },
+                const requestOptions = {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    "email": email,
+                    "password": password
+                  })
+                };
+                fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
+                .then((response) => {
+                  console.log(response.status)
+                  if (response.status === 200){
+                    setStore({ authentication: true });
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  localStorage.setItem("token", data.token);
+                  sessionStorage.setItem("token", data.token);
+                  localStorage.setItem("authentication", true);
+                  sessionStorage.setItem("authentication", true);
+                  if (userType === 'patient') {
+                    localStorage.setItem("id", data.patient.id);
+                    sessionStorage.setItem("id", data.patient.id);
+                    localStorage.setItem("name", data.patient.name);
+                    sessionStorage.setItem("name", data.patient.name);
+                  } else if (userType === 'doctor') {
+                    localStorage.setItem("id", data.doctor.id);
+                    sessionStorage.setItem("id", data.doctor.id);
+                    localStorage.setItem("name", data.doctor.name);
+                    sessionStorage.setItem("name", data.doctor.name);
+                  }
+                  localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
+                  console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
+                  console.log("DATA LOGIN ->", data);
+                })
+                .catch((error) => {
+                  console.error( error);
+                  setStore({ messageError: error.message });
+                });
+              },
 
+			  
 			register: async (userData, userType) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + `/api/register/${userType}`, {
