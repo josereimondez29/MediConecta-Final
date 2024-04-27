@@ -147,7 +147,8 @@ class Doctor(db.Model):
             "medical_license": self.medical_license,
             "identification": self.identification,
             "is_active": self.is_active,
-            "bio": self.bio
+            "bio": self.bio,
+            "email": self.email
         }
 
     def is_available(self, appointment_time):
