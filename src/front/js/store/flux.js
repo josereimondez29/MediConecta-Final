@@ -21,7 +21,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			authentication:false, 
 			messageError: null,
 			doctors: [],
+			specialities: [],
 			patients: [],
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -180,6 +182,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error(error))
 				}, 
 
+			loadSpecialities: ()=>{
+				fetch(process.env.BACKEND_URL + "/specialities")
+					.then((response) => response.json())
+					.then((data) => {
+						// console.log("fetchSpeciality FLUX",data)
+						// console.log("DATARESULT FLUX", data.result)
+						setStore({ specialities: data.result })})
+					.catch((error) => console.error(error))
+			},
+	
+
 			getinfoDoctor: (id) => { 
 				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
 				.then((response) => response.json())
@@ -194,32 +207,51 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					setStore({ doctors: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados
-					console.log("UPDATE", updatedDoctors); // Muestra los médicos actualizados en la consola
+					
 				});
 			},
 
-			updateDoctor: (doctors, id) => {
+			updateDoctor: (editDoctor, id) => {
+
 				const requestOptions = {
 					method: "PUT",
-					body: JSON.stringify(doctors),
+					body: JSON.stringify(editDoctor),
 					headers: { "Content-Type": "application/json" },
 					redirect: "follow"
-				  };
-				  
-				  fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
-					.then((response) => response.text())
-					.then((result) => {
-						console.log("RESULTADOS", result)
-						fetch(process.env.BACKEND_URL + "/doctors")
-						.then((response) => response.json())
-						.then((data) => setStore({doctors:data.result}))
-						.catch((error) => console.error(error))
-							
-							
-					})
-					.catch((error) => console.error(error));
-			 
+
+				};
+				
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.json();
+				})
+				.then((result) => {
+					console.log("RESULT FLUX UPGRATE", result);
+					setStore({ doctors: result });
+				})
+				.catch((error) => console.error("Fetch error:", error));
+
 			},
+
+			// 	  };
+				  
+			// 	  fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
+			// 		.then((response) => response.text())
+			// 		.then((result) => {
+			// 			console.log("RESULTADOS", result)
+			// 			fetch(process.env.BACKEND_URL + "/doctors")
+			// 			.then((response) => response.json())
+			// 			.then((data) => setStore({doctors:data.result}))
+			// 			.catch((error) => console.error(error))
+							
+							
+			// 		})
+			// 		.catch((error) => console.error(error));
+			 
+			// },
 
 			loadPatients: ()=>{
 				fetch(process.env.BACKEND_URL + "/patients")

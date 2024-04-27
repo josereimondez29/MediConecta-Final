@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const ListDoctors = () => {
     const { store, actions } = useContext(Context);
-    const [showAll, setShowAll] = useState(false);
     const navigate = useNavigate();
 
     const handleDoctors = () => {
