@@ -70,7 +70,7 @@ export const EditDoctor = () => {
                     navigate(`/privatedoctor/${idFromUrl}`);
                 }, 3000);
             } catch (error) {
-                console.error("Error updating doctor:", error);
+                console.error("Error updating doctor:", error); 
             }
         } else {
             // Mostrar mensaje de error o alerta si no todos los campos están completados

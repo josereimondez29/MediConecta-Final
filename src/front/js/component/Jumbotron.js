@@ -50,14 +50,15 @@ const AppointmentPageJumbotron = () => {
     );
 };
 
-const SingleDoctorPageJumbotron = () => {
-    return (
-        <div className="jumbotron">
-            <h1 className="display-4">EUIPO MÉDICO</h1>
-            <p className="lead">El experto</p>
-        </div>
-    );
-};
+// const SingleDoctorPageJumbotron = () => {
+    
+//     return (
+//         <div className="jumbotron">
+//             <h1 className="display-4">EQUIPO MÉDICO</h1>
+//             <p className="lead">El experto</p>
+//         </div>
+//     );
+// };
 
 const AllDoctorPageJumbotron = () => {
     return (
@@ -106,10 +107,20 @@ const SpecialtyPageJumbotron = () => {
     );
 };
 
+const NullPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4"> </h1>
+            <p className="lead"></p>
+     
+        </div>
+    );
+};
 
 
 // Ahora exportar Jumbotron como un componente separado
 const Jumbotron = ({ page }) => {
+    console.log("PAGE", page)
     // Determina qué componente de Jumbotron mostrar según la página actual
     switch (page) {
         case 'home':
@@ -122,8 +133,8 @@ const Jumbotron = ({ page }) => {
             return <PrivatePageJumbotron />;
         case 'appointment':
             return <AppointmentPageJumbotron />;
-        case 'singleDoctor':
-            return <SingleDoctorPageJumbotron />;
+        // case 'singleDoctor':
+        //     return <SingleDoctorPageJumbotron />;
         case 'allDoctor':
              return <AllDoctorPageJumbotron />;
         case 'price':
@@ -133,7 +144,9 @@ const Jumbotron = ({ page }) => {
         case 'info':
             return <InfoPageJumbotron />;   
         case 'specialty':
-            return <SpecialtyPageJumbotron />;                                                         
+            return <SpecialtyPageJumbotron />;    
+        case 'undefined':
+            return <NullPageJumbotron />;                                                       
         default:
             return null;
     }

@@ -59,37 +59,34 @@ const LayoutContent = () => {
       case "/register":
         setPage("register");
         break;
-      case `/privateDoctor/${id}`:
-        setPage("private");
-        break;
+        case `/privatedoctor/${id}`:
+          setPage("private");
+          break;
+      case `/editDoctor/${id}`:
+          setPage("edit");
+          break;
       case "/privatepatient":
           setPage("private");
           break;
       case "/register/medical_appointment":
         setPage("appointment");
       break;
-        case `/doctor/${id}/details`:
-        setPage("singleDoctor");
-      break;
-        case "/alldoctors":
+      case "/alldoctors":
         setPage("allDoctor");
       break;
-        case "/prices":
+      case "/prices":
         setPage("price");
       break;
-        case `/editDoctor/${id}`:
-        setPage("edit");
-      break;
-        case "/log":
+      case "/log":
         setPage("info");
       break;
-        case "/MedicinaGeneral":
+      case "/MedicinaGeneral":
         setPage("specialty");
-        break;
+      break;
      
 
       default:
-        setPage(" ");
+        setPage("undefined");
         break;
     }
   }, [location.pathname]);
@@ -105,7 +102,7 @@ const LayoutContent = () => {
         <Route element={<Register />} path="/register" />
         <Route element={<Single />} path="/single/:theid" />
         <Route element={<PrivateDoctor />} path="/privatedoctor/:id" />
-        <Route element={<SingleDoctor/>} path="/doctor/:id/details"/>
+        <Route element={<SingleDoctor />} path="/doctor/:id/details" />
         <Route element={<AllDoctors />} path="/alldoctors" />
         <Route element={<AllPatients />} path="/allpatients" />
         <Route element={<PrivatePatient />} path="/privatepatient" />

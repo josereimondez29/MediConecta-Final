@@ -49,7 +49,7 @@ export const SingleDoctor = (props) =>{
     if (!doctor) {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
-
+   
      
     // console.log("DOCTORDATA SINGLE DOCTOR-->", doctor)
     // console.log("STORE SINGLE DOCTOR-->", store.doctors)
@@ -58,6 +58,13 @@ export const SingleDoctor = (props) =>{
 
     return (
         <>
+
+  
+        <div className="jumbotron">
+            <h1 className="display-4">EQUIPO MÉDICO</h1>
+            <p className="lead">El experto</p>
+        </div>
+
             
             <div className="container-fluid">
                 <ul className="list-group">

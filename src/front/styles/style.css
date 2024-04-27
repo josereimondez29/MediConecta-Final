@@ -44,3 +44,27 @@ h1 {
     font-style: normal;
  
 }
+
+p {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.notFound-text{
+  color: #79a8b4;
+  font-family: "Manrope", sans-serif;
+  font-weight: 800;
+  font-size: 150px;
+}
+
+.notFound{
+  background-image: url("https://i.postimg.cc/DzfLbRgk/pexels-tara-winstead-7722649.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-bottom: 30px;
+  padding-top: 70px;
+
+}
+

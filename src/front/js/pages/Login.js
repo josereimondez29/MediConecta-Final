@@ -9,14 +9,16 @@ export const Login = () => {
   const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
+  const id = localStorage.getItem("id");
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await actions.login(email, password, userType);
       setTimeout(() => {
         if (store.authentication) {
-          navigate(userType === 'doctor' ? "/log" : "/PrivatePatient");
+          navigate(userType === 'doctor' ? `/log` : "/PrivatePatient");
         }
       }, 3000); // Delay de 3 segundos
     } catch (error) {
@@ -68,12 +70,13 @@ export const Login = () => {
             </Link>
           </form>
           {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
-        </div>
-        {store.authentication && (
+          {store.authentication && (
                     <div className="popup text-center">
                         <p>¡Login exitoso!</p>
                     </div>
                 )}
+        </div>
+       
       </div>
     </div>
   );

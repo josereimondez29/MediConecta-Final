@@ -142,7 +142,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               },
 
 			  
-			register: async (userData, userType) => {
+			register: async (userData, userType, id) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + `/api/register/${userType}`, {
 						method: "POST",
@@ -155,7 +155,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json();
 					setStore({ signupSuccesful: "Successful registration! Now you can log in." });
-			
+					
 				} catch (error) {
 					setStore({ messageError: error.message });
 				}
