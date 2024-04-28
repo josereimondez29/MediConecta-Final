@@ -20,11 +20,9 @@ from flask_mail import Mail, Message
 from datetime import datetime, time, timedelta
 from api.models import DoctorAvailability
 import uuid
-
-
-
-
-
+from random import choice
+from string import ascii_letters, digits
+import secrets
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -477,6 +475,7 @@ def get_doctors():
 
 #GET Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
+@jwt_required()
 def get_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:
@@ -529,8 +528,9 @@ def get_doctor_details(doctor_id):
 
 #PUT Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
-
+@jwt_required
 def update_doctor(doctor_id):   
+
     # Obtener el doctor que se desea actualizar
     doctor = Doctor.query.get(doctor_id)
     
@@ -556,6 +556,7 @@ def update_doctor(doctor_id):
         return jsonify({"message": "Doctor not found"}), 404
 #DELETE Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['DELETE'])
+@jwt_required()
 def delete_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:
@@ -1016,6 +1017,44 @@ def send_mail():
 
     return jsonify({"msg": "Correos electrónicos enviados correctamente"}), 200
 
+
+#RESTAURAR PASSWORD
+
+@app.route('/send_password', methods=['POST'])
+def send_password():
+    data = request.json
+    email = data.get('email')
+    userType = data.get('userType')
+
+    user = None
+    if userType == 'patient':
+        user = Patient.query.filter_by(email=email).first()
+    elif userType == 'doctor':
+        user = Doctor.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({"msn": f"No se encontró la dirección de correo electrónico en la base de datos para el userType: {userType}"}), 404
+
+    try:
+        temporary_password = generate_temporary_password()
+        hashed_temporary_password = bcrypt.generate_password_hash(temporary_password).decode('utf-8')
+
+        user.password = hashed_temporary_password
+        db.session.commit()
+
+        send_temporary_password_email(email, temporary_password)
+
+        return jsonify({"msn": "Correo electrónico enviado correctamente"}), 200
+    except Exception as e:
+        return jsonify({"msn": "Error al enviar el correo electronico: " + str(e)}), 500
+
+def generate_temporary_password():
+    return secrets.token_urlsafe(10)
+
+def send_temporary_password_email(email, temporary_password):
+    msg = Message(subject="Nueva contraseña temporal", sender='mediconecta1@gmail.com', recipients=[email])
+    msg.html = f"<h1>Tu nueva contraseña temporal es: {temporary_password}</h1> <p>Por favor una vez acceda a la zona privada modifique la contraseña</p>"
+    mail.send(msg)
 
 
 # Meetings

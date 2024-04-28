@@ -69,7 +69,7 @@ export const Footer = () => {
             <div className="ftco-footer-widget mb-4">
 
               <div className="">
-            <a href="ruta/a/MediConecta"><img src={MediConecta} alt="MediConecta" /></a>
+                  <a href="/"><img src={MediConecta} alt="MediConecta" /></a>
               <p className="mt-2">Muy muy lejos, detrás de la palabra montañas, lejos de los países..</p>
               </div>
               <div className="d-flex justify-content-center">

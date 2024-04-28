@@ -18,13 +18,20 @@ import { AllDoctors } from "./component/AllDoctors";
 import { AllPatients } from "./component/AllPatients";
 import { IsLogin } from "./component/IsLogin";
 import Jumbotron from "./component/Jumbotron";
-import { ChangeLog } from "./component/ChangeLog";
+// import { ChangeLog } from "./component/ChangeLog";
 import { PrivatePatient } from "./pages/PrivatePatient";
 import Prices from "./component/Prices";
 import MedicinaGeneral from "./component/MedicinaGeneral";
 import Dermatologia from "./component/Dermatologia";
 import Pediatria from "./component/Pediatria";
-import NotFound from "./component/NotFound";
+import NotFound from "./component/NotFound"; 
+import { Contact } from "./pages/Contact";
+import Psicologia from "./component/Psicología";
+import Fisioterapia from "./component/Fisioterapia";
+import Nutricion from "./component/Nutricion";
+import { RecoverPassword } from "./pages/RecoverPassword";
+
+
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -43,6 +50,7 @@ const Layout = () => {
 const LayoutContent = () => {
   const location = useLocation();
   const [page, setPage] = useState("");
+  const id = localStorage.getItem("id")
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -54,11 +62,57 @@ const LayoutContent = () => {
       case "/login":
         setPage("login");
         break;
+      case "/register":
+        setPage("register");
+        break;
+        case `/privatedoctor/${id}`:
+          setPage("private");
+          break;
+      case `/editDoctor/${id}`:
+          setPage("edit");
+          break;
+      case "/privatepatient":
+          setPage("private");
+          break;
+      case "/register/medical_appointment":
+        setPage("appointment");
+      break;
+      case "/alldoctors":
+        setPage("allDoctor");
+      break;
+      case "/prices":
+        setPage("price");
+      break;
+      case "/log":
+        setPage("info");
+      break;
       case "/contact":
         setPage("contact");
-        break;
+      break;
+      case "/recoverpassword":
+        setPage("recoverpassword");
+      break;
+      case "/MedicinaGeneral":
+        setPage("specialty");
+      break;
+      case "/Pediatria":
+        setPage("specialty");
+      break;
+      case "/Psicologia":
+        setPage("specialty");
+      break;
+      case "/Nutricion":
+        setPage("specialty");
+      break;
+      case "/Fisioterapia":
+        setPage("specialty");
+      break;
+      case "/Dermatologia":
+        setPage("specialty");
+      break;
+
       default:
-        setPage("");
+        setPage(" ");
         break;
     }
   }, [location.pathname]);
@@ -82,12 +136,18 @@ const LayoutContent = () => {
         <Route element={<PrivatePatient />} path="/privatepatient" />
         <Route element={<Prices />} path="/prices" />
         <Route element={<IsLogin />} path="/log" />
-        <Route element={<ChangeLog />} path="/changelog" />
         <Route element={<EditDoctor />} path="/editDoctor/:id" />
         <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
         <Route element={<Dermatologia />} path="/Dermatologia" />
         <Route element={<Pediatria />} path="/Pediatria" />
-        <Route element={<NotFound />} path="*" />
+        <Route element={<Nutricion />} path="/Nutricion" />
+        <Route element={<Psicologia />} path="/Psicologia" />
+        <Route element={<Fisioterapia />} path="/Fisioterapia" />
+        <Route element={<NotFound />} path="*" /> 
+        <Route element={<Contact/>} path = "/contact"/>
+        <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
+        
+
       </Routes>
       <Footer />
 

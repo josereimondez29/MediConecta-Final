@@ -1,21 +1,21 @@
-import React, { useContext } from 'react';
-import "./../../styles/MedicinaGeneral.css"
-import Medicina_general_dos from "../../img/Medicina-general-dos.jpg"
+import React, { useContext, useEffect, useState } from 'react';
+import "./../../styles/Nutricion.css";
+import nutricion from "../../img/nutricionn.jpg";
 import { Context } from '../store/appContext';
 import CardDoctor from "./CardDoctor";
 
-const MedicinaGeneral = () => {
+const Nutricion = () => {
   const { store, actions } = useContext(Context);
 
-  const medGenSpecialtyId = store.specialities.find(specialty => specialty.name === "Medicina General");
-  const medGenDoctors = store.doctors.filter(doctor => doctor.speciality_id === medGenSpecialtyId?.id);
+  const nutriSpecialtyId = store.specialities.find(specialty => specialty.name === "Nutrición");
+  const nutriDoctors = store.doctors.filter(doctor => doctor.speciality_id === nutriSpecialtyId?.id);
 
   let doctorsComponent;
 
-  if (medGenDoctors.length > 0) {
+  if (nutriDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
-        {medGenDoctors.map(doctor => (
+        {nutriDoctors.map(doctor => (
           <CardDoctor 
             key={doctor.id}
             id={doctor.id}
@@ -32,17 +32,17 @@ const MedicinaGeneral = () => {
 
   return (
     <>
-      <div className="medicina-general-container">
+      <div className="nutricion-container">
         <div className="image-container">
-          <img src={Medicina_general_dos} alt="Medicina General" className="medicina-general-image" />
+          <img src={nutricion} alt="fisioterapia" className="nutricion-image" />
         </div>
         <div className="text-container">
-          <h2 className="title">Medicina General</h2>
+          <h2 className="title">Nutricion</h2>
           <p className="text">
-            Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas, incluida la Medicina General.
+          Consulta online mediante videollamada (30 – 45 minutos) con un diagnóstico y un diseño de tratamiento basado en ejercicio terapéutico personalizado así como recomendaciones y pautas que seguir en base a su patología actual. 
           </p>
           <p className="text">
-            La Medicina General es la base fundamental de la atención médica, abordando una amplia gama de problemas de salud que afectan a personas de todas las edades y condiciones. Nuestros médicos generales son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes.
+          
           </p>
           <ul className="service-list">
             <li>Consultas médicas virtuales</li>
@@ -63,4 +63,4 @@ const MedicinaGeneral = () => {
   );
 }
 
-export default MedicinaGeneral;
+export default Nutricion;
