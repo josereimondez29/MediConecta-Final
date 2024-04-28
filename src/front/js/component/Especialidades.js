@@ -3,15 +3,19 @@ import Especialidad from './Especialidad';
 import bg_3 from "../../img/bg_3.jpg";
 import image_3 from "../../img/image_3.jpg"
 import dermatologia from "../../img/dermatologia.jpg"
+import nutricion2 from "../../img/nutricion2.jpg"
+import fisioterapia from "../../img/fisioterapia.jpg"
+import psicologia from "../../img/psicologia.jpg"
+
 
 const Especialidades = () => {
   let cardData = [
     { title: "Medicina General", text: "Nosotros te atendemos", image: bg_3 },
     { title: "Pediatría", text: "#Birds", image: image_3 },
     { title: "Dermatología", text: "Most iconic", image: dermatologia },
-    { title: "Psicología ", text: "#picture123", image: "https://via.placeholder.com/367x267?text=Pediatría" },
-    { title: "Nutrición", text: "#picture123", image: "https://via.placeholder.com/367x267?text=Entrenador%20Personal" },
-    { title: "Fisioterapia???", text: "#picture123", image: "https://via.placeholder.com/367x267?text=Diana???" }
+    { title: "Psicología ", text: "#picture123", image: psicologia },
+    { title: "Nutrición", text: "#picture123", image: nutricion2 },
+    { title: "Fisioterapia???", text: "#picture123", image: fisioterapia }
   ];
 
   // Función para dividir el array en grupos de tres elementos
@@ -46,11 +50,11 @@ const Especialidades = () => {
           ))}
         </div>
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev" style={{ color: 'black', backgroundColor: 'transparent' }}>
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span className="carousel-control-prev-icon" style={{ backgroundColor: "#5C8692" }} aria-hidden="true"></span>
           <span className="visually-hidden">Previous</span>
         </button>
         <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next" style={{ color: 'black', backgroundColor: 'transparent' }}>
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+          <span className="carousel-control-next-icon" style={{ backgroundColor: "#5C8692" }} aria-hidden="true"></span>
           <span className="visually-hidden">Next</span>
         </button>
       </div>

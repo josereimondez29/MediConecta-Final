@@ -9,36 +9,53 @@ export const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [userType, setUserType] = useState('patient'); // Establece el tipo de usuario predeterminado como 'patient'
+  const [userType, setUserType] = useState('patient');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const { store, actions } = useContext(Context);
+
+  const sendWelcomeEmail = async (email) => {
+    try {
+      const response = await fetch(process.env.BACKEND_URL +'/send_mail_to', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+      const data = await response.json();
+      console.log(data); // Puedes manejar la respuesta del backend según lo necesites
+    } catch (error) {
+      console.error('Error sending welcome email:', error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
-   
+  
     if (password !== confirmPassword) {
       setError("Passwords do not match");
-     
       return;
     }
-
+  
     const userData = {
       email,
       password,
       name,
       surname,
-      userType // Añade el tipo de usuario al objeto de datos del usuario
+      userType
     };
+  
+    console.log('Email:', email);
 
     try {
-      await actions.register(userData, userType, navigate);  
+      await actions.register(userData, userType, navigate);
+      await sendWelcomeEmail(email); // Llama a la función para enviar el correo electrónico de bienvenida
     } catch (error) {
       setError(error.message);
-      
     }
+  
     setTimeout(() => {
       navigate('/login');
     }, 3000);

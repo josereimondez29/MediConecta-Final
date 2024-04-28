@@ -2,13 +2,14 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 
 // import './../../styles/home.css'
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+// import rigoImageUrl from "../../img/rigo-baby.jpg";
 import bg_3 from "../../img/bg_3.jpg";
-import dept1 from "../../img/dept-1.jpg"
+// import dept1 from "../../img/dept-1.jpg"
 import Especialidades from "../component/Especialidades";
 import ListDoctors from "../component/ListDoctors";
 import "./../../styles/listDoctor.css"
 import Prices from "../component/Prices";
+import { Contact } from "../pages/Contact";
 
 export const Home = () => {
   const { store, actions } = useContext(Context);
@@ -17,10 +18,10 @@ export const Home = () => {
     <div>
       {/* Banner inicial */}
       <section className="hero-wrap">
-        <div
+        {/* <div
           className="hero-img"
           style={{ backgroundImage: `url(${bg_3})` }}
-        ></div>
+        ></div> */}
         {/* <div className="overlay"></div> */}
         {/* <div className="container">
           <div className="row align-items-center justify-content-start">
@@ -85,7 +86,8 @@ export const Home = () => {
           </div>
         </div> */}
       </section>
-      {/*tercero*/}
+
+      {/*ESPECIALIDADE*/}
       <section className="bg-light">
         {/* <div className="container">
           <div className="row d-flex">
@@ -112,13 +114,13 @@ export const Home = () => {
                     </div>
                   </div>
                   {/* Los otros servicios van aquí */}
-                {/* </div>
+        {/* </div>
               </div>
-            </div> */} 
-            <div className="row justify-content-center">
+            </div> */}
+        <div className="row justify-content-center">
           <Especialidades className="col-md-4" />
-      </div>
-            {/* <div className="col-md-5 d-flex">
+        </div>
+        {/* <div className="col-md-5 d-flex">
               <div className="appointment-wrap bg-white p-4 p-md-5 d-flex align-items-center">
                 <select name="" id="" className="form-control">
                   <option value="">Seleccione sus servicios</option>
@@ -131,7 +133,7 @@ export const Home = () => {
                 <Register />
               </div>
             </div> */}
-          {/* </div>
+        {/* </div>
         </div> */}
       </section>
 
@@ -195,15 +197,15 @@ export const Home = () => {
         </div>
       </section> */}
 
-      {/* Sexto */}
+      {/* DOCTORES */}
       <section className="section" id="doctor-section">
         <div className="container-fluid" >
           <div className="row justify-content-center mb-5 pb-2" >
             <div className="col-md-8 text-center heading-section" >
               <h2 className="mb-4 text-center">Nuestros doctores cualificados</h2>
               <p>Conoce a nuestro equipo</p>
-             </div>
-         {/* </div>
+            </div>
+            {/* </div>
           <div className="row">
             <div className="col-md-6 col-lg-3">
               <div className="staff">
@@ -239,29 +241,31 @@ export const Home = () => {
               </div>
             </div>
             Repite esta estructura para los otros doctores*/}
-           
-         </div>
-         <div className="container-fluid px-5 "  >
+
+
+            
+          </div>
+          <div className="container-fluid px-5 "  >
             <div className="row justify-content-center mx-5"  >
-              <ListDoctors  />
+              <ListDoctors />
             </div>
-         </div>
-         </div> 
-        
-         <div className="container-fluid px-5 "  >
-            <div className="row justify-content-center mx-5"  >
-              <Prices  />
-            </div>
-         </div>
-          
-      
-          
+          </div>
+        </div>
+{/*PRECIOS*/}
+        <div className="container-fluid px-5 "  >
+          <div className="row justify-content-center mx-5"  >
+            <Prices />
+          </div>
+        </div>
+
+
+
       </section>
 
-      {/* Séptimo */}
-      <section className="facts" style={{ backgroundImage: "url('img/bg_3.jpg')" }}>
+      {/* Séptimo  
+      <section className="facts" >
         <div className="overlay"></div>
-        <div className="container">
+        <div className="container " style={{ backgroundImage: "url('img/bg_3.jpg')" }}>
           <div className="row d-flex align-items-center">
             <div className="col-md-5 heading-section heading-section-white">
               <span className="subheading">Hechos graciosos</span>
@@ -284,14 +288,14 @@ export const Home = () => {
                     </div>
                   </div>
                 </div>
-                {/* Repite esta estructura para los otros contadores */}
+                 Repite esta estructura para los otros contadores  
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section>*/}
 
-      {/* Octavo */}
+      {/* Octavo
       <section className="section bg-light" id="blog-section">
         <div className="container">
           <div className="row justify-content-center mb-5 pb-5">
@@ -306,18 +310,18 @@ export const Home = () => {
           <div className="row d-flex">
             <div className="col-md-4 animate">
               <div className="blog-entry">
-                <a href="blog-single.html" className="block-20" style={{ backgroundImage: "url('img/image_1.jpg')" }}></a>
-                {/* Repite esta estructura para los otros elementos del blog */}
+                {/* <a href="blog-single.html" className="block-20" style={{ backgroundImage: "url('img/image_1.jpg')" }}></a>  
+                {/* Repite esta estructura para los otros elementos del blog  
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* Noveno */}
-      <section className="section testimony-section img" style={{ backgroundImage: "url('img/bg_3.jpg')" }}>
+      {/* Noveno 
+      <section className="section testimony-section img" >
         <div className="overlay"></div>
-        <div className="container">
+        <div className="container" style={{ backgroundImage: "url('img/bg_3.jpg')" }}>
           <div className="row justify-content-center pb-3">
             <div className="col-md-7 text-center heading-section heading-section-white animate">
               <span className="subheading">Leer testimonios</span>
@@ -327,38 +331,17 @@ export const Home = () => {
           <div className="row animate justify-content-center">
             <div className="col-md-12">
               <div className="carousel-testimony">
-                {/* Repite esta estructura para cada testimonio */}
+                {/* Repite esta estructura para cada testimonio  
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section>*/}
 
-      {/* Décimo */}
+      {/* CONTACT */}
       <section className="section contact-section" id="contact-section">
-        <div className="container">
-          <div className="row justify-content-center mb-5 pb-3">
-            <div className="col-md-7 heading-section text-center animate">
-              <h2 className="mb-4">Contáctenos</h2>
-              <p>
-                Muy, muy lejos, detrás de las montañas de la palabra, lejos de los
-                países Vokalia y Consonantia, viven los textos ciegos.
-              </p>
-            </div>
-          </div>
-          <div className="row d-flex contact-info mb-5">
-            {/* Repite esta estructura para cada sección de información de contacto */}
-          </div>
-          <div className="row no-gutters block-9">
-            <div className="col-md-6 order-md-last d-flex">
-              <form action="#" className="bg-light p-5 contact-form">
-                {/* Aquí van los campos del formulario */}
-              </form>
-            </div>
-            <div className="col-md-6 d-flex">
-              <div id="map" className="bg-white"></div>
-            </div>
-          </div>
+        <div className=" justify-content-center mb-5 pb-3">
+          <Contact />
         </div>
       </section>
     </div>

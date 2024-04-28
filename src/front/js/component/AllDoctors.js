@@ -11,13 +11,12 @@ export const AllDoctors =()=> {
         navigate('/alldoctors');
       };
 
-    // Obtener solo los primeros 6 médicos si no se ha hecho clic en "ver más"
     const displayedDoctors = store.doctors
 
     return (
         <>  
-        <h1 className="text-center">EQUIPO MÉDICO</h1>
-        <div className="container-fluid  text-center">
+         
+        <div className="container-fluid  text-center" style={{marginTop:"35px"}}>
             <p>
 
 En nuestro centro médico, nos enorgullece presentar a nuestros equipo de profesionales comprometidos con la excelencia en la atención médica y el bienestar de nuestros pacientes.
@@ -36,22 +35,15 @@ Ya sea que necesites una consulta de rutina, tratamiento para una enfermedad esp
    
             <div className="container-fuid"  >
                 <div className="row m-4 justify-content-center">
-                {displayedDoctors.length > 0 ? (
-                    <>
                         {displayedDoctors.map(Doctor => (
                             <CardDoctor 
                                 key={Doctor.id}
                                 id={Doctor.id}
                                 name={Doctor.name}
                                 surname={Doctor.surname}
-                                bio={Doctor.bio}
                                 speciality={Doctor.speciality}
                             />
                         ))}
-                    </>
-                ) : (
-                    <p>No hay doctores disponibles.</p>
-                )}
                 </div>
           </div>
         </>
