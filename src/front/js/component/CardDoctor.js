@@ -8,12 +8,15 @@ const CardDoctor = (props) => {
     const [speciality, setSpeciality] = useState(null);
     const { id } = useParams(); // Obtener los parámetros de la URL correctamente
 
-    useEffect(() => {
-        // Obtener la información del doctor y su especialidad asociada
-        if (!doctorData) {
-            actions.getinfoDoctor(id);
-        }
-    }, [doctorData]);
+    //this is causing error bcs of the invalid id...also de useParams??
+
+    // useEffect(() => {
+    //     // Obtener la información del doctor y su especialidad asociada
+    //     console.log("este es el id:", id)
+    //     if (!doctorData && id) {
+    //         actions.getinfoDoctor(id);
+    //     }
+    // }, [doctorData]);
 
     useEffect(() => {
         // Cuando se actualice el contexto con la información del médico, actualizar el estado local

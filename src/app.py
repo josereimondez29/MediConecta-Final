@@ -23,6 +23,7 @@ import uuid
 from random import choice
 from string import ascii_letters, digits
 import secrets
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -292,6 +293,9 @@ def get_patient(patient_id):
             "name": patient.name,
             "surname": patient.surname,
             "email": patient.email,
+            "age": patient.age,
+            "identification": patient.identification,
+            "social_security": patient.social_security,
         }
         return jsonify({"message": "Patient found", "patient": patient_data}), 200
     return jsonify({"message": "Patient not found"}), 404
@@ -323,10 +327,10 @@ def get_patient_details(patient_id):
             "identification": patient.identification,
             "social_security": patient.social_security,
             "email": patient.email,
-            "alergic": patient.alergic,
-            "specific_alergic": patient.specific_alergic,
-            "medicated": patient.medicated,
-            "specific_medicated": patient.specific_medicated,
+            # "alergic": patient.alergic,
+            # "specific_alergic": patient.specific_alergic,
+            # "medicated": patient.medicated,
+            # "specific_medicated": patient.specific_medicated,
             "is_active": patient.is_active
         }
         return jsonify({"message": "Patient found", "patient": patient_data}), 200
@@ -347,10 +351,10 @@ def update_patient(patient_id):
     patient.identification = data.get('identification', patient.identification)
     patient.social_security = data.get('social_security', patient.social_security)
     patient.email = data.get('email', patient.email)
-    patient.alergic = data.get('alergic', patient.alergic)
-    patient.specific_alergic = data.get('specific_alergic', patient.specific_alergic)
-    patient.medicated = data.get('medicated', patient.medicated)
-    patient.specific_medicated = data.get('specific_medicated', patient.specific_medicated)
+    # patient.alergic = data.get('alergic', patient.alergic)
+    # patient.specific_alergic = data.get('specific_alergic', patient.specific_alergic)
+    # patient.medicated = data.get('medicated', patient.medicated)
+    # patient.specific_medicated = data.get('specific_medicated', patient.specific_medicated)
     patient.is_active = data.get('is_active', patient.is_active)
     
     db.session.commit()
@@ -987,10 +991,24 @@ def delete_medicated(medicated_id):
 # def send_mail():
 #     msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
 #                   recipients=['mediconecta1@gmail.com'])
-#     msg.html = "<h1> Hola desde el correo</h1>"
+#     msg.html = "<h1> Bienvenido a MediConecta </h1>"
 #     mail.send(msg)
 #     return jsonify ({"msg": "Mail enviado!!!"})
 
+
+@app.route('/send_mail_to', methods=['POST'])
+def send_mail_to():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify({"error": "Email address not provided"}), 400
+
+    msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
+                  recipients=[email])
+    msg.html = "<h1> Bienvenido a MediConecta </h1>"
+    mail.send(msg)
+    return jsonify({"msg": "Mail enviado!!!"}), 200
 
 
 @app.route('/send_mail', methods=['POST'])

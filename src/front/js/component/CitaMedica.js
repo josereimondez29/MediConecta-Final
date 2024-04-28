@@ -97,4 +97,6 @@ const MedicalAppointment = () => {
     </div>
   );
 };
+
 export default MedicalAppointment;
+
