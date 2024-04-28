@@ -4,24 +4,29 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+  const [excludedTimes, setExcludedTimes] = useState([]);
 
   useEffect(() => {
-    console.log('Disponibilidad del médico:', doctorAvailability);
-  }, [doctorAvailability]); // Ejecutar cada vez que cambie la disponibilidad del médico
+    if (doctorAvailability) {
+      const times = transformAvailabilityToExcludeTimes();
+      console.log('Excluded Times:', times); // Agregar este console.log
+      setExcludedTimes(times);
+    }
+  }, [doctorAvailability]);
 
   const transformAvailabilityToExcludeTimes = () => {
     if (!doctorAvailability) {
       return [];
     }
-    
-    return doctorAvailability.map(availability => {
+
+    return doctorAvailability.map((availability) => {
       const startTime = new Date(`1970-01-01T${availability.start_time}`);
       const endTime = new Date(`1970-01-01T${availability.end_time}`);
       return { start: startTime, end: endTime };
     });
   };
 
-  const handleDateChange = date => {
+  const handleDateChange = (date) => {
     setSelectedDate(date);
     handleAppointment(date);
   };
@@ -38,13 +43,15 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
         dateFormat="MMMM d, yyyy h:mm aa"
         minDate={new Date()}
         placeholderText="Seleccione una fecha y hora"
-        excludeTimes={transformAvailabilityToExcludeTimes()}
+        excludeTimes={excludedTimes}
       />
     </div>
   );
 };
 
 export default AvailabilityCalendar;
+
+
 
 
 
