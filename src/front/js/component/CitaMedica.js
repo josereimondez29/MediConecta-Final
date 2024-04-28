@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+// Importar useEffect desde React
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SpecialitySelection from './SpecialitySelection';
 import DoctorSelection from './DoctorSelection';
@@ -13,6 +14,22 @@ const MedicalAppointment = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [appointmentCreated, setAppointmentCreated] = useState(false);
+  const [doctorAvailability, setDoctorAvailability] = useState(null); // Inicializamos como null
+
+  const handleDoctorSelect = async (doctorId) => {
+    setSelectedDoctor(doctorId);
+
+    try {
+      const response = await fetch(`${process.env.BACKEND_URL}/api/doctor_availability/${doctorId}`);
+      if (!response.ok) {
+        throw new Error('Error fetching doctor availability');
+      }
+      const data = await response.json();
+      setDoctorAvailability(data.availability);
+    } catch (error) {
+      console.error('Error fetching doctor availability:', error);
+    }
+  };
 
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
@@ -49,16 +66,16 @@ const MedicalAppointment = () => {
     <div className="container medical-appointment-container mt-5">
       {store.authentication === false ? (
         <div className="row justify-content-center">
-        <div className="col-md-12">
-          <div className="message">
-            <p>Para sacar una cita, necesitas estar registrado y haber iniciado sesión en la web.</p>
-            <div className="d-flex justify-content-center"> {/* Utilizamos flexbox para alinear horizontalmente */}
-              <button style={{ backgroundColor: '#5C8692', color: '#fff', marginRight: '10px' }} className="btn" onClick={() => navigate('/login')}>Iniciar sesión</button>
-              <button style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn" onClick={() => navigate('/register')}>Registrarse</button>
+          <div className="col-md-12">
+            <div className="message">
+              <p>Para sacar una cita, necesitas estar registrado y haber iniciado sesión en la web.</p>
+              <div className="d-flex justify-content-center">
+                <button style={{ backgroundColor: '#5C8692', color: '#fff', marginRight: '10px' }} className="btn" onClick={() => navigate('/login')}>Iniciar sesión</button>
+                <button style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn" onClick={() => navigate('/register')}>Registrarse</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       ) : (
         <div className="row justify-content-center">
           <div className="col-12">
@@ -66,11 +83,11 @@ const MedicalAppointment = () => {
               <SpecialitySelection handleSpecialitySelect={setSelectedSpeciality} />
             </div>
             <div style={{ marginBottom: '20px' }}>
-              <DoctorSelection handleDoctorSelect={setSelectedDoctor} selectedSpeciality={selectedSpeciality} />
+              <DoctorSelection handleDoctorSelect={handleDoctorSelect} selectedSpeciality={selectedSpeciality} />
             </div>
             <div style={{ marginBottom: '20px' }}>
-              {selectedDoctor && (
-                <AvailabilityCalendar handleAppointment={setSelectedDate} doctorId={selectedDoctor} />
+              {selectedDoctor && doctorAvailability && ( // Asegurarse de que doctorAvailability esté presente
+                <AvailabilityCalendar handleAppointment={setSelectedDate} doctorAvailability={doctorAvailability} />
               )}
             </div>
             <button style={{backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px'}}  className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
@@ -89,6 +106,10 @@ const MedicalAppointment = () => {
 };
 
 export default MedicalAppointment;
+
+
+
+
 
 
 
