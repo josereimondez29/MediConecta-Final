@@ -30,7 +30,7 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 
   return (
     <div>
-      <h2>Seleccione Doctor</h2>
+      <h4>Seleccione Doctor</h4>
       <select onChange={handleDoctorChange}>
         <option value="">Seleccionar Doctor</option>
         {doctors.map((doctor) => (
@@ -42,6 +42,10 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 };
 
 export default DoctorSelection;
+
+
+
+
 
 
 

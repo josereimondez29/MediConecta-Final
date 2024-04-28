@@ -81,7 +81,7 @@ export const Navbar = () => {
                           </form>
                           <form className="d-flex p-2" role="log in">
                             <Link to = {"/register/medical_appointment"}>
-                              <button className="btn btn-success" >Registrar cita</button>
+                              <button style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn" >Registrar cita</button>
                             </Link>
                           </form>
                       </div>

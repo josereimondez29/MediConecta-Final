@@ -28,7 +28,7 @@ const SpecialitySelection = ({ handleSpecialitySelect }) => {
 
   return (
     <div>
-      <h2>Seleccione Especialidad</h2>
+      <h4>Seleccione Especialidad</h4>
       <select value={selectedSpeciality} onChange={handleChange}>
         <option value="">Seleccionar Especialidad</option>
         {specialities.map((speciality) => (

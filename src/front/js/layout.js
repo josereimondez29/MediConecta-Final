@@ -11,6 +11,7 @@ import { SingleDoctor } from "./pages/SingleDoctor";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+
 import MedicalAppointment from "./component/CitaMedica";
 import PrivateDoctor from "./pages/PrivateDoctor";
 import { AllDoctors } from "./component/AllDoctors";
@@ -65,6 +66,7 @@ const LayoutContent = () => {
   return (
     <div>
 
+
       <Navbar />
       <Jumbotron page={page} />
       <Routes>
@@ -88,6 +90,7 @@ const LayoutContent = () => {
         <Route element={<NotFound />} path="*" />
       </Routes>
       <Footer />
+
 
     </div>
   );
