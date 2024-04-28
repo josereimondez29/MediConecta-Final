@@ -27,7 +27,7 @@ import Dermatologia from "./component/Dermatologia";
 import Pediatria from "./component/Pediatria";
 import NotFound from "./component/NotFound"; 
 import { Contact } from "./pages/Contact";
-import Psicologia from "./component/Psicología";
+import Psicologia from "./component/Psicologia";
 import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
