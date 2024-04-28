@@ -23,7 +23,7 @@ export const Navbar = () => {
         // Verificar si el tipo de usuario y el id del usuario están definidos y son válidos
         if (userType && (userType === "doctor" || userType === "patient") && userId) {
             // Redirigir al componente de zona privada correspondiente
-            navigate(`/${userType === "doctor" ? "privatedoctor" : "PrivatePatient"}`);
+            navigate(`/${userType === "doctor" ? `privatedoctor/&{id}`  : "PrivatePatient"}`);
         } else {
             console.error("Tipo de usuario o ID de usuario no reconocido");
         }
