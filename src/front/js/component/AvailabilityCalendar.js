@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
   const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    console.log('Disponibilidad del médico:', doctorAvailability);
+  }, [doctorAvailability]); // Ejecutar cada vez que cambie la disponibilidad del médico
 
   const transformAvailabilityToExcludeTimes = () => {
     if (!doctorAvailability) {
@@ -24,7 +28,7 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
 
   return (
     <div>
-      <h4>Seleccione una fecha y hora disponibles</h4>
+      <h2>Seleccione una fecha y hora disponibles</h2>
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
@@ -41,6 +45,13 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
 };
 
 export default AvailabilityCalendar;
+
+
+
+
+
+
+
 
 
 
