@@ -10,15 +10,15 @@ const PrivateDoctor = (props) => {
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
 
-    useEffect(() => {
-        actions.loadDoctors()
-        actions.loadSpecialities()
-        actions.privateZone()
-    }, []);
+    // useEffect(() => {
+    //     actions.loadDoctors()
+    //     actions.loadSpecialities()
+    //     actions.privateZone()
+    // }, []);
 
-    if (!store.authentication) {
-        return <Navigate to = "/"/>;
-      }
+    // if (!store.authentication) {
+    //     return <Navigate to = "/"/>;
+    //   }
 
     useEffect(() => {
         if (id && store.doctors && store.doctors.length > 0) {
@@ -80,7 +80,7 @@ const PrivateDoctor = (props) => {
                                             </div>
                                             <div className="container-fluid justify-content-between" >
                                                 <Link to={`/editDoctor/${id}`}>
-                                                    <button className="btn btn-info">Modificar perfil</button>
+                                                    <button className="btn btn-primario">Modificar perfil</button>
                                                 </Link>
                                             </div>
                                         </div>

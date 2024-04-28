@@ -68,3 +68,14 @@ p {
   background-attachment: fixed;
 }
 
+.btn-primario{
+  background-color:#5C8692;
+  color: #fff;
+  border-color: #7A9CA5;
+}
+
+.btn-secundario{
+  background-color:#fff;
+  color: #5C8692;
+  border-color: #7A9CA5;
+}

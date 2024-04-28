@@ -66,23 +66,21 @@ export const Login = () => {
             </div>
             <button type="submit" style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn me-3">Login</button>
             <Link to={"/"}>
-              <button type="button" className="btn btn-secondary">Back home</button>
+              <button type="button" className="btn btn-secundario">Back home</button>
             </Link>
             <Link to={"/recoverpassword"}>
-              <button type="button" className="btn btn-secondary">Recuperar contraseña</button>
+              <button type="button" className="btn btn-primario">Recuperar contraseña</button>
             </Link>
 
-          </form>
+            </form>
           {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
-
-
+          {store.authentication && (
+                    <div className="popup text-center">
+                        <p>¡Login exitoso!</p>
+                    </div>
+                )}
         </div>
-        {store.authentication && (
-          <div className="popup text-center">
-            <p>¡Login exitoso!</p>
-          </div>
-        )}
-
+       
       </div>
     </div>
   );

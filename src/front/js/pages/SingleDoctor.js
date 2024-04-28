@@ -88,11 +88,11 @@ export const SingleDoctor = (props) =>{
                                     </div>
                                     <div className="buttons" style={{display: "flex", justifyContent:"space-between", alignItems:"center"}}>
                                         <Link to = {"/register/medical_appointment"}>
-                                            <button className="btn btn-success" >Registrar cita</button>
+                                            <button className="btn btn-primario" >Registrar cita</button>
                                         </Link>
                                         
                                         <Link to={"/"}>
-                                            <button className="btn btn-primary" style={{ marginBottom:"5px"}}>Volver a Home</button>
+                                            <button className="btn btn-secundario" style={{ marginBottom:"5px"}}>Volver a Home</button>
                                         </Link> 
                                        
                                         {/* <Link to={"/"}>

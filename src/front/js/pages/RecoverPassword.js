@@ -42,7 +42,7 @@ export const RecoverPassword = () => {
                         <option value="doctor">Médico</option>
                       </select>
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit " className="btn btn-primario">Submit</button>
                 </form>
             </div>
         </>

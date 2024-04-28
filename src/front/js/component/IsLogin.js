@@ -42,12 +42,12 @@ export const IsLogin = () => {
                 
                 <div className="container-fluid d-flex justify-content-between">
                     <Link to={`/privatedoctor/${id}`}>
-                        <button className="btn btn-info">Ir a zona privada</button>
+                        <button className="btn btn-primario">Ir a zona privada</button>
                     </Link>
                     {/* Utilizamos el valor actualizado de token */}
                     { token && (
                         <Link to={`/editDoctor/${id}`}>
-                        <button className="btn btn-info">Modificar perfil</button>
+                        <button className="btn btn-secundario">Modificar perfil</button>
                      </Link>
                     )}
                  

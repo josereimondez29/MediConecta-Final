@@ -57,10 +57,10 @@ const CardDoctor = (props) => {
                 <hr/>
                 <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center", marginTop:"0px"}}>
                     <Link to={"/doctor/" + props.id + "/details"}>
-                        <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Leer más</button>
+                        <button className="btn btn-secundario" style={{  marginBottom:"5px"}}>Leer más</button>
                     </Link> 
                     <Link to = {"/register/medical_appointment"}>
-                        <button className="btn btn-success" style={{ marginBottom:"15px"}} >Registrar cita</button>
+                        <button className="btn btn-primario" style={{ marginBottom:"15px"}} >Registrar cita</button>
                     </Link>
                 </div>
             </div>
