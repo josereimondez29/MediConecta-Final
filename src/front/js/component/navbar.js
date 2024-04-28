@@ -4,8 +4,6 @@ import { Context } from "../store/appContext";
 export const Navbar = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
-
-
     const handleLoginButtonClickMedicos = () => {
         // Redirige al componente de registro
         navigate('/register');
@@ -19,7 +17,6 @@ export const Navbar = () => {
         const userType = localStorage.getItem("userType");
         // Obtener el id del usuario del almacenamiento local si está disponible
         const userId = localStorage.getItem("id");
-        
         // Verificar si el tipo de usuario y el id del usuario están definidos y son válidos
         if (userType && (userType === "doctor" || userType === "patient") && userId) {
             // Redirigir al componente de zona privada correspondiente
@@ -28,8 +25,6 @@ export const Navbar = () => {
             console.error("Tipo de usuario o ID de usuario no reconocido");
         }
     };
-
-
     useEffect(() => {
         console.log("cambió el token")
         console.log(localStorage.getItem("token"))

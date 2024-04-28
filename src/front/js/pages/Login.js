@@ -18,7 +18,6 @@ export const Login = () => {
       await actions.login(email, password, userType);
       setTimeout(() => {
         if (store.authentication) {
-
           navigate(userType === 'doctor' ? "/log" : "/PrivatePatient");
 
         }
@@ -75,6 +74,7 @@ export const Login = () => {
 
           </form>
           {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
+
 
         </div>
         {store.authentication && (
