@@ -41,16 +41,16 @@ const Psicologia = () => {
       <div className="text-container">
         <h2 className="title">Psicologia</h2>
         <p className="text">
-          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas, incluida la Medicina General.
+          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
         </p>
         <p className="text">
-          La Psicologia es la base fundamental de la atención médica, abordando una amplia gama de problemas de salud que afectan a personas de todas las edades y condiciones. Nuestros médicos generales son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes.
+          Consulta online mediante videollamada (30 – 45 minutos) para realizar un procedimiento de evaluación, establecimientos de objetivos y tratamiento. Tipos de terapias a realiar:
         </p>
         <ul className="service-list">
-          <li>Consultas médicas virtuales</li>
-          <li>Atención preventiva</li>
-          <li>Manejo de enfermedades crónicas</li>
-          <li>Referencias y coordinación de atención</li>
+          <li>Trastornos por ansiedad</li>
+          <li>Trastornos del estado de ánimo</li>
+          <li>Ludopatía</li>
+          <li>Trastorno de déficit de ateción con/sin hiperactividad (TDA/H)</li>
         </ul>
         <p className="text">
           En MediConecta, estamos comprometidos a brindar atención médica de alta calidad y accesible a todos. Ya sea que necesites una consulta de rutina, atención preventiva o manejo de una enfermedad crónica, nuestro equipo de Medicina General está aquí para cuidarte. ¡Pide una cita con nosotros hoy mismo y toma el control de tu salud!
