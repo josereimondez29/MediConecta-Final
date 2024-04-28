@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SpecialitySelection from './SpecialitySelection';
 import DoctorSelection from './DoctorSelection';
@@ -6,23 +6,32 @@ import AvailabilityCalendar from './AvailabilityCalendar';
 import './../../styles/MedicalAppointment.css';
 import { Context } from '../store/appContext';
 
+
 const MedicalAppointment = () => {
   const navigate = useNavigate();
   const { store } = useContext(Context);
   const [selectedSpeciality, setSelectedSpeciality] = useState(null);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-
+  const [appointmentCreated, setAppointmentCreated] = useState(false);
+  const [doctorAvailability, setDoctorAvailability] = useState(null); // Inicializamos como null
+  const handleDoctorSelect = async (doctorId) => {
+    setSelectedDoctor(doctorId);
+    try {
+      const response = await fetch(`${process.env.BACKEND_URL}/api/doctor_availability/${doctorId}`);
+      if (!response.ok) {
+        throw new Error('Error fetching doctor availability');
+      }
+      const data = await response.json();
+      setDoctorAvailability(data.availability);
+    } catch (error) {
+      console.error('Error fetching doctor availability:', error);
+    }
+  };
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
-      console.log("Doctor seleccionado:", selectedDoctor);
-      console.log("Fecha y hora seleccionadas:", selectedDate);
-
       const token = localStorage.getItem('token');
       const formattedDate = selectedDate.toISOString().slice(0, 19).replace('T', ' ');
-
-      console.log("Fecha y hora formateadas:", formattedDate);
-
       const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
         method: "POST",
         headers: {
@@ -36,10 +45,8 @@ const MedicalAppointment = () => {
         })
       });
       const data = await response.json();
-      console.log("Respuesta del backend:", data);
-
       if (response.ok) {
-        navigate('/success');
+        setAppointmentCreated(true); // Cambio de estado para mostrar el mensaje
       } else {
         console.error('Error al registrar la cita:', data.msg);
       }
@@ -47,40 +54,43 @@ const MedicalAppointment = () => {
       alert("Por favor, selecciona una especialidad, un médico y una fecha para programar la cita.");
     }
   };
-
   const isButtonDisabled = !(selectedSpeciality && selectedDoctor && selectedDate);
-
   return (
-    <div className="container medical-appointment-container">
+    <div className="container medical-appointment-container mt-5">
       {store.authentication === false ? (
         <div className="row justify-content-center">
-          <div className="col-md-6">
+          <div className="col-md-12">
             <div className="message">
               <p>Para sacar una cita, necesitas estar registrado y haber iniciado sesión en la web.</p>
-              <div className="buttons">
-                <button className="btn btn-primary" onClick={() => navigate('/login')}>Iniciar sesión</button>
-                <button className="btn btn-secondary" onClick={() => navigate('/register')}>Registrarse</button>
+              <div className="d-flex justify-content-center">
+                <button style={{ backgroundColor: '#5C8692', color: '#fff', marginRight: '10px' }} className="btn" onClick={() => navigate('/login')}>Iniciar sesión</button>
+                <button style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn" onClick={() => navigate('/register')}>Registrarse</button>
               </div>
             </div>
           </div>
         </div>
       ) : (
         <div className="row justify-content-center">
-          <div className="col-md-6 selection-container">
-            <SpecialitySelection handleSpecialitySelect={setSelectedSpeciality} />
-          </div>
-          <div className="col-md-6 selection-container">
-            <DoctorSelection handleDoctorSelect={setSelectedDoctor} selectedSpeciality={selectedSpeciality} />
-          </div>
-          <div className="col-md-6">
-            {selectedDoctor && (
-              <AvailabilityCalendar handleAppointment={setSelectedDate} doctorId={selectedDoctor} />
-            )}
-          </div>
-          <div className="col-md-6">
-            <button className="btn btn-success" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
+          <div className="col-12">
+            <div style={{ marginBottom: '20px'}}>
+              <SpecialitySelection handleSpecialitySelect={setSelectedSpeciality} />
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              <DoctorSelection handleDoctorSelect={handleDoctorSelect} selectedSpeciality={selectedSpeciality} />
+            </div>
+            <div style={{ marginBottom: '20px' }}>
+              {selectedDoctor && doctorAvailability && ( // Asegurarse de que doctorAvailability esté presente
+                <AvailabilityCalendar handleAppointment={setSelectedDate} doctorAvailability={doctorAvailability} />
+              )}
+            </div>
+            <button style={{backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px'}}  className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
               Registrar cita
             </button>
+            {appointmentCreated && (
+              <div className="alert alert-success" role="alert">
+                Cita creada satisfactoriamente! A su email le llegarán los datos y link de su cita online!
+              </div>
+            )}
           </div>
         </div>
       )}

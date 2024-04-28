@@ -41,7 +41,7 @@ class Patient(db.Model):
     identification = db.Column(db.Integer, unique=True)
     social_security = db.Column(db.Integer, unique=True)
     email = db.Column(db.String(120), unique=True, nullable=False) 
-    password = db.Column(db.String(80))
+    password = db.Column(db.String(255), nullable=False)
     is_active = db.Column(db.Boolean(), default=True)
     alergic = db.Column(db.Boolean())
     medicated = db.Column(db.Boolean())
@@ -220,20 +220,47 @@ class Medical_Appointment(db.Model):
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
     doctor_id_relationship = db.relationship('Doctor')  
     appointment_date = db.Column(db.DateTime, nullable=False)  
+    meeting_id = db.Column(db.Integer, db.ForeignKey('meetings.id'))  # Nueva columna para la relación con Meetings
+    meeting_relationship = db.relationship('Meetings', back_populates='medical_appointment', lazy=True)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-
-    def __repr__(self):
-        return f"Cita: {self.id}, Paciente: {self.patient_id}, Doctor: {self.doctor_id}, Especialidad: {self.speciality_id}, Estado: {self.is_active}"
     
+    def serialize(self):
+        # Acceder al room_url a través de la relación con Meetings
+        room_url = self.meeting_relationship.room_url if self.meeting_relationship else None
+        
+        return {
+            "id": self.id,
+            "speciality_id": self.speciality_id,
+            "patient_id": self.patient_id,
+            "doctor_id": self.doctor_id,
+            "appointment_date": self.appointment_date.isoformat(),
+            "room_url": room_url,
+            "is_active": self.is_active
+        }
+
+class Meetings(db.Model):
+    __tablename__ = 'meetings'
+
+    id = db.Column(db.Integer, primary_key=True)
+    room_id = db.Column(db.String(255), nullable=False)
+    appointment_date = db.Column(db.DateTime, nullable=False)
+    room_url = db.Column(db.String(255), nullable=False)  # Nueva columna para la URL de la sala
+    medical_appointment = db.relationship('Medical_Appointment', back_populates='meeting_relationship', uselist=False)
+
     def serialize(self):
         return {
             "id": self.id,
-            "medical_appointment_id": self.id,
-            "patient_id": self.patient_id,
-            "doctor_id": self.doctor_id,
-            "speciality": self.speciality_id,
-            "is_active": self.is_active
+            "room_id": self.room_id,
+            "appointment_date": self.appointment_date.isoformat(),
+            "room_url": self.room_url  # Incluyendo la URL de la sala en la serialización
         }
+
+    @classmethod
+    def add_meeting(cls, room_id, appointment_date, room_url):
+        new_meeting = cls(room_id=room_id, appointment_date=appointment_date, room_url=room_url)
+        db.session.add(new_meeting)
+        db.session.commit()
+
 """class FavoriteSpeciality(db.Model):
     __tablename__ = 'favorite_speciality'
     id = db.Column(db.Integer, primary_key=True)

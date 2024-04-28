@@ -1,6 +1,3 @@
-
-
-
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -27,126 +24,99 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
 
-			// getMessage: async () => {
-			// 	try{
-			// 		// fetching data from the backend
-			// 		const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-			// 		const data = await resp.json()
-			// 		setStore({ message: data.message })
-			// 		// don't forget to return something, that is how the async resolves
-			// 		return data;
-			// 	}catch(error){
-			// 		console.log("Error loading message from backend", error)
-			// 	}
-			// },
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			},
-
-			// login: (email, password, userType) => {
+			login: (email, password, userType) => {
 			// 	const requestOptions = {
-			// 		method: "POST",
-			// 		headers: {"Content-Type": "application/json"},
-			// 		body: JSON.stringify({
-			// 			"email": email,
-			// 			"password": password
-			// 		})
+			// 	  method: "POST",
+			// 	  headers: { "Content-Type": "application/json" },
+			// 	  body: JSON.stringify({
+			// 		"email": email,
+			// 		"password": password
+			// 	  })
 			// 	};
 				
 			// 	fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
 			// 	.then((response) => {
-			// 		console.log(response.status)
-			// 		if (response.status === 200){
-			// 			setStore({ authentication: true });
-			// 		}
-			// 		return response.json();
+			// 	  console.log(response.status)
+			// 	  if (response.status === 200){
+			// 		setStore({ authentication: true });
+			// 	  }
+			// 	  return response.json();
 			// 	})
 			// 	.then((data) => {
-			// 		localStorage.setItem("token", data.token);
-			// 		sessionStorage.setItem("token", data.token);
-			// 		localStorage.setItem("authentication", true)
-			// 		sessionStorage.setItem("authentication", true);
-
-			// 		localStorage.setItem("id", data.doctor.id)
+			// 	  localStorage.setItem("token", data.token);
+			// 	  sessionStorage.setItem("token", data.token);
+			// 	  localStorage.setItem("authentication", true);
+			// 	  sessionStorage.setItem("authentication", true);
+			  
+			// 	  if (userType === 'patient') {
+			// 		localStorage.setItem("id", data.patient.id);
+			// 		sessionStorage.setItem("id", data.patient.id);
+			// 		localStorage.setItem("name", data.patient.name);
+			// 		sessionStorage.setItem("name", data.patient.name);
+			// 	  } else if (userType === 'doctor') {
+			// 		localStorage.setItem("id", data.doctor.id);
 			// 		sessionStorage.setItem("id", data.doctor.id);
+			// 		localStorage.setItem("name", data.doctor.name);
+			// 		sessionStorage.setItem("name", data.doctor.name);
+			// 	  }
+				  
+			// 	  localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
+			// 	  console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
 
-			// 		console.log("DATA LOGIN ->", data)
-					
-			// 		const user = userType === 'patient' ? data.patient : data.doctor;
-			// 		localStorage.setItem("name", user.name);
-			// 		sessionStorage.setItem("name", user.name);
-			
+			// 	  console.log("DATA LOGIN ->", data);
 			// 	})
 			// 	.catch((error) => {
-			// 		console.error( error);
-			// 		setStore({ messageError: error.message });
+			// 	  console.error( error);
+			// 	  setStore({ messageError: error.message });
 			// 	});
-			// },
+			//   },
 
-			login: (email, password, userType) => {
-				const requestOptions = {
-				  method: "POST",
-				  headers: { "Content-Type": "application/json" },
-				  body: JSON.stringify({
-					"email": email,
-					"password": password
-				  })
-				};
-				
-				fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
-				.then((response) => {
-				  console.log(response.status)
-				  if (response.status === 200){
-					setStore({ authentication: true });
-				  }
-				  return response.json();
-				})
-				.then((data) => {
-				  localStorage.setItem("token", data.token);
-				  sessionStorage.setItem("token", data.token);
-				  localStorage.setItem("authentication", true);
-				  sessionStorage.setItem("authentication", true);
+                const requestOptions = {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    "email": email,
+                    "password": password
+                  })
+                };
+                fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
+                .then((response) => {
+                  console.log(response.status)
+                  if (response.status === 200){
+                    setStore({ authentication: true });
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  localStorage.setItem("token", data.token);
+                  sessionStorage.setItem("token", data.token);
+                  localStorage.setItem("authentication", true);
+                  sessionStorage.setItem("authentication", true);
+                  if (userType === 'patient') {
+                    localStorage.setItem("id", data.patient.id);
+                    sessionStorage.setItem("id", data.patient.id);
+                    localStorage.setItem("name", data.patient.name);
+                    sessionStorage.setItem("name", data.patient.name);
+                  } else if (userType === 'doctor') {
+                    localStorage.setItem("id", data.doctor.id);
+                    sessionStorage.setItem("id", data.doctor.id);
+                    localStorage.setItem("name", data.doctor.name);
+                    sessionStorage.setItem("name", data.doctor.name);
+                  }
+                  localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
+                  console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
+                  console.log("DATA LOGIN ->", data);
+                })
+                .catch((error) => {
+                  console.error( error);
+                  setStore({ messageError: error.message });
+                });
+              },
+
+
 			  
-				  if (userType === 'patient') {
-					localStorage.setItem("id", data.patient.id);
-					sessionStorage.setItem("id", data.patient.id);
-					localStorage.setItem("name", data.patient.name);
-					sessionStorage.setItem("name", data.patient.name);
-				  } else if (userType === 'doctor') {
-					localStorage.setItem("id", data.doctor.id);
-					sessionStorage.setItem("id", data.doctor.id);
-					localStorage.setItem("name", data.doctor.name);
-					sessionStorage.setItem("name", data.doctor.name);
-				  }
-				  
-				  localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
-				  console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
-
-				  console.log("DATA LOGIN ->", data);
-				})
-				.catch((error) => {
-				  console.error( error);
-				  setStore({ messageError: error.message });
-				});
-			  },
-
-			register: async (userData, userType) => {
+			register: async (userData, userType, id) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + `/api/register/${userType}`, {
 						method: "POST",
@@ -159,30 +129,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const data = await resp.json();
 					setStore({ signupSuccesful: "Successful registration! Now you can log in." });
-			
+					
 				} catch (error) {
 					setStore({ messageError: error.message });
 				}
 			},
 
-			// register: async (userData, userType) => {
-			// 	try {
-			// 		const resp = await fetch(process.env.BACKEND_URL + `/api/register/${userType}`, {
-			// 			method: "POST",
-			// 			headers: { "Content-Type": "application/json" },
-			// 			body: JSON.stringify(userData)
-			// 		});
-			// 		if (!resp.ok) {
-			// 			throw new Error("There was a problem in the registration request");
-			// 		}
-			// 		const data = await resp.json();
-			// 		// Almacenar los datos del paciente en el contexto
-			// 		setStore({ currentPatient: data });
-			// 		setStore({ signupSuccesful: "Successful registration! Now you can log in." });
-			// 	} catch (error) {
-			// 		setStore({ messageError: error.message });
-			// 	}
-			// },
+			
 
 			logout: ()=>{
 				setStore({ authentication: false });
@@ -262,31 +215,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			},
 
-			// updateDoctor: async (editDoctor, id) => {
-            //     try {
-            //         const requestOptions = {
-            //             method: "PUT",
-            //             body: JSON.stringify(editDoctor),
-            //             headers: { "Content-Type": "application/json" }
-            //         };
-
-            //         const response = await fetch(`${process.env.BACKEND_URL}/patient/${id}`, requestOptions);
-            //         const data = await response.json();
-
-            //         if (!response.ok) {
-            //             throw new Error(data.message || "Failed to update doctor");
-            //         }
-
-            //         // Actualizar el estado global con la información actualizada del paciente
-            //         setStore({ currentPatient: data });
-
-            //         return data;
-            //     } catch (error) {
-            //         console.error("Error updating doctor:", error);
-            //         throw error;
-            //     }
-            // },
-
 			updatePatient: async (editPatient, id) => {
 				try {
 					console.log("ID in updatePatient:", id); // Agregar este console.log
@@ -318,6 +246,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 
+
 			loadPatients: ()=>{
 				fetch(process.env.BACKEND_URL + "/patients")
 					.then((response) => response.json())
@@ -326,24 +255,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}, 
 			
 			
-			// getinfoPatient: (id) => { 
-			// 	fetch(process.env.BACKEND_URL + `/patient/${id}`)
-			// 	.then((response) => response.json())
-			// 	.then((result) => {
-			// 		// Aquí se asume que los datos del paciente obtenidos del backend están en data
-			// 			let updatedPatient = result; // Suponiendo que los datos del médico se encuentran en data.result
-			// 			let updatedPatients = getStore().patients.map((Patient) => {
-			// 				if (Patient.id === id) {
-			// 					return updatedPatient; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
-			// 				} else {
-			// 					return Patient; // Si el ID no coincide, conserva el médico sin cambios
-			// 				}
-			// 			});
-			// 			setStore({ patients: updatedPatients }); // Actualiza el estado de la tienda con los médicos actualizados
-			// 			console.log("UPDATE", updatedPatients); // Muestra los médicos actualizados en la consola
-			// 		});
-			// 	},
-
 			getinfoPatient: (id) => { 
 
 				console.log("Fetching patient info for ID:", id);
@@ -375,6 +286,52 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
+			recoverPassword: (email, userType) => {
+				const requestOptions = {
+				  method: "POST",
+				  headers: { "Content-Type": "application/json" },
+				  body: JSON.stringify({
+					"email": email,
+					"userType": userType
+				})
+				};
+				
+				fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
+				  .then((response) => response.text())
+				  .then((result) => console.log(result))
+				  .catch((error) => console.error(error));
+			},
+			
+			privateZone: async () => {
+				try {
+					const token = localStorage.getItem('token');
+					
+					const requestOptions = {
+						method: 'GET',
+						headers: { 
+							"Content-Type": "application/json",
+							'Authorization': 'Bearer ' + token
+						} 
+					};
+
+					const resp = await fetch(process.env.BACKEND_URL + "/api/protected", requestOptions);
+
+					if (!resp.ok) {
+						throw new Error("There was a problem in the login request");
+					} else if (resp.status === 403) {
+						throw new Error("Missing or invalid token");
+					}
+
+					const data = await resp.json();
+					console.log("This is the data you requested", data);
+					return data;
+				} catch (error) {
+					console.error(error);
+				
+				}
+			
+		},
+		
 		},
 	}
 };

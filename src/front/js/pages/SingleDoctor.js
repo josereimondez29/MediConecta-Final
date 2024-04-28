@@ -49,7 +49,7 @@ export const SingleDoctor = (props) =>{
     if (!doctor) {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
-
+   
      
     // console.log("DOCTORDATA SINGLE DOCTOR-->", doctor)
     // console.log("STORE SINGLE DOCTOR-->", store.doctors)
@@ -58,6 +58,13 @@ export const SingleDoctor = (props) =>{
 
     return (
         <>
+
+  
+        <div className="jumbotron">
+            <h1 className="display-4">EQUIPO MÉDICO</h1>
+            <p className="lead">El experto</p>
+        </div>
+
             
             <div className="container-fluid">
                 <ul className="list-group">
@@ -72,23 +79,25 @@ export const SingleDoctor = (props) =>{
                                     <div className="card-text" style={{ textAlign: "left" }}>
                                         <div className='info_contact' style={{marginBottom: "15px"}}>
                                             <span style={{ fontSize: "medium "}}>ESPECIALIDAD:&nbsp;{speciality.name}</span><br/>
-                                            <span style={{ fontSize: "small "}}>EMAIL:&nbsp;{doctor.email}</span><br/>
+                                            {/* <span style={{ fontSize: "small "}}>EMAIL:&nbsp;{doctor.email}</span><br/> */}
                                             <span style={{ fontSize: "small "}}>Nº COLEGIADO:&nbsp;{doctor.medical_license}</span><br/>
-                                            <span style={{ fontSize: "small "}}>DNI/NIE:&nbsp;{doctor.identification}</span><br/>
+                                            {/* <span style={{ fontSize: "small "}}>DNI/NIE:&nbsp;{doctor.identification}</span><br/> */}
                                             <span style={{ fontSize: "small "}}>BIO:&nbsp;{doctor.bio}</span>
                                         </div>
 
                                     </div>
-                                    <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
+                                    <div className="buttons" style={{display: "flex", justifyContent:"space-between", alignItems:"center"}}>
+                                        <Link to = {"/register/medical_appointment"}>
+                                            <button className="btn btn-success" >Registrar cita</button>
+                                        </Link>
+                                        
                                         <Link to={"/"}>
-                                            <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Volver a Home</button>
+                                            <button className="btn btn-primary" style={{ marginBottom:"5px"}}>Volver a Home</button>
                                         </Link> 
-                                        <Link to={"/"}>
-                                            <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Pedir cita</button>
-                                        </Link>
-                                        <Link to={"/"}>
+                                       
+                                        {/* <Link to={"/"}>
                                             <button className="btn btn-primary" style={{  marginBottom:"10px"}}>Añador a favorito</button>
-                                        </Link>
+                                        </Link> */}
                                 </div>
                                 </div>
                             </div>

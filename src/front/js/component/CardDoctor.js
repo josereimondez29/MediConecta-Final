@@ -34,7 +34,7 @@ const CardDoctor = (props) => {
 
     // Esperar hasta que doctorData y speciality tengan valor antes de renderizar el componente
     if (!doctorData || !speciality) {
-        return <div></div>;
+        return <div> </div>;
     }
 
 
@@ -48,22 +48,19 @@ const CardDoctor = (props) => {
         <div className="col-md-4 mb-3" > 
             <div className="card text-center" >
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw_qLv_ueyszEkB_U0nWQxsPujgcsZe89czAjeWa5S7Q&s"
-                     className="card-img-top mx-auto object-fit-sm-contain" alt="img_doc" style={{width:"18rem", objectFit:"fill"}}/>
+                     className="card-img-top mx-auto object-fit-sm-contain" alt="img_doc" style={{width:"9rem", objectFit:"cover"}}/>
                 <div className="card-body justify-content-center ">
                     <h5 className="card-title aling-text-center">{doctorData.name}&nbsp;{doctorData.surname}</h5>
                     <h6>{speciality ? speciality.name : "Sin especialidad"}</h6>
                     {/* <p>{doctorData.bio}</p> */}
                 </div>
                 <hr/>
-                <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
+                <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center", marginTop:"0px"}}>
                     <Link to={"/doctor/" + props.id + "/details"}>
                         <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Leer más</button>
                     </Link> 
-                    <Link to={"/"}>
-                        <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Pedir cita</button>
-                    </Link>
-                    <Link to={"/"}>
-                        <button className="btn btn-primary" style={{  marginBottom:"10px"}}>Añador a favorito</button>
+                    <Link to = {"/register/medical_appointment"}>
+                        <button className="btn btn-success" style={{ marginBottom:"15px"}} >Registrar cita</button>
                     </Link>
                 </div>
             </div>

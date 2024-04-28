@@ -1,9 +1,37 @@
-import React from 'react';
-import "./../../styles/Dermatologia.css"
-import dermatologia from "../../img/dermatologia.jpg"
-import ListDoctors from './ListDoctors';
+import React, { useContext, useEffect, useState } from 'react';
+import "./../../styles/Dermatologia.css";
+import dermatologia from "../../img/dermatologia.jpg";
+import { Context } from '../store/appContext';
+import CardDoctor from "./CardDoctor";
 
 const Dermatologia = () => {
+  const { store, actions } = useContext(Context);
+
+  const dermSpecialtyId = store.specialities.find(specialty => specialty.name === "Dermatologia");
+  const dermDoctors = store.doctors.filter(doctor => doctor.speciality_id === dermSpecialtyId?.id);
+
+  let doctorsComponent;
+
+  if (dermDoctors.length > 0) {
+    doctorsComponent = (
+      <div className="row justify-content-center mx-5">
+        {dermDoctors.map(doctor => (
+          <CardDoctor 
+            key={doctor.id}
+            id={doctor.id}
+            name={doctor.name}
+            surname={doctor.surname}
+            specialty={doctor.specialty}
+          />
+        ))}
+      </div>
+    );
+  } else {
+    doctorsComponent = <p className='text-center'>No hay doctores disponibles</p>;
+  }
+ 
+
+
   return (
     <>
 
@@ -30,12 +58,12 @@ const Dermatologia = () => {
       </p>
     </div>
   </div>
-  <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Dermatología</h3></div>
-  <div className="container-fluid px-5 "  >
-    <div className="row justify-content-center mx-5"  >
-      <ListDoctors  />
-    </div>
-  </div>
+  <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Dermatologia</h3></div>
+      <div className="container-fluid px-5 "  >
+        <div className="row justify-content-center mx-5 text-center" style={{marginBottom:"35px"}} >
+        {doctorsComponent}
+        </div>
+      </div>
     </>
   );
 }
