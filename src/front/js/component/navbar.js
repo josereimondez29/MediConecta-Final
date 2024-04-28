@@ -52,10 +52,13 @@ export const Navbar = () => {
                     <div className="d-flex ms-3">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item pe-5 ms-3">
-                                <a className="nav-link active p-2" aria-current="page" href="#">Home</a>
+                                <a className="nav-link active p-2" aria-current="page" href="/">Home</a>
                             </li>
                             <li className="nav-item pe-5 ms-3">
-                                <a className="nav-link p-2" href="#">Blog</a>
+                                <a className="nav-link p-2" href="/contact">Contacto</a>
+                            </li>
+                            <li className="nav-item pe-5 ms-3">
+                                <a className="nav-link p-2" href="/prices">Tarifas</a>
                             </li>
                             <li className="nav-item dropdown pe-5 ms-3">
                                 <a className="nav-link dropdown-toggle p-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -64,10 +67,10 @@ export const Navbar = () => {
                                 <ul className="dropdown-menu">
                                     <li><a className="dropdown-item" href="/MedicinaGeneral">Medicina General</a></li>
                                     <li><a className="dropdown-item" href="/Dermatologia">Dermatología</a></li>
-                                    <li><a className="dropdown-item" href="#">Pediatría</a></li>
-                                    <li><a className="dropdown-item" href="#">Psicología</a></li>
-                                    <li><a className="dropdown-item" href="#">Nutrición</a></li>
-                                    <li><a className="dropdown-item" href="#">Fisioterapia</a></li>
+                                    <li><a className="dropdown-item" href="/Pediatria">Pediatría</a></li>
+                                    <li><a className="dropdown-item" href="/Psicologia">Psicología</a></li>
+                                    <li><a className="dropdown-item" href="/Nutricion">Nutrición</a></li>
+                                    <li><a className="dropdown-item" href="/Fisioterapia">Fisioterapia</a></li>
                                 </ul>
                             </li>
                         </ul>

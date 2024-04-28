@@ -24,6 +24,10 @@ import MedicinaGeneral from "./component/MedicinaGeneral";
 import Dermatologia from "./component/Dermatologia";
 import Pediatria from "./component/Pediatria";
 import NotFound from "./component/NotFound"; 
+import { Contact } from "./pages/Contact";
+import Psicologia from "./component/Psicología";
+import Fisioterapia from "./component/Fisioterapia";
+import Nutricion from "./component/Nutricion";
 
 
 
@@ -80,9 +84,28 @@ const LayoutContent = () => {
       case "/log":
         setPage("info");
       break;
+      case "/contact":
+        setPage("contact");
+      break;
       case "/MedicinaGeneral":
         setPage("specialty");
       break;
+      case "/Pediatria":
+        setPage("specialty");
+      break;
+      case "/Psicologia":
+        setPage("specialty");
+      break;
+      case "/Nutricion":
+        setPage("specialty");
+      break;
+      case "/Fisioterapia":
+        setPage("specialty");
+      break;
+      case "/Dermatologia":
+        setPage("specialty");
+      break;
+      
      
 
       default:
@@ -113,7 +136,11 @@ const LayoutContent = () => {
         <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
         <Route element={<Dermatologia />} path="/Dermatologia" />
         <Route element={<Pediatria />} path="/Pediatria" />
+        <Route element={<Nutricion />} path="/Nutricion" />
+        <Route element={<Psicologia />} path="/Psicologia" />
+        <Route element={<Fisioterapia />} path="/Fisioterapia" />
         <Route element={<NotFound />} path="*" /> 
+        <Route element={<Contact/>} path = "/contact"/>
       </Routes>
       <Footer />
     </div>
