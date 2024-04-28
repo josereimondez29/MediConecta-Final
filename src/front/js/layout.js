@@ -11,6 +11,7 @@ import { SingleDoctor } from "./pages/SingleDoctor";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
+
 import MedicalAppointment from "./component/CitaMedica";
 import PrivateDoctor from "./pages/PrivateDoctor";
 import { AllDoctors } from "./component/AllDoctors";
@@ -29,6 +30,7 @@ import Psicologia from "./component/Psicología";
 import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
+
 
 
 const Layout = () => {
@@ -117,6 +119,8 @@ const LayoutContent = () => {
 
   return (
     <div>
+
+
       <Navbar />
       <Jumbotron page={page} />
       <Routes>
@@ -132,7 +136,6 @@ const LayoutContent = () => {
         <Route element={<PrivatePatient />} path="/privatepatient" />
         <Route element={<Prices />} path="/prices" />
         <Route element={<IsLogin />} path="/log" />
-        {/* <Route element={<ChangeLog/>} path="/changelog" /> */}
         <Route element={<EditDoctor />} path="/editDoctor/:id" />
         <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
         <Route element={<Dermatologia />} path="/Dermatologia" />
@@ -144,8 +147,11 @@ const LayoutContent = () => {
         <Route element={<Contact/>} path = "/contact"/>
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         
+
       </Routes>
       <Footer />
+
+
     </div>
   );
 };
