@@ -1,107 +1,68 @@
-// import React, { useContext } from "react";
-// import CardPatient from "../component/CardPatient";
-// import { Context } from "../store/appContext";
-
-// export const PrivatePatient = () => {
-//     const { store, actions } = useContext(Context);
-
-
-//     const handlePatients = () => {
-//         // Redirige al componente Login
-//         navigate('/allpatients');
-//     };
-
-//     // Obtener solo los primeros 3 médicos si no se ha hecho clic en "ver más"
-//     const displayedPatients = store.patients
-
-//     return (
-//         <>
-//             <h1 className="text-center">Pacientes</h1>
-//             <div className="container-fluid  text-center">
-//                 <p>
-
-//                     En nuestro centro médico, nos enorgullece presentar a nuestros equipo de profesionales comprometidos con la excelencia en la atención médica y el bienestar de nuestros pacientes.
-
-//                     Nuestros Patientes no solo poseen una sólida formación académica y experiencia en sus respectivas especialidades, sino que también están dedicados a mantenerse al día con los últimos avances y tecnologías médicas. Su pasión por la medicina se refleja en cada interacción con los pacientes, donde brindan un cuidado compasivo y personalizado.
-
-//                     {/* Cada uno de nuestros Patientes ha sido cuidadosamente seleccionado por su experiencia, habilidades clínicas y compromiso con la ética profesional. Desde médicos de atención primaria hasta especialistas en áreas como cardiología, dermatología, pediatría y más, nuestro equipo está capacitado para abordar una amplia gama de necesidades médicas con la más alta calidad y atención. */}
-
-//                     Ya sea que necesites una consulta de rutina, tratamiento para una enfermedad específica o simplemente busques orientación sobre tu salud y bienestar, puedes confiar en que nuestros Patientes cualificados estarán allí para brindarte el mejor cuidado posible.
-
-//                     {/* En nuestro centro médico, la salud y la seguridad de nuestros pacientes son nuestra principal prioridad, y nuestros Patientes cualificados están aquí para ayudarte en cada paso del camino hacia una vida más saludable y feliz. */}
-
-//                     ¡Programa una consulta con nuestros Patientes hoy mismo y experimenta la diferencia que pueden hacer en tu vida!
-//                 </p>
-//             </div>
-
-//             <div className="container-fuid"  >
-//                 <div className="row m-4 justify-content-center">
-//                     {displayedPatients.length > 0 ? (
-//                         <>
-//                             {displayedPatients.map(Patient => (
-//                                 <CardPatient
-//                                     key={Patient.id}
-//                                     id={Patient.id}
-//                                     name={Patient.name}
-//                                     surname={Patient.surname}
-//                                     bio={Patient.bio}
-//                                     speciality={Patient.speciality}
-//                                 />
-//                             ))}
-//                         </>
-//                     ) : (
-//                         <p>No hay Patientes disponibles.</p>
-//                     )}
-//                 </div>
-//             </div>
-//         </>
-//     );
-// };
-
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
 export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
+    const [patientId, setPatientId] = useState(null);
 
     useEffect(() => {
         // Obtener el ID del paciente almacenado en el almacenamiento local
-        const patientId = localStorage.getItem("id");
+        const id = localStorage.getItem("id");
+        setPatientId(id);
 
         // Verificar si el ID del paciente existe y es válido
-        if (patientId) {
+        if (id) {
             // Llamar a la acción para obtener la información del paciente utilizando el ID almacenado
-            actions.getinfoPatient(patientId);
+            actions.getinfoPatient(id);
         }
     }, []); // Ejecutar solo una vez al cargar el componente
 
-    useEffect(() => {
-        console.log("Estoy pendiente")
-    }, [store.currentPatient])
-
-    console.log(store.currentPatient)
+    console.log(store.currentPatient);
+    
     return (
-        <div className="container">
+        <div className="container card mt-5">
             <h1>Información del paciente</h1>
             {store.currentPatient ? (
                 <div>
-                    <p>Nombre: {store.currentPatient.patient.name}</p>
-                    {/* <p>Edad: {store.currentPatient.age}</p> */}
-                    <p>Email: {store.currentPatient.patient.email}</p>
-                    {/* Agregar más campos según sea necesario */}
+                    <ul class="list-group list-group-flush">
+                    <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
+                    <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Nombre: {store.currentPatient.name}</span><i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692"}}></i></p>
+                    </li>
+                    <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
+                    <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Apellido: {store.currentPatient.surname}</span><i class="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                    </li>
+                    <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
+                    <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Edad: {store.currentPatient.age}</span><i class="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                    </li>
+                    <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
+                    <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Identificación: {store.currentPatient.identification}</span><i class="fa-solid fa-id-card fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                    </li>
+                    <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
+                    <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Seguro Social: {store.currentPatient.social_security}</span><i class="fa-solid fa-user-doctor fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                    </li>
+                    <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
+                    <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Email: {store.currentPatient.email}</span><i class="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                    </li>
+                    </ul>
                 </div>
             ) : (
-                <p>No se encontró información del paciente.</p>
+                <p className="mb-0">No se encontró información del paciente.</p>
             )}
-            <div className="">
-
+            <div className="d-flex justify-content-center mt-3">
                 <form className="d-flex p-2" role="log in">
                     <Link to={"/register/medical_appointment"}>
-                        <button className="btn btn-success" >Registrar cita</button>
+                    <button className="btn" style={{backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" }}} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Registrar cita</button>
                     </Link>
                 </form>
+                <form className="d-flex p-2">
+                {patientId && (
+                    <Link to={`/editPatient/${patientId}`}>
+                        <button className="btn" style={{backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" }}} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información del paciente</button>
+                    </Link>
+                )}
+                </form>
+                </div>
             </div>
-        </div>
     );
 };

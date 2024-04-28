@@ -7,6 +7,7 @@ import { Single } from "./pages/single";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { EditDoctor } from "./pages/EditDoctor";
+import { EditPatient } from "./pages/EditPatient";
 import { SingleDoctor } from "./pages/SingleDoctor";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
@@ -81,6 +82,7 @@ const LayoutContent = () => {
         <Route element={<IsLogin />} path="/log" />
         <Route element={<ChangeLog />} path="/changelog" />
         <Route element={<EditDoctor />} path="/editDoctor/:id" />
+        <Route element={<EditPatient />} path="/editPatient/:id" />
         <Route element={<MedicinaGeneral />} path="/MedicinaGeneral" />
         <Route element={<Dermatologia />} path="/Dermatologia" />
         <Route element={<Pediatria />} path="/Pediatria" />

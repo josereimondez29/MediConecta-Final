@@ -90,23 +90,3 @@ const MedicalAppointment = () => {
 
 export default MedicalAppointment;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
