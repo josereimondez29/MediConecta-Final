@@ -107,6 +107,16 @@ const SpecialtyPageJumbotron = () => {
     );
 };
 
+const RecoverpasswordPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">RECUPERAR CONTRASEÑA</h1>
+            <p className="lead"></p>
+            <hr className="my-4" />
+            <p>¿Has olvidado tu password?</p>
+        </div>
+    );
+};
 
 const NullPageJumbotron = () => {
     return (
@@ -159,7 +169,9 @@ const Jumbotron = ({ page }) => {
         case 'undefined':
             return <NullPageJumbotron />;             
         case 'contact':
-            return <ContactPageJumbotron/>;                                          
+            return <ContactPageJumbotron/>;  
+        case 'recoverpassword':
+            return <RecoverpasswordPageJumbotron/>;                                         
         default:
             return null;
     }

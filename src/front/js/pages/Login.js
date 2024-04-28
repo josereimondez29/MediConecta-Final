@@ -68,6 +68,10 @@ export const Login = () => {
             <Link to={"/"}>
               <button type="button" className="btn btn-secondary">Back home</button>
             </Link>
+            <Link to={"/recoverpassword"}>
+              <button type="button" className="btn btn-secondary">Recuperar contraseña</button>
+            </Link>
+            
           </form>
           {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
           {store.authentication && (

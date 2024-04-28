@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, Navigate  } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 
@@ -13,8 +13,12 @@ const PrivateDoctor = (props) => {
     useEffect(() => {
         actions.loadDoctors()
         actions.loadSpecialities()
+        actions.privateZone()
     }, []);
 
+    if (!store.authentication) {
+        return <Navigate to = "/"/>;
+      }
 
     useEffect(() => {
         if (id && store.doctors && store.doctors.length > 0) {

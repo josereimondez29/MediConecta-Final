@@ -28,7 +28,7 @@ import { Contact } from "./pages/Contact";
 import Psicologia from "./component/Psicología";
 import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
-
+import { RecoverPassword } from "./pages/RecoverPassword";
 
 
 const Layout = () => {
@@ -87,6 +87,9 @@ const LayoutContent = () => {
       case "/contact":
         setPage("contact");
       break;
+      case "/recoverpassword":
+        setPage("recoverpassword");
+      break;
       case "/MedicinaGeneral":
         setPage("specialty");
       break;
@@ -105,11 +108,9 @@ const LayoutContent = () => {
       case "/Dermatologia":
         setPage("specialty");
       break;
-      
-     
 
       default:
-        setPage("undefined");
+        setPage(" ");
         break;
     }
   }, [location.pathname]);
@@ -141,6 +142,8 @@ const LayoutContent = () => {
         <Route element={<Fisioterapia />} path="/Fisioterapia" />
         <Route element={<NotFound />} path="*" /> 
         <Route element={<Contact/>} path = "/contact"/>
+        <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
+        
       </Routes>
       <Footer />
     </div>

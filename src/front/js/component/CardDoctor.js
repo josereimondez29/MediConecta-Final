@@ -31,7 +31,7 @@ const CardDoctor = (props) => {
 
     // Esperar hasta que doctorData y speciality tengan valor antes de renderizar el componente
     if (!doctorData || !speciality) {
-        return <div>Cargando...</div>;
+        return <div> </div>;
     }
 
 
