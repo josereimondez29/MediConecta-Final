@@ -569,6 +569,16 @@ def delete_doctor(doctor_id):
         return jsonify({"message": "Doctor deleted"}), 200
     return jsonify({"message": "Doctor not found"}), 404
 
+#Doctor/Speciality
+@app.route('/doctors/speciality/<int:speciality_id>', methods=['GET'])
+def get_doctors_by_speciality(speciality_id):
+    doctors = Doctor.query.filter_by(speciality_id=speciality_id).all()
+    doctors_serialized = []
+    for doctor in doctors:
+        doctors_serialized.append(doctor.serialize())
+    return jsonify({"message": "Doctors found", "doctors": doctors_serialized}), 200
+
+
 #Doctor Availability
 @app.route("/api/doctor_availability/<int:doctor_id>", methods=["GET"])
 def get_doctor_availability(doctor_id):
