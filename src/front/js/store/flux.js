@@ -20,8 +20,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			doctors: [],
 			specialities: [],
 			patients: [],
-			currentPatient: null
-
+			currentPatient: null,
+			appointments:[],
+			meetings:[],
 		},
 		actions: {
 
@@ -167,6 +168,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({ specialities: data.result })})
 					.catch((error) => console.error(error))
 			},
+
+			loadAppointment: ()=>{
+				fetch(process.env.BACKEND_URL + "/medical_appoinments")
+				.then((response)=> response.json())
+				.then((data)=>{
+					setStore({appointments: data.result})})
+				.catch((err)=> console.error(err))
+			},
+
+			loadMeetings: ()=>{
+				fetch(process.env.BACKEND_URL + "/meetings")
+				.then((response)=>response.json())
+				.then((data)=>{
+					setStore({meetings: data.result})})
+				.catch((err)=>console.err(err))
+			},
 	
 
 			getinfoDoctor: (id) => { 
@@ -272,63 +289,50 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
-			//PARA USAR EN EL PrivateMedico.js
-			getinfoMedico: (id) => { 
-				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
-				.then((response) => response.json())
-				.then((result) => {
-					// Actualizar el estado global con la información del paciente que ha iniciado sesión
-					setStore({ currentMedico: result });
-				})
-				.catch((error) => {
-					console.error("Error al obtener la información del paciente:", error);
-					setStore({ messageError: "Error al obtener la información del paciente" });
-				});
-			},
 
 			recoverPassword: (email, userType) => {
-				 ;
-				const requestOptions = {
-				  method: "POST",
-				  headers: { "Content-Type": "application/json",
-				  			  },
-				  body: JSON.stringify({
-					"email": email,
-					"userType": userType
-				})
-				};
-				
-				fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
-				  .then((response) => response.text())
-				  .then((result) => console.log(result))
-				  .catch((error) => console.error(error));
-			},
+				;
+			   const requestOptions = {
+				 method: "POST",
+				 headers: { "Content-Type": "application/json",
+							   },
+				 body: JSON.stringify({
+				   "email": email,
+				   "userType": userType
+			   })
+			   };
+			   
+			   fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
+				 .then((response) => response.text())
+				 .then((result) => console.log(result))
+				 .catch((error) => console.error(error));
+		   },
 
 
-			changePassword: (password, id) => {
-				const userType = localStorage.getItem("userType")
-				const requestOptions = {
-					method: "PUT",
-					body: JSON.stringify({ password }), // Envía los datos como un objeto
-					headers: { "Content-Type": "application/json" },
-				};
+		   changePassword: (password, id) => {
+			   const userType = localStorage.getItem("userType")
+			   const requestOptions = {
+				   method: "PUT",
+				   body: JSON.stringify({ password }), // Envía los datos como un objeto
+				   headers: { "Content-Type": "application/json" },
+			   };
+		   
+			   console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
+			   console.log("NUEVA CONTRASEÑA", { password });
+		   
+			   fetch(process.env.BACKEND_URL + `/changepassword/doctor/${id}`, requestOptions)
+				   .then((response) => {
+					   if (!response.ok) {
+						   throw new Error('Network response was not ok');
+					   }
+					   return true; 
+				   })
+				   .then((result) => {
+					   console.log("Contraseña actualizada exitosamente");
+				   })
+				   .catch((error) => console.error("Fetch error:", error));
+		   },
 			
-				console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
-				console.log("NUEVA CONTRASEÑA", { password });
-			
-				fetch(process.env.BACKEND_URL + `/changepassword/doctor/${id}`, requestOptions)
-					.then((response) => {
-						if (!response.ok) {
-							throw new Error('Network response was not ok');
-						}
-						return true; 
-					})
-					.then((result) => {
-						console.log("Contraseña actualizada exitosamente");
-					})
-					.catch((error) => console.error("Fetch error:", error));
-			},
-
 			privateZone: async () => {
 				try {
 					const token = localStorage.getItem('token');

@@ -8,6 +8,7 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
+  
   const navigate = useNavigate();
 
   const id = localStorage.getItem("id");

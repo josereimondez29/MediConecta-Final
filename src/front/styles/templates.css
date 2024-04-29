@@ -1,0 +1,41 @@
+.container-principal {
+    background-image: url("./../img/templatesEmail.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.container-secundario {
+    text-align: center;
+    background: white;
+    border-radius: 14px;
+    border-style: solid;
+    border-color: white;
+    max-width: 950px; /* Cambiado a max-width */
+    height: auto; /* Altura automática */
+    padding: 20px; /* Añadido un relleno */
+}
+
+h1 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+h3 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  p {
+    font-family: "Manrope", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+  }

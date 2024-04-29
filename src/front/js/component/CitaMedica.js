@@ -63,8 +63,8 @@ const MedicalAppointment = () => {
             <div className="message">
               <p>Para sacar una cita, necesitas estar registrado y haber iniciado sesión en la web.</p>
               <div className="d-flex justify-content-center">
-                <button style={{ marginRight: '10px' }} className="btn btn-primario" onClick={() => navigate('/login')}>Iniciar sesión</button>
-                <button className="btn btn-primario" onClick={() => navigate('/register')}>Registrarse</button>
+                <button style={{ backgroundColor: '#5C8692', color: '#fff', marginRight: '10px' }} className="btn" onClick={() => navigate('/login')}>Iniciar sesión</button>
+                <button style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn" onClick={() => navigate('/register')}>Registrarse</button>
               </div>
             </div>
           </div>
@@ -99,4 +99,3 @@ const MedicalAppointment = () => {
 };
 
 export default MedicalAppointment;
-
