@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import setHours from "date-fns/setHours";
+import setMinutes from "date-fns/setMinutes";
 
 const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -40,7 +42,11 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
         dateFormat="MMMM d, yyyy HH:mm" // Agregar HH:mm para incluir horas en formato de 24 horas
         minDate={new Date()}
         placeholderText="Seleccione una fecha y hora"
-        excludeTimes={transformAvailabilityToExcludeTimes()}
+        excludeDates={[{date: new Date("2024/05/02")}]}
+        excludeTimes={[
+          setHours(setMinutes(new Date("2024/05/03"), 0), 17),
+          setHours(setMinutes(new Date("2024/05/03"), 30), 17),
+        ]}
       />
     </div>
   );
