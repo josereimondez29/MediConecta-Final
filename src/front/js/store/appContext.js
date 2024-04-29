@@ -32,8 +32,7 @@ const injectContext = PassedComponent => {
 			
 			state.actions.loadDoctors()
 			state.actions.loadSpecialities()
-			state.actions.loadAppointment()
-			state.actions.loadMeetings()
+
 
 		}, []);
 

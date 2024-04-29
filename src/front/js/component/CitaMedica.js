@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SpecialitySelection from './SpecialitySelection';
 import DoctorSelection from './DoctorSelection';
 import AvailabilityCalendar from './AvailabilityCalendar';
@@ -86,6 +86,11 @@ const MedicalAppointment = () => {
             <button style={{backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px'}}  className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
               Registrar cita
             </button>
+            <Link to = "/PrivatePatient">
+            <button style={{backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px'}}  className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
+              Volver a zona privada
+            </button>
+            </Link>
             {appointmentCreated && (
               <div className="alert alert-success" role="alert">
                 Cita creada satisfactoriamente! A su email le llegarán los datos y link de su cita online!

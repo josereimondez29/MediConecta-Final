@@ -5,13 +5,17 @@ import { Context } from "../store/appContext";
 export const RecoverPassword = () => {
     const [email, setEmail] = useState("");
     const [userType, setUserType] = useState("");
+    const [formSubmitted, setFormSubmitted] = useState(false)
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
 
     const handleSubmit =(e)=> {
         e.preventDefault();
+        setFormSubmitted(true); 
         actions.recoverPassword(email, userType)
-        navigate ("/login")
+        setTimeout(() => {
+            navigate ("/login")
+        }, 3000);
     }
 
   
@@ -44,6 +48,11 @@ export const RecoverPassword = () => {
                     </div>
                     <button type="submit " className="btn btn-primario">Submit</button>
                 </form>
+                {formSubmitted && (
+                        <div className="popup text-center">
+                            <p>¡Password temporal enviado!</p>
+                        </div>
+                    )}
             </div>
         </>
         )

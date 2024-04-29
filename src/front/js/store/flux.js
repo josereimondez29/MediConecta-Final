@@ -21,8 +21,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			specialities: [],
 			patients: [],
 			currentPatient: null,
-			appointments:[],
-			meetings:[],
+			// appointments:[],
+			// meetings:[],
 		},
 		actions: {
 
@@ -152,46 +152,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Redireccionar al usuario a la página de inicio de sesión
 				},
 			
-			loadDoctors: ()=>{
-				fetch(process.env.BACKEND_URL + "/doctors")
-					.then((response) => response.json())
-					.then((data) => setStore({doctors:data.result}))
-					.catch((error) => console.error(error))
-				}, 
+				loadDoctors: ()=>{
+					fetch(process.env.BACKEND_URL + "/doctors")
+						.then((response) => response.json())
+						.then((data) => setStore({doctors:data.result}))
+						.catch((error) => console.error(error))
+					}, 
+	
+				loadSpecialities: ()=>{
+					fetch(process.env.BACKEND_URL + "/specialities")
+						.then((response) => response.json())
+						.then((data) => {
+							// console.log("fetchSpeciality FLUX",data)
+							// console.log("DATARESULT FLUX", data.result)
+							setStore({ specialities: data.result })})
+						.catch((error) => console.error(error))
+				},
 
-			loadSpecialities: ()=>{
-				fetch(process.env.BACKEND_URL + "/specialities")
-					.then((response) => response.json())
-					.then((data) => {
-						// console.log("fetchSpeciality FLUX",data)
-						// console.log("DATARESULT FLUX", data.result)
-						setStore({ specialities: data.result })})
-					.catch((error) => console.error(error))
-			},
+			// loadAppointment: ()=>{
+			// 	fetch(process.env.BACKEND_URL + "/medical_appoinments")
+			// 	.then((response)=> response.json())
+			// 	.then((data)=>{
+			// 		setStore({appointments: data.result})})
+			// 	.catch((err)=> console.error(err))
+			// },
 
-			loadAppointment: ()=>{
-				fetch(process.env.BACKEND_URL + "/medical_appoinments")
-				.then((response)=> response.json())
-				.then((data)=>{
-					setStore({appointments: data.result})})
-				.catch((err)=> console.error(err))
-			},
-
-			loadMeetings: ()=>{
-				fetch(process.env.BACKEND_URL + "/meetings")
-				.then((response)=>response.json())
-				.then((data)=>{
-					setStore({meetings: data.result})})
-				.catch((err)=>console.err(err))
-			},
+			// loadMeetings: ()=>{
+			// 	fetch(process.env.BACKEND_URL + "/meetings")
+			// 	.then((response)=>response.json())
+			// 	.then((data)=>{
+			// 		setStore({meetings: data.result})})
+			// 	.catch((err)=>console.err(err))
+			// },
 	
 
 			getinfoDoctor: (id) => { 
-				console.log("id es igual a:", id)
 				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
-				.then((response) => { console.log(response)
-					return response.json()})
-
+				.then((response) => response.json())
 				.then((result) => {
 				// Aquí se asume que los datos del médico obtenidos del backend están en data
 					let updatedDoctor = result; // Suponiendo que los datos del médico se encuentran en data.result
@@ -217,7 +214,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				};
 				
-				fetch(process.env.BACKEND_URL + `doctor/${id}`, requestOptions)
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
 				.then((response) => {
 					if (!response.ok) {
 						throw new Error('Network response was not ok');
@@ -226,7 +223,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				.then((result) => {
 					console.log("RESULT FLUX UPGRATE", result);
-					setStore({ doctors: result });
+					const conStore = getStore()
+					const doctorsUpdate = conStore.doctors.map((doctor)=>{if (doctor.id === id){
+						return result.doctor
+					} return doctor})
+					setStore({ doctors: doctorsUpdate });
 				})
 				.catch((error) => console.error("Fetch error:", error));
 

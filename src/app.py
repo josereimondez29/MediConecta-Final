@@ -480,7 +480,6 @@ def get_doctors():
 
 #GET Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
-@jwt_required()
 def get_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:
@@ -533,7 +532,6 @@ def get_doctor_details(doctor_id):
 
 #PUT Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
-@jwt_required
 def update_doctor(doctor_id):   
 
     # Obtener el doctor que se desea actualizar
@@ -632,7 +630,7 @@ def get_speciality(speciality_id):
 
 #PUT Speciality by id
 @app.route('/speciality/<int:speciality_id>', methods=['PUT'])
-@jwt_required()
+ 
 def update_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:

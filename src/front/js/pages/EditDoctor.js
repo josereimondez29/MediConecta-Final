@@ -168,7 +168,7 @@ export const EditDoctor = () => {
                     )}
                 </form>
                 <Link to={"/"}>
-                    <button className='btn btn-secundario' type="submit" >Cancel, get back to contacts</button>
+                    <button className='btn btn-secundario' type="submit" >Cancel, get back to Home</button>
                 </Link>
             </div>
         </>

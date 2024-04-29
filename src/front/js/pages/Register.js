@@ -62,7 +62,7 @@ export const Register = () => {
   };
   
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{boxShadow: "10px 5px 5px grey"}}>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Register</h2>
@@ -128,7 +128,9 @@ export const Register = () => {
                 <option value="doctor">Médico</option>
               </select>
             </div>
-            <button type="submit" className="btn-primario">Register</button>
+            <div className="text-center">
+              <button type="submit" className="btn btn-primario">Register</button>
+            </div>
             {error && <div className="mt-3 text-danger">{error}</div>}
             {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
           </form>
