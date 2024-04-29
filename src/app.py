@@ -759,7 +759,6 @@ def register_medical_appointment():
     db.session.add(new_medical_appointment)
     db.session.commit()
 
-    # Genera los enlaces de videoconferencia para la cita médica
     meeting_room_data = create_meeting()
     meeting_id = meeting_room_data.get('meetingId')
     meeting_data = {
@@ -770,29 +769,25 @@ def register_medical_appointment():
     }
     meeting_links = create_meeting_links(meeting_data)
     
-    print(meeting_room_data) 
-    
-    # Almacena la información de la reunión en la base de datos
-    room_url = meeting_data.get('roomNamePrefix')  # Obtener la URL de la sala
+    room_url = meeting_data.get('roomNamePrefix')
     new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time, room_url=room_url)
     db.session.add(new_meeting)
     db.session.commit()
     
-    # Envía correos electrónicos al paciente y al doctor
     send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time, meeting_links)
 
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
 
+
 def create_meeting_links(data):
-    # Simulación de la generación de enlaces de videoconferencia
     room_url = f"{data['roomNamePrefix']}"
     host_room_url = f"{data['HostroomNamePrefix']}"
     return room_url, host_room_url
 
+
 def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor_email, appointment_time, meeting_links):
     room_url, host_room_url = meeting_links
     
-    # Construye el mensaje de correo electrónico con los detalles de la cita y los enlaces de videoconferencia
     msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
     msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
     mail.send(msg_patient)
@@ -800,7 +795,6 @@ def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor
     msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
     msg_doctor.html = f"<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
-
 
 
 
