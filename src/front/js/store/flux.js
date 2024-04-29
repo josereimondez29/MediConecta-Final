@@ -287,9 +287,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			recoverPassword: (email, userType) => {
+				 ;
 				const requestOptions = {
 				  method: "POST",
-				  headers: { "Content-Type": "application/json" },
+				  headers: { "Content-Type": "application/json",
+				  			  },
 				  body: JSON.stringify({
 					"email": email,
 					"userType": userType
@@ -301,7 +303,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  .then((result) => console.log(result))
 				  .catch((error) => console.error(error));
 			},
+
+
+			changePassword: (password, id) => {
+				const userType = localStorage.getItem("userType")
+				const requestOptions = {
+					method: "PUT",
+					body: JSON.stringify({ password }), // Envía los datos como un objeto
+					headers: { "Content-Type": "application/json" },
+				};
 			
+				console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
+				console.log("NUEVA CONTRASEÑA", { password });
+			
+				fetch(process.env.BACKEND_URL + `/changepassword/doctor/${id}`, requestOptions)
+					.then((response) => {
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
+						}
+						return true; 
+					})
+					.then((result) => {
+						console.log("Contraseña actualizada exitosamente");
+					})
+					.catch((error) => console.error("Fetch error:", error));
+			},
+
 			privateZone: async () => {
 				try {
 					const token = localStorage.getItem('token');

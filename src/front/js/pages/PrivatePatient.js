@@ -56,6 +56,11 @@ export const PrivatePatient = () => {
                     </Link>
                 </form>
                 <form className="d-flex p-2">
+                <Link to={`/changepassword`}>
+                    <button className="btn btn-secundario">Cambiar contraseña</button>
+                </Link>
+                </form>
+                <form className="d-flex p-2">
                 {patientId && (
                     <Link to={`/editPatient/${patientId}`}>
                         <button className="btn" style={{backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" }}} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información del paciente</button>

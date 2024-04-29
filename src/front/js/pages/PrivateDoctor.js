@@ -82,6 +82,9 @@ const PrivateDoctor = (props) => {
                                                 <Link to={`/editDoctor/${id}`}>
                                                     <button className="btn btn-primario">Modificar perfil</button>
                                                 </Link>
+                                                <Link to={`/changepassword`}>
+                                                    <button className="btn btn-secundario">Cambiar contraseña</button>
+                                                </Link>
                                             </div>
                                         </div>
 

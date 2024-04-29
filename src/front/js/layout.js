@@ -31,6 +31,8 @@ import Psicologia from "./component/Psicologia";
 import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
+import { CambioContraseña } from "./component/CambioContraseña";
+
 
 
 const Layout = () => {
@@ -92,6 +94,9 @@ const LayoutContent = () => {
       case "/recoverpassword":
         setPage("recoverpassword");
       break;
+      case "/changepassword":
+        setPage("changepassword")
+      break;
       case "/MedicinaGeneral":
         setPage("specialty");
       break;
@@ -147,6 +152,7 @@ const LayoutContent = () => {
         <Route element={<NotFound />} path="*" /> 
         <Route element={<Contact/>} path = "/contact"/>
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
+        <Route element={<CambioContraseña/>} path="/changepassword"/>
         
       </Routes>
       <Footer />

@@ -50,6 +50,15 @@ const AppointmentPageJumbotron = () => {
     );
 };
 
+const ChangePasswordPageJumbotron = () => {
+    return (
+        <div className="jumbotron">
+            <h1 className="display-4">CAMBIO DE CONTRASEÑA</h1>
+            {/* <p className="lead">No dudes en pedir una cita con tu medico de confianza</p> */}
+        </div>
+    );
+};
+
 // const SingleDoctorPageJumbotron = () => {
     
 //     return (
@@ -171,7 +180,9 @@ const Jumbotron = ({ page }) => {
         case 'contact':
             return <ContactPageJumbotron/>;  
         case 'recoverpassword':
-            return <RecoverpasswordPageJumbotron/>;                                         
+            return <RecoverpasswordPageJumbotron/>;    
+        case 'changepassword':
+            return <ChangePasswordPageJumbotron/>                                     
         default:
             return null;
     }
