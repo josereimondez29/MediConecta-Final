@@ -1,53 +1,49 @@
 import React, { useState } from "react";
 
-export const ProfilePicture =()=> {
+export const ProfilePicture = () => {
   const [imageUrl, setImageUrl] = useState("");
 
   const changeUploadImage = async (e) => {
     const file = e.target.files[0];
-    const data = new FormData();
-  
-    data.append("file", file);
-    data.append("upload_preset", "Presents_PT-56");
-  
+    const formData = new FormData();
+    formData.append("file", file);
+
     try {
-      const response = await fetch("https://api.cloudinary.com/v1_1/dw4ur9soy/image/upload", {
+      const response = await fetch(process.env.BACKEND_URL + "/uploadprofilepicture", {
         method: "POST",
-        body: data,
+        body: formData,
       });
-  
+
       if (!response.ok) {
         throw new Error("Failed to upload image");
       }
-  
+
       const responseData = await response.json();
-      console.log(responseData);
-  
-      setImageUrl(responseData.secure_url);
+      setImageUrl(responseData.imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
     }
   };
 
-  const deleteImagen =()=>{
-    setImageUrl("")
-  }
-  
+  const deleteImage = () => {
+    setImageUrl("");
+  };
+   
+
+
   return (
     <div className="App">
-
-    <h1>SUBE TU IMAGEN</h1>
-
-    <div>
-      <input type="file" accept="image/*" onChange={changeUploadImage}/>
-      {imageUrl && (
-        <div>
-          <img src={imageUrl}/>
-          <button onClick={()=>deleteImagen()}>Eliminar imagen</button>
-        </div>
-      )}
-    </div>
-
+      <h1>SUBE TU IMAGEN</h1>
+      <div>
+        
+        <input type="file" accept="image/*" onChange={changeUploadImage} />
+        {imageUrl && (
+          <div>
+            <img src={imageUrl} alt="uploaded image" />
+            <button onClick={deleteImage}>Eliminar imagen</button>
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+};

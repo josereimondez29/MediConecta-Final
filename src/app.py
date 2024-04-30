@@ -24,6 +24,7 @@ from random import choice
 from string import ascii_letters, digits
 import secrets
 from flask import render_template
+import cloudinary.uploader
 
 # from models import Person
 
@@ -45,7 +46,7 @@ app.config.update(dict(
 
 mail= Mail(app)
 
-CORS(app)
+CORS(app,  supports_credentials=True)
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension
@@ -76,6 +77,7 @@ setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 #app.register_blueprint(api, url_prefix='/api')
+ 
 
 # Handle/serialize errors like a JSON object
 
@@ -466,6 +468,7 @@ def create_doctor_login():
 
 #GET Doctors
 @app.route('/doctors', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_doctors():
     doctors = Doctor.query.all()
 
@@ -603,6 +606,7 @@ def register_speciality():
 
 #GET Speciality
 @app.route('/specialities', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_specialities():
     specialities = Speciality.query.all()
 
@@ -1158,6 +1162,7 @@ def delete_summary(summaryId):
 
 # Profile Pictures
 @app.route("/profilepicture", methods=["GET"])
+@cross_origin(supports_credentials=True)
 def get_picture():
     profilespictures=Profile_Picture.query.all()
 
@@ -1167,8 +1172,36 @@ def get_picture():
 
     return jsonify({"message":"Pictures add successfully"}), 200
 
+@app.route('/uploadprofilepicture', methods=['POST'])
+@cross_origin(supports_credentials=True)
+
+def upload_image():
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+        
+        # Obtenemos el ID del paciente o del doctor desde la solicitud
+        patient_id = request.form.get('patient_id')
+        doctor_id = request.form.get('doctor_id')
+
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id, doctor_id=doctor_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'imageUrl': profile_picture.url_picture}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+
 
 @app.route('/profilepicture/<int:profilepicture>', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_picture_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     print(doctor)
