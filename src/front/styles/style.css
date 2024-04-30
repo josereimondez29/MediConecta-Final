@@ -101,6 +101,10 @@ p {
   border-color: #7A9CA5;
 }
 
+
+.dropdown-item{
+  color: white;
+}
 /* .cardDoctore{
   border: 5px solid red;
 }

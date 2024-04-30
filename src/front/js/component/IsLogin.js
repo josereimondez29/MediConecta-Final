@@ -41,7 +41,7 @@ export const IsLogin = () => {
                 <p>Para la correcta funcionalidad de la web, debes tener completo la información del perfil</p>
                 
                 <div className="container-fluid d-flex justify-content-between">
-                    <Link to={`/privatedoctor/${id}`}>
+                    <Link to={`/privatedoctor`}>
                         <button className="btn btn-primario">Ir a zona privada</button>
                     </Link>
                     {/* Utilizamos el valor actualizado de token */}

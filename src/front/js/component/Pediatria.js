@@ -7,7 +7,7 @@ import CardDoctor from "./CardDoctor";
 const Pediatria = () => {
   const { store, actions } = useContext(Context);
 
-  const pediSpecialtyId = store.specialities.find(specialty => specialty.name === "Fisioterapia");
+  const pediSpecialtyId = store.specialities.find(specialty => specialty.name === "Pediatria");
   const pediDoctors = store.doctors.filter(doctor => doctor.speciality_id === pediSpecialtyId?.id);
 
   let doctorsComponent;

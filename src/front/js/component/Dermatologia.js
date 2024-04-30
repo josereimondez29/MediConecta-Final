@@ -7,7 +7,7 @@ import CardDoctor from "./CardDoctor";
 const Dermatologia = () => {
   const { store, actions } = useContext(Context);
 
-  const dermSpecialtyId = store.specialities.find(specialty => specialty.name === "Dermatologia");
+  const dermSpecialtyId = store.specialities.find(specialty => specialty.name === "Dermatología");
   const dermDoctors = store.doctors.filter(doctor => doctor.speciality_id === dermSpecialtyId?.id);
 
   let doctorsComponent;

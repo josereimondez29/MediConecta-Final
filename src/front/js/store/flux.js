@@ -21,6 +21,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			specialities: [],
 			patients: [],
 			currentPatient: null,
+			profilespictures: [],
 			// appointments:[],
 			// meetings:[],
 		},
@@ -292,7 +293,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 			recoverPassword: (email, userType) => {
-				;
+				
 			   const requestOptions = {
 				 method: "POST",
 				 headers: { "Content-Type": "application/json",
@@ -318,10 +319,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				   headers: { "Content-Type": "application/json" },
 			   };
 		   
-			   console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
-			   console.log("NUEVA CONTRASEÑA", { password });
+			//    console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
+			//    console.log("NUEVA CONTRASEÑA", { password });
 		   
-			   fetch(process.env.BACKEND_URL + `/changepassword/doctor/${id}`, requestOptions)
+			   fetch(process.env.BACKEND_URL + `/changepassword/${userType}/${id}`, requestOptions)
 				   .then((response) => {
 					   if (!response.ok) {
 						   throw new Error('Network response was not ok');
@@ -333,6 +334,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				   })
 				   .catch((error) => console.error("Fetch error:", error));
 		   },
+
+
 			
 			privateZone: async () => {
 				try {

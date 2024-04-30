@@ -27,7 +27,7 @@ export const CambioContraseña = () => {
                 const userId = localStorage.getItem("id");
             
                 if (userType && (userType === "doctor" || userType === "patient") && userId) {
-                    navigate(`/${userType === "doctor" ? `privatedoctor/${userId}` : "PrivatePatient"}`);
+                    navigate(`/${userType === "doctor" ? 'privatedoctor' : "PrivatePatient"}`);
                 } else {
                     console.error("Tipo de usuario o ID de usuario no reconocido");
                 }

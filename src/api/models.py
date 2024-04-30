@@ -123,7 +123,7 @@ class Doctor(db.Model):
     name = db.Column(db.String(120), nullable=False)
     surname = db.Column(db.String(120), nullable=False)
     age = db.Column(db.Integer, nullable=True)
-    bio = db.Column(db.String(500), unique=True, nullable=True)
+    bio = db.Column(db.String(500), unique=False, nullable=True)
     identification = db.Column(db.Integer)
     medical_license = db.Column(db.Integer)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -174,7 +174,7 @@ class DoctorAvailability(db.Model):
     __tablename__ = 'doctor_availability'
     id = db.Column(db.Integer, primary_key=True)
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'), nullable=False)
-    doctor_id_relationship = db.relationship('Doctor')
+    doctor_id_relationship = db.relationship('Doctor', overlaps="availabilities")
     day_of_week = db.Column(db.Integer, nullable=False)
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
@@ -261,7 +261,29 @@ class Meetings(db.Model):
         db.session.add(new_meeting)
         db.session.commit()
 
-"""class FavoriteSpeciality(db.Model):
+
+##PROFILE PICTURE
+class Profile_Picture(db.Model):
+    __tablename__ = 'profiles_pictures'
+    id = db.Column(db.Integer, primary_key=True)
+    url_picture = db.Column(db.String(255), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable=True, unique=True)
+    patient_id_relationship = db.relationship('Patient', backref='profiles_pictures', uselist=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey("doctor.id"), nullable=True, unique=True)
+    doctor_id_relationship = db.relationship('Doctor', backref='profiles_pictures', uselist=False)
+
+    def __repr__(self):
+        return f"Picture ID: {self.id}, URL: {self.url_picture}, Patient ID: {self.patient_id}, Doctor ID: {self.doctor_id}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "url_picture": self.url_picture,    
+            "patient_id": self.patient_id, 
+            "doctor_id": self.doctor_id,
+        }
+
+"""class FavoriteSpeciality(db.Model):    
     __tablename__ = 'favorite_speciality'
     id = db.Column(db.Integer, primary_key=True)
     medical_appointment_id = db.Column(db.Integer, db.ForeignKey('medical_appointment.id'))

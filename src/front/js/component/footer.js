@@ -1,10 +1,15 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 import MediConecta from "../../img/MediConecta.jpg"
  
 
 export const Footer = () => {
 
+  const email = "mediconecta1@gmail.com";
+  const subject = "Consulta";
+
+  const mailToLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
   // const handleInstagram = () => {
   //   // Redirige al componente Login
   //   navigate('Instagram');
@@ -39,12 +44,12 @@ export const Footer = () => {
                   <i className="fa-brands fa-facebook fa-xl"></i>
                   </button>
                 </li> */}
-                  <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Medicina General</a></li>
-                  <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Pediatría</a></li>
-                  <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Dermatología</a></li>
-                  <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Psiquiatria</a></li>
-                  <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Nutrición</a></li>
-                  <li><a href="#"><span className="icon-long-arrow-right mr-2"></span>Fisioterapia</a></li>
+                  <li><Link className="dropdown-item" to="/Dermatologia">Dermatología</Link></li>
+                  <li><Link className="dropdown-item" to="/Fisioterapia">Fisioterapia</Link></li>
+                  <li><Link className="dropdown-item" to="/MedicinaGeneral">Medicina General</Link></li>
+                  <li><Link className="dropdown-item" to="/Nutricion">Nutrición</Link></li>
+                  <li><Link className="dropdown-item" to="/Pediatria">Pediatría</Link></li>
+                  <li><Link className="dropdown-item" to="/Psicologia">Psicología</Link></li>
                 </ul>
               </div>
             </div>
@@ -110,9 +115,9 @@ export const Footer = () => {
               <h2 className="ftco-heading-2">Contacto</h2>
               <div className="block-23 mb-3">
                 <ul className="list-unstyled">
-                  <li><span className="icon icon-map-marker"></span><span className="text" style={{color:"#ffff"}}>203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-                  <li><a href="#"><span className="icon icon-phone"></span><span className="text" style={{color:"#ffff"}}>+32 569 874 875</span></a></li>
-                  <li><a href="#"><span className="icon icon-envelope pr-4"></span><span className="text" style={{color:"#ffff"}}>info@mediconecta.com</span></a></li>
+                  {/* <li><span className="icon icon-map-marker"></span><span className="text" style={{color:"#ffff"}}>203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                  <li><a href="#"><span className="icon icon-phone"></span><span className="text" style={{color:"#ffff"}}>+32 569 874 875</span></a></li> */}
+                  <a href={mailToLink} className="card-text" style={{ marginBottom: "15px", textDecoration: "underline", color:"black" }}>{email}</a>
                 </ul>
               </div>
             </div>

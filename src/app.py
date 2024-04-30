@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 import requests
 from api.utils import APIException, generate_sitemap
-from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
+from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated, Profile_Picture
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -85,6 +85,9 @@ def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
 # generate sitemap with all your endpoints
+
+
+
 
 
 @app.route('/')
@@ -1152,6 +1155,33 @@ def delete_summary(summaryId):
     summaries = [summary for summary in summaries if summary["summaryId"] != summaryId]
     return jsonify({"message": "Summary deleted successfully"})
 
+
+# Profile Pictures
+@app.route("/profilepicture", methods=["GET"])
+def get_picture():
+    profilespictures=Profile_Picture.query.all()
+
+    profilespictures_serialized=[]
+    for profilepicture in profilespictures:
+        profilespictures_serialized.append(profilepicture.serialize())
+
+    return jsonify({"message":"Pictures add successfully"}), 200
+
+
+@app.route('/profilepicture/<int:profilepicture>', methods=['GET'])
+def get_picture_doctor(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    print(doctor)
+    profilepicture = db.session.query(Doctor, Profile_Picture).join(Doctor).filter(Profile_Picture.id == doctor.url_picture).all()
+    profilepicture_serialized = []
+    for Doctor_item, ProfilePicture_item in profilepicture:
+        profilepicture_serialized.append({'Doctor': Doctor_item.serialize(), 'Profile_Picture': ProfilePicture_item.serialize()})
+    print(profilepicture)
+
+    return jsonify({"message": "Doctor details found", "profiles_pictures": profilepicture_serialized}), 200
+    
+
+
 # Favorite Routes
 
 # @app.route('/user/favorites', methods=['GET'])
@@ -1197,6 +1227,8 @@ def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

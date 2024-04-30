@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
-    const { id } = useParams();
+    const id = localStorage.getItem("id");
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
@@ -63,28 +63,28 @@ const PrivateDoctor = (props) => {
                 <div>
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Nombre: {doctor.name}</span><i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692"}}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b> Nombre: </b>  {doctor.name}</span><i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692"}}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Apellido: {doctor.surname}</span><i className="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b>Apellido:</b> {doctor.surname}</span><i className="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Edad: {doctor.age}</span><i className="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b>Edad: </b>{doctor.age}</span><i className="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{  display: 'flex', justifyContent: 'space-between' }}><span>Identificación: {doctor.identification}</span><i className="fa-solid fa-id-card fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0" style={{  display: 'flex', justifyContent: 'space-between' }}><span><b>Identificación: </b>{doctor.identification}</span><i className="fa-solid fa-id-card fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Email:{doctor.email}</span><i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b>Email: </b>{doctor.email}</span><i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Medical License:{doctor.medical_license}</span><i className="fa-solid fa-stethoscope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b>Medical License: </b>{doctor.medical_license}</span><i className="fa-solid fa-stethoscope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Especialidad:{speciality.name}</span><i className="fa-solid fa-hand-holding-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692", fontSize:"inherit" }}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b>Especialidad: </b>{speciality.name}</span><i className="fa-solid fa-hand-holding-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
-                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span>Bio:{doctor.bio}</span><i className="fa-solid fa-comment-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0" style={{ display: 'flex', justifyContent: 'space-between' }}><span><b>Bio: </b>{doctor.bio}</span><i className="fa-solid fa-comment-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                     </ul>
                 </div>
