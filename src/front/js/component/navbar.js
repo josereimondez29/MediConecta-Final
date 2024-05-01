@@ -31,10 +31,10 @@ export const Navbar = () => {
         }
     };
 
-    useEffect(() => {
-        console.log("cambió el token")
-        console.log(localStorage.getItem("token"))
-    }, [store.authentication]);
+    // useEffect(() => {
+    //     console.log("cambió el token")
+    //     console.log(localStorage.getItem("token"))
+    // }, [store.authentication]);
 
     function submitLogout() {
         actions.logout();

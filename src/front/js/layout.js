@@ -30,7 +30,8 @@ import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
-import { ProfilePicture } from "./component/ProfilePicture";
+import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
+
 
 
 
@@ -66,7 +67,7 @@ const LayoutContent = () => {
       case "/register":
         setPage("register");
         break;
-        case '/privatedoctor/':
+      case "/privatedoctor":
           setPage("private");
           break;
       case `/editDoctor/${id}`:
@@ -153,6 +154,7 @@ const LayoutContent = () => {
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
         <Route element={<ProfilePicture/>} path="/img"/>
+
       </Routes>
       <Footer />
 

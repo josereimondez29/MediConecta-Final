@@ -262,14 +262,13 @@ class Meetings(db.Model):
         db.session.commit()
 
 
-##PROFILE PICTURE
 class Profile_Picture(db.Model):
     __tablename__ = 'profiles_pictures'
     id = db.Column(db.Integer, primary_key=True)
     url_picture = db.Column(db.String(255), nullable=False)
-    patient_id = db.Column(db.Integer, db.ForeignKey("patient.id"), nullable=True, unique=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey("patient.id", ondelete="CASCADE"), nullable=True, unique=True)
     patient_id_relationship = db.relationship('Patient', backref='profiles_pictures', uselist=False)
-    doctor_id = db.Column(db.Integer, db.ForeignKey("doctor.id"), nullable=True, unique=True)
+    doctor_id = db.Column(db.Integer, db.ForeignKey("doctor.id", ondelete="CASCADE"), nullable=True, unique=True)
     doctor_id_relationship = db.relationship('Doctor', backref='profiles_pictures', uselist=False)
 
     def __repr__(self):

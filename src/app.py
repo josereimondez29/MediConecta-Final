@@ -1174,7 +1174,6 @@ def get_picture():
 
 @app.route('/uploadprofilepicture', methods=['POST'])
 @cross_origin(supports_credentials=True)
-
 def upload_image():
     try:
         # Obtenemos el archivo de la solicitud
@@ -1197,23 +1196,70 @@ def upload_image():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
-
-
-@app.route('/profilepicture/<int:profilepicture>', methods=['GET'])
+@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['POST'])
 @cross_origin(supports_credentials=True)
-def get_picture_doctor(doctor_id):
-    doctor = Doctor.query.get(doctor_id)
-    print(doctor)
-    profilepicture = db.session.query(Doctor, Profile_Picture).join(Doctor).filter(Profile_Picture.id == doctor.url_picture).all()
-    profilepicture_serialized = []
-    for Doctor_item, ProfilePicture_item in profilepicture:
-        profilepicture_serialized.append({'Doctor': Doctor_item.serialize(), 'Profile_Picture': ProfilePicture_item.serialize()})
-    print(profilepicture)
-
-    return jsonify({"message": "Doctor details found", "profiles_pictures": profilepicture_serialized}), 200
+def upload_image_patient(patient_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
     
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
 
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_image_doctor(doctor_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+        
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], doctor_id=doctor_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+ 
+@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_image_doctor(doctor_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
+    if profile_picture:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(profile_picture.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+
+@app.route('/deleteprofilepicture/doctor/<int:doctor_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_image_doctor(doctor_id):
+    # Buscar la imagen del perfil del doctor
+    profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
+    if profile_picture:
+        # Eliminar la entrada de Profile_Picture
+        db.session.delete(profile_picture)
+        db.session.commit()
+        return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
+    return jsonify({"message": "Profile picture not found"}), 404
 
 # Favorite Routes
 
