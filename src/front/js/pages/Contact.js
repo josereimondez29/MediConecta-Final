@@ -1,7 +1,7 @@
 import React from "react";
 
 export const Contact = () => {
-    const email = "info@mediconecta.com";
+    const email = "mediconecta1@gmail.com";
     const subject = "Consulta";
 
     const mailToLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`;

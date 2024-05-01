@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+
 export const CambioContraseña = () => {
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
@@ -9,6 +10,7 @@ export const CambioContraseña = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState(""); // Estado para almacenar el mensaje de error
     const [formSubmitted, setFormSubmitted] = useState(false);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
@@ -17,12 +19,14 @@ export const CambioContraseña = () => {
             actions.changePassword(password, id);
             setPassword("");
             setConfirmPassword("");
-            setFormSubmitted(true);
+            setFormSubmitted(true); 
             setTimeout(() => {
                 const userType = localStorage.getItem("userType");
                 const userId = localStorage.getItem("id");
+            
                 if (userType && (userType === "doctor" || userType === "patient") && userId) {
-                    navigate(`/${userType === "doctor" ? `privatedoctor/${userId}` : "PrivatePatient"}`);
+                    navigate(`/${userType === "doctor" ? 'privatedoctor' : "PrivatePatient"}`);
+
                 } else {
                     console.error("Tipo de usuario o ID de usuario no reconocido");
                 }
@@ -30,6 +34,7 @@ export const CambioContraseña = () => {
             setError(""); // Limpia el mensaje de error si las contraseñas coinciden
         }
     };
+
 return (
     <>
         <div className="container" style={{ marginTop: "30px" }}>

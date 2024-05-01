@@ -22,8 +22,10 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
   };
 
   const handleDateChange = date => {
-    setSelectedDate(date);
-    handleAppointment(date);
+    // Ajustar la zona horaria a la del servidor (GMT+1 en este caso)
+    const adjustedDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)); 
+    setSelectedDate(adjustedDate);
+    handleAppointment(adjustedDate);
   };
 
   return (
@@ -33,9 +35,9 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
         selected={selectedDate}
         onChange={handleDateChange}
         showTimeSelect
-        timeFormat="HH:mm"
+        timeFormat="HH:mm" // Utilizar el formato de 24 horas
         timeIntervals={15}
-        dateFormat="MMMM d, yyyy h:mm aa"
+        dateFormat="MMMM d, yyyy HH:mm" // Agregar HH:mm para incluir horas en formato de 24 horas
         minDate={new Date()}
         placeholderText="Seleccione una fecha y hora"
         excludeTimes={transformAvailabilityToExcludeTimes()}
@@ -45,6 +47,10 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability }) => {
 };
 
 export default AvailabilityCalendar;
+
+
+
+
 
 
 

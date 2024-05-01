@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SpecialitySelection from './SpecialitySelection';
 import DoctorSelection from './DoctorSelection';
 import AvailabilityCalendar from './AvailabilityCalendar';
 import './../../styles/MedicalAppointment.css';
 import { Context } from '../store/appContext';
-
 
 const MedicalAppointment = () => {
   const navigate = useNavigate();
@@ -15,8 +14,10 @@ const MedicalAppointment = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [appointmentCreated, setAppointmentCreated] = useState(false);
   const [doctorAvailability, setDoctorAvailability] = useState(null); // Inicializamos como null
+
   const handleDoctorSelect = async (doctorId) => {
     setSelectedDoctor(doctorId);
+
     try {
       const response = await fetch(`${process.env.BACKEND_URL}/api/doctor_availability/${doctorId}`);
       if (!response.ok) {
@@ -28,10 +29,12 @@ const MedicalAppointment = () => {
       console.error('Error fetching doctor availability:', error);
     }
   };
+
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
       const token = localStorage.getItem('token');
       const formattedDate = selectedDate.toISOString().slice(0, 19).replace('T', ' ');
+
       const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
         method: "POST",
         headers: {
@@ -45,6 +48,7 @@ const MedicalAppointment = () => {
         })
       });
       const data = await response.json();
+
       if (response.ok) {
         setAppointmentCreated(true); // Cambio de estado para mostrar el mensaje
       } else {
@@ -54,7 +58,9 @@ const MedicalAppointment = () => {
       alert("Por favor, selecciona una especialidad, un médico y una fecha para programar la cita.");
     }
   };
+
   const isButtonDisabled = !(selectedSpeciality && selectedDoctor && selectedDate);
+
   return (
     <div className="container medical-appointment-container mt-5">
       {store.authentication === false ? (
@@ -72,7 +78,7 @@ const MedicalAppointment = () => {
       ) : (
         <div className="row justify-content-center">
           <div className="col-12">
-            <div style={{ marginBottom: '20px'}}>
+            <div style={{ marginBottom: '20px' }}>
               <SpecialitySelection handleSpecialitySelect={setSelectedSpeciality} />
             </div>
             <div style={{ marginBottom: '20px' }}>
@@ -83,9 +89,14 @@ const MedicalAppointment = () => {
                 <AvailabilityCalendar handleAppointment={setSelectedDate} doctorAvailability={doctorAvailability} />
               )}
             </div>
-            <button style={{backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px'}}  className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
+            <button style={{ backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px' }} className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
               Registrar cita
             </button>
+            <Link to = "/PrivatePatient">
+            <button style={{backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px'}}  className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
+              Volver a zona privada
+            </button>
+            </Link>
             {appointmentCreated && (
               <div className="alert alert-success" role="alert">
                 Cita creada satisfactoriamente! A su email le llegarán los datos y link de su cita online!
@@ -98,5 +109,7 @@ const MedicalAppointment = () => {
   );
 };
 
+
 export default MedicalAppointment;
+
 

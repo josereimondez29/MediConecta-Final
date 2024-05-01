@@ -42,8 +42,3 @@ const SpecialitySelection = ({ handleSpecialitySelect }) => {
 export default SpecialitySelection;
 
 
-
-
-
-
-

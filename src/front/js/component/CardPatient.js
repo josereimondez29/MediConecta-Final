@@ -38,13 +38,10 @@ const CardPatient = (props) => {
                 <hr/>
                 <div className="buttons" style={{display: "flex", flexDirection: "column", alignItems:"center"}}>
                     <Link to={"/patient/" + props.id + "/details"}>
-                        <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Leer más</button>
+                        <button className="btn btn-primario" style={{  marginBottom:"5px"}}>Leer más</button>
                     </Link> 
                     <Link to={"/"}>
-                        <button className="btn btn-primary" style={{  marginBottom:"5px"}}>Pedir cita</button>
-                    </Link>
-                    <Link to={"/"}>
-                        <button className="btn btn-primary" style={{  marginBottom:"10px"}}>Añador a favorito</button>
+                        <button className="btn btn-primario" style={{  marginBottom:"5px"}}>Pedir cita</button>
                     </Link>
                 </div>
             </div>

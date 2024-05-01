@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
   const [doctors, setDoctors] = useState([]);
-  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
 
   useEffect(() => {
     if (selectedSpeciality) {
-      fetch(`${process.env.BACKEND_URL}/doctors?speciality=${selectedSpeciality}`)
+      fetch(`${process.env.BACKEND_URL}/doctors/speciality/${selectedSpeciality}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Error fetching doctors');
@@ -14,7 +13,7 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
           return response.json();
         })
         .then(data => {
-          setDoctors(data.result);
+          setDoctors(data.doctors);
         })
         .catch(error => {
           console.error('Error fetching doctors:', error);
@@ -24,7 +23,6 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 
   const handleDoctorChange = (e) => {
     const doctorId = e.target.value;
-    setSelectedDoctorId(doctorId);
     handleDoctorSelect(doctorId);
   };
 
@@ -42,7 +40,6 @@ const DoctorSelection = ({ handleDoctorSelect, selectedSpeciality }) => {
 };
 
 export default DoctorSelection;
-
 
 
 

@@ -6,8 +6,8 @@ import CardDoctor from "./CardDoctor";
 
 const Dermatologia = () => {
 
+
   const { store, actions } = useContext(Context);
-  
   const dermSpecialtyId = store.specialities.find(specialty => specialty.name === "Dermatología");
   const dermDoctors = store.doctors.filter(doctor => doctor.speciality_id === dermSpecialtyId?.id);
 
@@ -42,7 +42,7 @@ const Dermatologia = () => {
     <div className="text-container">
       <h2 className="title">Dermatología</h2>
       <p className="text">
-      Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
+      Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas. 
       </p>
       <p className="text">
         La Dermatología es una especialidad médica fundamental que se centra en el diagnóstico, tratamiento y prevención de enfermedades y condiciones de la piel, cabello y uñas. Nuestros dermatólogos son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes. Tipos de terapias a realiar:

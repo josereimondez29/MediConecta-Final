@@ -2,10 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import paciente2 from "../../img/paciente2.jpg"
+import { Link, useParams } from "react-router-dom";
+import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
+
 
 export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
     const [patientId, setPatientId] = useState(null);
+    const idURL = useParams();
 
     useEffect(() => {
         // Obtener el ID del paciente almacenado en el almacenamiento local
@@ -19,12 +23,15 @@ export const PrivatePatient = () => {
         }
     }, []); // Ejecutar solo una vez al cargar el componente
 
+
     console.log(store.currentPatient);
 
     return (
         <>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="col-lg-6 container card mt-5">
+                      <div className="d-flex flex-column align-items-start">
+                    <GetProfilePicture />
                     <h1>Información del paciente</h1>
                     {store.currentPatient ? (
                         <div>
@@ -48,10 +55,12 @@ export const PrivatePatient = () => {
                                     <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Email: {store.currentPatient.email}</span><i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                                 </li>
                             </ul>
+
                         </div>
                     ) : (
                         <p className="mb-0">No se encontró información del paciente.</p>
                     )}
+
                 <div className="d-flex justify-content-center align-items-center mt-3">
                     <div className="d-flex justify-content-center">
                         <form className="d-flex p-2">
@@ -68,6 +77,7 @@ export const PrivatePatient = () => {
                         </Link>
                     </div>
                     </div>
+                </div>
                 </div>
                 <div className="col-lg-6 d-flex flex-column justify-content-center align-items-center" style={{height: "600px"}}>
                     <img src= {paciente2} alt="Doctor" style={{ height: "400px", width: "600px", marginRight: "60px", marginBottom: "20px", borderRadius: "10px", marginLeft: "10px" }} />

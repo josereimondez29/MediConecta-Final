@@ -4,12 +4,12 @@
  
 .footer {
     background-color: #83a8b1; 
-    
+ 
 }
 
-.ftco-heading-2 {
+/* .ftco-heading-2 {
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
+} */
 
 /* .list-unstyled{
     text-decoration: none;
@@ -34,3 +34,7 @@ a:hover{
 .footer-social{
     justify-content:space-around;
  } 
+
+ .text{
+    color:#ffff;
+ }

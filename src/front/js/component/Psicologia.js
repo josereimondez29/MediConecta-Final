@@ -9,7 +9,7 @@ const Psicologia = () => {
 
   const psicoSpecialtyId = store.specialities.find(specialty => specialty.name === "Psicología");
   const psicoDoctors = store.doctors.filter(doctor => doctor.speciality_id === psicoSpecialtyId?.id);
-  
+
   let doctorsComponent;
 
   if (psicoDoctors.length > 0) {
@@ -26,12 +26,12 @@ const Psicologia = () => {
         ))}
       </div>
     );
-
   } else {
     doctorsComponent = <p className='text-center'>No hay doctores disponibles</p>;
   }
-  return (
+ 
 
+  return (
     <>
     <div className="psicolgia-container">
       <div className="image-container">
@@ -66,4 +66,6 @@ const Psicologia = () => {
   );
 }
 
+
 export default Psicologia;
+
