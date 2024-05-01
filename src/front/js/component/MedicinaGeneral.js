@@ -16,7 +16,7 @@ const MedicinaGeneral = () => {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {medGenDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}

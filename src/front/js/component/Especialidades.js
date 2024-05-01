@@ -1,21 +1,21 @@
 import React from 'react';
 import Especialidad from './Especialidad';
-import bg_3 from "../../img/bg_3.jpg";
+import medicina_general_dos from "../../img/Medicina-general-dos.jpg";
 import image_3 from "../../img/image_3.jpg"
 import dermatologia from "../../img/dermatologia.jpg"
 import nutricion2 from "../../img/nutricion2.jpg"
 import fisioterapia from "../../img/fisioterapia.jpg"
 import psicologia from "../../img/psicologia.jpg"
-
+import "./../../styles/Especialidades.css"
 
 const Especialidades = () => {
   let cardData = [
-    { title: "Medicina General", text: "Nosotros te atendemos", image: bg_3 },
-    { title: "Pediatría", text: "#Birds", image: image_3 },
-    { title: "Dermatología", text: "Most iconic", image: dermatologia },
-    { title: "Psicología ", text: "#picture123", image: psicologia },
-    { title: "Nutrición", text: "#picture123", image: nutricion2 },
-    { title: "Fisioterapia???", text: "#picture123", image: fisioterapia }
+    { title: "Medicina General", text: "Consultas médicas virtuales, Atención preventiva, Manejo de enfermedades crónicas, Referencias y coordinación de atención", image: medicina_general_dos, link: "/MedicinaGeneral" },
+    { title: "Pediatría", text: "Exámenes rutinarios, Gestión de medicamentos, Tratamientos de salud mental, Tratamiento y prevención", image: image_3, link: "/Pediatria" },
+    { title: "Dermatología", text: "Consulta dermatológica virtual, Tratamiento de enfermedades de la piel, Cuidados estéticos de la piel, Manejo de enfermedades dermatológicas", image: dermatologia, link: "/Dermatologia" },
+    { title: "Psicología ", text: "Trastornos por ansiedad, Trastornos del estado de ánimo, Ludopatía, Trastorno de déficit de atención", image: psicologia, link: "/Psicologia" },
+    { title: "Nutrición", text: "Ganancia o pérdida de peso, Protección cardiovascular, Mejora sistema inmunológico, Control de procesos inflamatorios", image: nutricion2, link: "/Nutricion" },
+    { title: "Fisioterapia", text: "Fisioterapia neurológica, Fisioterapia respiratoria, Fisioterapia pediatrica, Rehabilitación", image: fisioterapia, link: "/Dermatologia" }
   ];
 
   // Función para dividir el array en grupos de tres elementos
@@ -32,8 +32,25 @@ const Especialidades = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-center mt-4">
-        <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83a8b1", color: "#fff" }}>Especialidades</button>
+      <div className="text d-flex justify-content-center mt-4">
+        {/* <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83a8b1", color: "#fff" }}>Especialidades</button> */}
+            {/* <h1 className="t-stroke t-shadow">ESPECIALIDADES</h1> */}
+  <span>E</span>
+  <span>S</span>
+  <span>P</span>
+  <span>E</span>
+  <span>C</span>
+  <span>i</span>
+  <span>A</span>
+  <span>L</span>
+  <span>I</span>  
+  <span>D</span>
+  <span>A</span>
+  <span>D</span>
+  <span>E</span>
+  <span>S</span>
+  
+
       </div>
       <div id="carouselExampleControlsNoTouching" className="carousel slide" data-bs-touch="false">
         <div className="carousel-inner">
@@ -42,7 +59,7 @@ const Especialidades = () => {
               <div className="d-flex justify-content-center">
                 {group.map((card, cardIndex) => (
                   <div key={cardIndex} className="p-2">
-                    <Especialidad title={card.title} text={card.text} image={card.image} />
+                    <Especialidad title={card.title} text={card.text} image={card.image} link={card.link} />
                   </div>
                 ))}
               </div>

@@ -10,8 +10,6 @@ export const CambioContraseña = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState(""); // Estado para almacenar el mensaje de error
     const [formSubmitted, setFormSubmitted] = useState(false);
- 
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -28,6 +26,7 @@ export const CambioContraseña = () => {
             
                 if (userType && (userType === "doctor" || userType === "patient") && userId) {
                     navigate(`/${userType === "doctor" ? 'privatedoctor' : "PrivatePatient"}`);
+
                 } else {
                     console.error("Tipo de usuario o ID de usuario no reconocido");
                 }

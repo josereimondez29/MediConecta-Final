@@ -30,7 +30,6 @@ const PrivateDoctor = (props) => {
             if (selectedDoctor) {
                 setDoctor(selectedDoctor);
                 setLoading(false);
-
                 // Buscar la especialidad correspondiente al médico
                 const foundSpeciality = store.specialities.find(speciality => speciality.id === selectedDoctor.speciality_id);
                 setSpeciality(foundSpeciality);
@@ -39,17 +38,12 @@ const PrivateDoctor = (props) => {
             }
         }
     }, [id, store.doctors, store.specialities]);
-
-
     if (loading) {
         return <p>Cargando...</p>;
     }
-
     if (!doctor) {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
-
-
 
     // console.log("DOCTORDATA PRIVATE DOCTOR-->", doctor)
     // console.log("STORE PRIVATE DOCTOR-->", store.doctors)
@@ -108,19 +102,17 @@ const PrivateDoctor = (props) => {
                             </>
                         )}
                     </form>
-                </div>
-            </div>
 
-            <div>
-                <h1 className="text-center">Citas pendientes</h1>
-                {/* <ListAppointment/> */}
             </div>
+        </div>
+        <div>
+        <h1 className="text-center">Citas pendientes</h1>
+            {/* <ListAppointment/> */}
+        </div>
         </>
     );
 }
-
 PrivateDoctor.propTypes = {
     match: PropTypes.object
 };
-
 export default PrivateDoctor

@@ -23,7 +23,7 @@ import Prices from "./component/Prices";
 import MedicinaGeneral from "./component/MedicinaGeneral";
 import Dermatologia from "./component/Dermatologia";
 import Pediatria from "./component/Pediatria";
-import NotFound from "./component/NotFound"; 
+import NotFound from "./component/NotFound";
 import { Contact } from "./pages/Contact";
 import Psicologia from "./component/Psicologia";
 import Fisioterapia from "./component/Fisioterapia";
@@ -32,9 +32,6 @@ import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
 import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
-
-
-
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -118,6 +115,7 @@ const LayoutContent = () => {
       break;
 
       default:
+
         setPage(" ");
         break;
     }
@@ -125,8 +123,6 @@ const LayoutContent = () => {
 
   return (
     <div>
-
-
       <Navbar />
       <Jumbotron page={page} />
       <Routes>
@@ -150,7 +146,7 @@ const LayoutContent = () => {
         <Route element={<Nutricion />} path="/Nutricion" />
         <Route element={<Psicologia />} path="/Psicologia" />
         <Route element={<Fisioterapia />} path="/Fisioterapia" />
-        <Route element={<NotFound />} path="*" /> 
+        <Route element={<NotFound />} path="*" />
         <Route element={<Contact/>} path = "/contact"/>
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
@@ -159,8 +155,6 @@ const LayoutContent = () => {
         
       </Routes>
       <Footer />
-
-
     </div>
   );
 };

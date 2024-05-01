@@ -14,21 +14,24 @@ export const Register = () => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
 
-  const sendWelcomeEmail = async (email) => {
+  const sendWelcomeEmail = async (email, userType, name) => {
     try {
       const response = await fetch(process.env.BACKEND_URL +'/send_mail_to', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({   email: email,
+        userType: userType, name: name})
       });
+
       const data = await response.json();
-      console.log(data); // Puedes manejar la respuesta del backend según lo necesites
+      console.log("Prueba de datos", data); // Puedes manejar la respuesta del backend según lo necesites
     } catch (error) {
       console.error('Error sending welcome email:', error);
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +52,10 @@ export const Register = () => {
   
     console.log('Email:', email);
 
+    
     try {
       await actions.register(userData, userType, navigate);
-      await sendWelcomeEmail(email); // Llama a la función para enviar el correo electrónico de bienvenida
+      await sendWelcomeEmail(email, userType, name); // Llama a la función para enviar el correo electrónico de bienvenida
     } catch (error) {
       setError(error.message);
     }

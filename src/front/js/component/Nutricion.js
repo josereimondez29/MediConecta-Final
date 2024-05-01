@@ -11,12 +11,12 @@ const Nutricion = () => {
   const nutriDoctors = store.doctors.filter(doctor => doctor.speciality_id === nutriSpecialtyId?.id);
 
   let doctorsComponent;
-
+  
   if (nutriDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {nutriDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}

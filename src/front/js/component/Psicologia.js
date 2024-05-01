@@ -16,7 +16,7 @@ const Psicologia = () => {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {psicoDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
@@ -33,7 +33,6 @@ const Psicologia = () => {
 
   return (
     <>
-
     <div className="psicolgia-container">
       <div className="image-container">
         <img src={psicologia} alt="Psicologia" className="psicologia-image" />
@@ -67,4 +66,6 @@ const Psicologia = () => {
   );
 }
 
+
 export default Psicologia;
+

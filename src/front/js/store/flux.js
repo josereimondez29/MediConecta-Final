@@ -277,9 +277,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					} return doctor})
 					setStore({ doctors: doctorsUpdate });
 				})
-				.catch((error) => console.error("Fetch error:", error));
+				.catch((error) => console.error("Fetch error:", error));__
 
 			},
+
 
 			updatePatient: async (editPatient, id) => {
 				try {
@@ -381,6 +382,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				   .catch((error) => console.error("Fetch error:", error));
 		   },
 
+      
 		   changeUploadImage: async (formData, userId, userType) => {
 			try {
 			  const response = await fetch(process.env.BACKEND_URL + `/uploadprofilepicture/${userType}/${userId}`, {
@@ -429,7 +431,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			});
 		},
 
- 
+
 			privateZone: async () => {
 				try {
 					const token = localStorage.getItem('token');

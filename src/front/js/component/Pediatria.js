@@ -6,17 +6,16 @@ import CardDoctor from "./CardDoctor";
 
 const Pediatria = () => {
   const { store, actions } = useContext(Context);
-
   const pediSpecialtyId = store.specialities.find(specialty => specialty.name === "Pediatria");
   const pediDoctors = store.doctors.filter(doctor => doctor.speciality_id === pediSpecialtyId?.id);
 
   let doctorsComponent;
-
+  
   if (pediDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {pediDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
@@ -29,7 +28,6 @@ const Pediatria = () => {
   } else {
     doctorsComponent = <p className='text-center'>No hay doctores disponibles</p>;
   }
- 
 
   return (
     <>

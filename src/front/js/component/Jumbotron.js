@@ -19,8 +19,7 @@ const LoginPageJumbotron = () => {
             <p className="lead">Accede a tu perfil</p>
         </div>
     );
-};   
-
+};
 const RegisterPageJumbotron = () => {
     return (
         <div className="jumbotron mb-4">
@@ -49,6 +48,15 @@ const AppointmentPageJumbotron = () => {
         </div>
     );
 };
+const ChangePasswordPageJumbotron = () => {
+    return (
+        <div className="jumbotron mb-4">
+            <h1 className="display-4">CAMBIO DE CONTRASEÑA</h1>
+            {/* <p className="lead">No dudes en pedir una cita con tu medico de confianza</p> */}
+        </div>
+    );
+};
+
 
 const ChangePasswordPageJumbotron = () => {
     return (
@@ -68,6 +76,7 @@ const ChangePasswordPageJumbotron = () => {
 //         </div>
 //     );
 // };
+
 
 const AllDoctorPageJumbotron = () => {
     return (
@@ -97,6 +106,7 @@ const EditPageJumbotron = () => {
         </div>
     );
 };
+
 const InfoPageJumbotron = () => {
     return (
         <div className="jumbotron mb-4">
@@ -132,7 +142,7 @@ const NullPageJumbotron = () => {
         <div className="jumbotron mb-4">
             <h1 className="display-4"> </h1>
             <p className="lead"></p>
-     
+
         </div>
     );
 };
@@ -142,7 +152,7 @@ const ContactPageJumbotron = () => {
         <div className="jumbotron mb-4">
             <h1 className="display-4"> CONTACTANOS </h1>
             <p className="lead">Estaremos encantados de ayudarte</p>
-     
+
         </div>
     );
 };
@@ -150,7 +160,7 @@ const ContactPageJumbotron = () => {
 
 // Ahora exportar Jumbotron como un componente separado
 const Jumbotron = ({ page }) => {
-    
+
     // Determina qué componente de Jumbotron mostrar según la página actual
     switch (page) {
         case 'home':
@@ -166,19 +176,19 @@ const Jumbotron = ({ page }) => {
         // case 'singleDoctor':
         //     return <SingleDoctorPageJumbotron />;
         case 'allDoctor':
-             return <AllDoctorPageJumbotron />;
+            return <AllDoctorPageJumbotron />;
         case 'price':
-             return <PricePageJumbotron />;
+            return <PricePageJumbotron />;
         case 'edit':
-            return <EditPageJumbotron />;    
+            return <EditPageJumbotron />;
         case 'info':
-            return <InfoPageJumbotron />;   
+            return <InfoPageJumbotron />;
         case 'specialty':
-            return <SpecialtyPageJumbotron />;    
+            return <SpecialtyPageJumbotron />;
         case 'undefined':
-            return <NullPageJumbotron />;             
+            return <NullPageJumbotron />;
         case 'contact':
-            return <ContactPageJumbotron/>;  
+            return <ContactPageJumbotron />;
         case 'recoverpassword':
             return <RecoverpasswordPageJumbotron/>;    
         case 'changepassword':

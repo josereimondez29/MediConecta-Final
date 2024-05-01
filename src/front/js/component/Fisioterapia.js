@@ -11,12 +11,12 @@ const Fisioterapia = () => {
   const fisioDoctors = store.doctors.filter(doctor => doctor.speciality_id === fisioSpecialtyId?.id);
 
   let doctorsComponent;
-
+  
   if (fisioDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {fisioDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
