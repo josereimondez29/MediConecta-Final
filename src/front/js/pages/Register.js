@@ -14,21 +14,24 @@ export const Register = () => {
   const navigate = useNavigate();
   const { store, actions } = useContext(Context);
 
-  const sendWelcomeEmail = async (email) => {
+  const sendWelcomeEmail = async (email, userType, name) => {
     try {
       const response = await fetch(process.env.BACKEND_URL +'/send_mail_to', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email })
+        body: JSON.stringify({   email: email,
+        userType: userType, name: name})
       });
+
       const data = await response.json();
-      console.log(data); // Puedes manejar la respuesta del backend según lo necesites
+      console.log("Prueba de datos", data); // Puedes manejar la respuesta del backend según lo necesites
     } catch (error) {
       console.error('Error sending welcome email:', error);
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,9 +52,10 @@ export const Register = () => {
   
     console.log('Email:', email);
 
+    
     try {
       await actions.register(userData, userType, navigate);
-      await sendWelcomeEmail(email); // Llama a la función para enviar el correo electrónico de bienvenida
+      await sendWelcomeEmail(email, userType, name); // Llama a la función para enviar el correo electrónico de bienvenida
     } catch (error) {
       setError(error.message);
     }
@@ -62,7 +66,7 @@ export const Register = () => {
   };
   
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{boxShadow: "10px 5px 5px grey"}}>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Register</h2>
@@ -128,7 +132,9 @@ export const Register = () => {
                 <option value="doctor">Médico</option>
               </select>
             </div>
-            <button type="submit" style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn">Register</button>
+            <div className="text-center">
+              <button type="submit" className="btn btn-primario">Register</button>
+            </div>
             {error && <div className="mt-3 text-danger">{error}</div>}
             {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
           </form>

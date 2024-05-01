@@ -41,13 +41,13 @@ export const IsLogin = () => {
                 <p>Para la correcta funcionalidad de la web, debes tener completo la información del perfil</p>
                 
                 <div className="container-fluid d-flex justify-content-between">
-                    <Link to={`/privatedoctor/${id}`}>
-                        <button className="btn btn-info">Ir a zona privada</button>
+                    <Link to={`/privatedoctor`}>
+                        <button className="btn btn-primario">Ir a zona privada</button>
                     </Link>
                     {/* Utilizamos el valor actualizado de token */}
                     { token && (
                         <Link to={`/editDoctor/${id}`}>
-                        <button className="btn btn-info">Modificar perfil</button>
+                        <button className="btn btn-secundario">Modificar perfil</button>
                      </Link>
                     )}
                  

@@ -12,26 +12,26 @@ import { SingleDoctor } from "./pages/SingleDoctor";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-
 import MedicalAppointment from "./component/CitaMedica";
 import PrivateDoctor from "./pages/PrivateDoctor";
 import { AllDoctors } from "./component/AllDoctors";
 import { AllPatients } from "./component/AllPatients";
 import { IsLogin } from "./component/IsLogin";
 import Jumbotron from "./component/Jumbotron";
-// import { ChangeLog } from "./component/ChangeLog";
 import { PrivatePatient } from "./pages/PrivatePatient";
 import Prices from "./component/Prices";
 import MedicinaGeneral from "./component/MedicinaGeneral";
 import Dermatologia from "./component/Dermatologia";
 import Pediatria from "./component/Pediatria";
-import NotFound from "./component/NotFound"; 
+import NotFound from "./component/NotFound";
 import { Contact } from "./pages/Contact";
-import Psicologia from "./component/Psicología";
+import Psicologia from "./component/Psicologia";
 import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
-
+import { CambioContraseña } from "./component/CambioContraseña";
+import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
+import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -65,7 +65,7 @@ const LayoutContent = () => {
       case "/register":
         setPage("register");
         break;
-        case `/privatedoctor/${id}`:
+      case "/privatedoctor":
           setPage("private");
           break;
       case `/editDoctor/${id}`:
@@ -92,6 +92,9 @@ const LayoutContent = () => {
       case "/recoverpassword":
         setPage("recoverpassword");
       break;
+      case "/changepassword":
+        setPage("changepassword")
+      break;
       case "/MedicinaGeneral":
         setPage("specialty");
       break;
@@ -112,6 +115,7 @@ const LayoutContent = () => {
       break;
 
       default:
+
         setPage(" ");
         break;
     }
@@ -119,8 +123,6 @@ const LayoutContent = () => {
 
   return (
     <div>
-
-
       <Navbar />
       <Jumbotron page={page} />
       <Routes>
@@ -129,7 +131,7 @@ const LayoutContent = () => {
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />
         <Route element={<Single />} path="/single/:theid" />
-        <Route element={<PrivateDoctor />} path="/privatedoctor/:id" />
+        <Route element={<PrivateDoctor />} path="/privatedoctor" />
         <Route element={<SingleDoctor />} path="/doctor/:id/details" />
         <Route element={<AllDoctors />} path="/alldoctors" />
         <Route element={<AllPatients />} path="/allpatients" />
@@ -144,14 +146,15 @@ const LayoutContent = () => {
         <Route element={<Nutricion />} path="/Nutricion" />
         <Route element={<Psicologia />} path="/Psicologia" />
         <Route element={<Fisioterapia />} path="/Fisioterapia" />
-        <Route element={<NotFound />} path="*" /> 
+        <Route element={<NotFound />} path="*" />
         <Route element={<Contact/>} path = "/contact"/>
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
+        <Route element={<CambioContraseña/>} path="/changepassword"/>
+        <Route element={<ProfilePicture/>} path="/img"/>
+        <Route element={<UpdateAtachment/>} path="/file"/>
         
       </Routes>
       <Footer />
-
-
     </div>
   );
 };

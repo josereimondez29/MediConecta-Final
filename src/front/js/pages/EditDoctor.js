@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Context } from "../store/appContext";
-
 export const EditDoctor = () => {
     const { store, actions } = useContext(Context);
     const { id } = useParams();
@@ -20,7 +19,6 @@ export const EditDoctor = () => {
         medical_license: "",
         speciality_id: ""
     });
-
     useEffect(() => {
         const loadSpecialities = async () => {
             try {
@@ -31,15 +29,13 @@ export const EditDoctor = () => {
         };
         loadSpecialities();
     }, []);
-
     useEffect(() => {
         setSpecialities(store.specialities);
     }, [store.specialities]);
-
     useEffect(() => {
         const editDoctor = Array.isArray(store.doctors) ? store.doctors.find(doctor => doctor.id === idFromUrl) : null;
         if (editDoctor) {
-            setEditDoctor({ 
+            setEditDoctor({
                 name: editDoctor.name || "",
                 surname: editDoctor.surname || "",
                 email: editDoctor.email || "",
@@ -51,14 +47,12 @@ export const EditDoctor = () => {
             });
         }
     }, [idFromUrl, store.doctors]);
-
     useEffect(() => {
         if (editDoctor && editDoctor.speciality_id) {
             const foundSpeciality = specialities.find(speciality => speciality.id === editDoctor.speciality_id);
             setSpeciality(foundSpeciality);
         }
-    }, [editDoctor, specialities]); 
-
+    }, [editDoctor, specialities]);
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Verificar si todos los campos están completados
@@ -67,27 +61,24 @@ export const EditDoctor = () => {
                 await actions.updateDoctor(editDoctor, id);
                 setFormSubmitted(true); // Marcar el formulario como enviado
                 setTimeout(() => {
-                    navigate(`/privatedoctor/${idFromUrl}`);
+                    navigate('/privatedoctor');
                 }, 3000);
             } catch (error) {
-                console.error("Error updating doctor:", error); 
+                console.error("Error updating doctor:", error);
             }
         } else {
             // Mostrar mensaje de error o alerta si no todos los campos están completados
             alert("Por favor complete todos los campos antes de enviar el formulario.");
         }
     };
-
-
     return (
-         
             <>
              <div className='content' style={{ padding: "50px" }}>
                 <form onSubmit={handleSubmit}>
                     <h1 className='tittle' style={{ textAlign: "center" }}><strong>Edit the contact</strong></h1>
-                    <div className="mb-3"> 
+                    <div className="mb-3">
                         <label htmlFor="inputname" className="form-label">Name</label>
-                        <input type="text" className="form-control" id="inputname" name="name" placeholder="Name" 
+                        <input type="text" className="form-control" id="inputname" name="name" placeholder="Name"
                             onChange={(e) => setEditDoctor({ ...editDoctor, name: e.target.value })}
                             value={editDoctor.name}
                         />
@@ -134,7 +125,6 @@ export const EditDoctor = () => {
                             value={editDoctor.medical_license}
                         />
                     </div>
-    
                     <div className="mb-3">
                         <label htmlFor="inputspeciality" className="form-label">Speciality</label>
                         <select
@@ -155,10 +145,9 @@ export const EditDoctor = () => {
                             ))}
                         </select>
                     </div>
-                 
                     {/* Botón de enviar */}
                     <div className='d-grid gap-2'>
-                        <button className="btn btn-primary" type="submit" >Update</button>
+                        <button className="btn btn-primario" type="submit" >Update</button>
                     </div>
                     {/* Mensaje de éxito */}
                     {formSubmitted && (
@@ -168,7 +157,7 @@ export const EditDoctor = () => {
                     )}
                 </form>
                 <Link to={"/"}>
-                    <button className='btn buttonContact' type="submit" >Cancel, get back to contacts</button>
+                    <button className='btn btn-secundario' type="submit" >Cancel, get back to Home</button>
                 </Link>
             </div>
         </>
