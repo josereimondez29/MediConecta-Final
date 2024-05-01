@@ -220,12 +220,11 @@ class Medical_Appointment(db.Model):
     doctor_id = db.Column(db.Integer, db.ForeignKey('doctor.id'))
     doctor_id_relationship = db.relationship('Doctor')  
     appointment_date = db.Column(db.DateTime, nullable=False)  
-    meeting_id = db.Column(db.Integer, db.ForeignKey('meetings.id'))  # Nueva columna para la relación con Meetings
-    meeting_relationship = db.relationship('Meetings', back_populates='medical_appointment', lazy=True)
+    meeting_id = db.Column(db.Integer, db.ForeignKey('meetings.id'))
+    meeting_relationship = db.relationship('Meetings', back_populates='medical_appointment', uselist=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
     
     def serialize(self):
-        # Acceder al room_url a través de la relación con Meetings
         room_url = self.meeting_relationship.room_url if self.meeting_relationship else None
         
         return {
@@ -234,9 +233,15 @@ class Medical_Appointment(db.Model):
             "patient_id": self.patient_id,
             "doctor_id": self.doctor_id,
             "appointment_date": self.appointment_date.isoformat(),
-            "room_url": room_url,
+            "meeting": {
+                "id": self.meeting_relationship.id if self.meeting_relationship else None,
+                "room_id": self.meeting_relationship.room_id if self.meeting_relationship else None,
+                "appointment_date": self.meeting_relationship.appointment_date.isoformat() if self.meeting_relationship else None,
+                "room_url": room_url
+            },
             "is_active": self.is_active
         }
+
 
 class Meetings(db.Model):
     __tablename__ = 'meetings'
@@ -244,7 +249,7 @@ class Meetings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     room_id = db.Column(db.String(255), nullable=False)
     appointment_date = db.Column(db.DateTime, nullable=False)
-    room_url = db.Column(db.String(255), nullable=False)  # Nueva columna para la URL de la sala
+    room_url = db.Column(db.String(255), nullable=False)
     medical_appointment = db.relationship('Medical_Appointment', back_populates='meeting_relationship', uselist=False)
 
     def serialize(self):
@@ -252,7 +257,7 @@ class Meetings(db.Model):
             "id": self.id,
             "room_id": self.room_id,
             "appointment_date": self.appointment_date.isoformat(),
-            "room_url": self.room_url  # Incluyendo la URL de la sala en la serialización
+            "room_url": self.room_url
         }
 
     @classmethod
@@ -260,6 +265,7 @@ class Meetings(db.Model):
         new_meeting = cls(room_id=room_id, appointment_date=appointment_date, room_url=room_url)
         db.session.add(new_meeting)
         db.session.commit()
+
 
 
 class Profile_Picture(db.Model):
@@ -306,6 +312,7 @@ class Attachment_File(db.Model):
 
 
 """class FavoriteSpeciality(db.Model):    
+
     __tablename__ = 'favorite_speciality'
     id = db.Column(db.Integer, primary_key=True)
     medical_appointment_id = db.Column(db.Integer, db.ForeignKey('medical_appointment.id'))

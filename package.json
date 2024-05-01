@@ -76,6 +76,7 @@
     "@types/react": "^18.2.79",
     "@whereby.com/browser-sdk": "^2.9.0",
     "axios": "^1.6.8",
+    "date-fns": "^3.6.0",
     "cloudinary": "^2.2.0",
     "http-server": "^14.1.1",
     "prop-types": "^15.6.1",

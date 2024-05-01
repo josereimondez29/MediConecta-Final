@@ -23,9 +23,10 @@ import uuid
 from random import choice
 from string import ascii_letters, digits
 import secrets
+from dateutil import tz
 from flask import render_template
-
 import cloudinary.uploader
+
 
 
 # from models import Person
@@ -597,6 +598,20 @@ def get_doctor_availability(doctor_id):
     availability = [availability.serialize() for availability in doctor.availabilities]
     return jsonify({'availability': availability}), 200
 
+#Doctor Availability / ID
+@app.route("/api/doctor_appointments/<int:doctor_id>", methods=["GET"])
+def get_doctor_appointments(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'error': "El doctor especificado no existe", 'doctor_id': doctor_id}), 404
+
+    # Aquí deberías obtener las citas del doctor desde la base de datos
+    # Por ejemplo, asumiendo que las citas están almacenadas en una tabla llamada Appointment:
+    appointments = Medical_Appointment.query.filter_by(doctor_id=doctor_id).all()
+    appointment_data = [appointment.serialize() for appointment in appointments]
+
+    return jsonify({'appointments': appointment_data}), 200
+
 
 
 
@@ -738,7 +753,8 @@ def register_medical_appointment():
     appointment_time_str = body.get('appointment_time')
 
     try:
-        appointment_time = datetime.fromisoformat(appointment_time_str)
+        # Convertir la fecha y hora recibidas en UTC
+        appointment_time_utc = datetime.fromisoformat(appointment_time_str).replace(tzinfo=tz.gettz('UTC')).astimezone(tz.gettz('UTC'))
     except ValueError:
         return jsonify({'msg': "Formato de fecha y hora incorrecto"}), 400
 
@@ -746,12 +762,12 @@ def register_medical_appointment():
     if doctor is None:
         return jsonify({'msg': "El doctor especificado no existe"}), 404
 
-    if not doctor.is_available(appointment_time):
+    if not doctor.is_available(appointment_time_utc):
         return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
 
     existing_appointment = Medical_Appointment.query.filter_by(
         doctor_id=doctor_id,
-        appointment_date=appointment_time
+        appointment_date=appointment_time_utc
     ).first()
 
     if existing_appointment:
@@ -761,47 +777,42 @@ def register_medical_appointment():
         speciality_id=body['speciality'],
         patient_id=patient_info.id,
         doctor_id=doctor_id,
-        appointment_date=appointment_time,
+        appointment_date=appointment_time_utc,
         is_active=True
     )
     
     db.session.add(new_medical_appointment)
     db.session.commit()
 
-    # Genera los enlaces de videoconferencia para la cita médica
     meeting_room_data = create_meeting()
     meeting_id = meeting_room_data.get('meetingId')
     meeting_data = {
-        "endDate": appointment_time.isoformat(),
+        "endDate": appointment_time_utc.isoformat(),
         "roomNamePrefix": meeting_room_data['roomUrl'],
         "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
         "meetingId": meeting_id
     }
     meeting_links = create_meeting_links(meeting_data)
     
-    print(meeting_room_data) 
-    
-    # Almacena la información de la reunión en la base de datos
-    room_url = meeting_data.get('roomNamePrefix')  # Obtener la URL de la sala
-    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time, room_url=room_url)
+    room_url = meeting_data.get('roomNamePrefix')
+    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time_utc, room_url=room_url)
     db.session.add(new_meeting)
     db.session.commit()
     
-    # Envía correos electrónicos al paciente y al doctor
-    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time, meeting_links)
+    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time_utc, meeting_links)
 
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
 
+
 def create_meeting_links(data):
-    # Simulación de la generación de enlaces de videoconferencia
     room_url = f"{data['roomNamePrefix']}"
     host_room_url = f"{data['HostroomNamePrefix']}"
     return room_url, host_room_url
 
+
 def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor_email, appointment_time, meeting_links):
     room_url, host_room_url = meeting_links
     
-    # Construye el mensaje de correo electrónico con los detalles de la cita y los enlaces de videoconferencia
     msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
     msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
     mail.send(msg_patient)

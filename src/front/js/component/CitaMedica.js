@@ -13,7 +13,26 @@ const MedicalAppointment = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [appointmentCreated, setAppointmentCreated] = useState(false);
-  const [doctorAvailability, setDoctorAvailability] = useState(null); // Inicializamos como null
+  const [doctorAvailability, setDoctorAvailability] = useState(null);
+  const [bookedAppointments, setBookedAppointments] = useState([]);
+
+  useEffect(() => {
+    if (selectedDoctor) {
+      fetch(`${process.env.BACKEND_URL}/api/doctor_appointments/${selectedDoctor}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error fetching doctor appointments');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setBookedAppointments(data.appointments);
+        })
+        .catch(error => {
+          console.error('Error fetching doctor appointments:', error);
+        });
+    }
+  }, [selectedDoctor]);
 
   const handleDoctorSelect = async (doctorId) => {
     setSelectedDoctor(doctorId);
@@ -33,6 +52,14 @@ const MedicalAppointment = () => {
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
       const token = localStorage.getItem('token');
+
+      // Verificar si selectedDate es una instancia válida de Date
+      if (!(selectedDate instanceof Date && !isNaN(selectedDate))) {
+        console.error('La fecha seleccionada no es válida:', selectedDate);
+        return;
+      }
+
+      // Formatear la fecha en el formato 'YYYY-MM-DDTHH:MM:SS'
       const formattedDate = selectedDate.toISOString().slice(0, 19).replace('T', ' ');
 
       const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
@@ -50,7 +77,7 @@ const MedicalAppointment = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setAppointmentCreated(true); // Cambio de estado para mostrar el mensaje
+        setAppointmentCreated(true);
       } else {
         console.error('Error al registrar la cita:', data.msg);
       }
@@ -85,8 +112,12 @@ const MedicalAppointment = () => {
               <DoctorSelection handleDoctorSelect={handleDoctorSelect} selectedSpeciality={selectedSpeciality} />
             </div>
             <div style={{ marginBottom: '20px' }}>
-              {selectedDoctor && doctorAvailability && ( // Asegurarse de que doctorAvailability esté presente
-                <AvailabilityCalendar handleAppointment={setSelectedDate} doctorAvailability={doctorAvailability} />
+              {selectedDoctor && doctorAvailability && (
+                <AvailabilityCalendar 
+                  handleAppointment={setSelectedDate} 
+                  doctorAvailability={doctorAvailability}
+                  bookedAppointments={bookedAppointments} 
+                />
               )}
             </div>
             <button style={{ backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px' }} className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
@@ -111,5 +142,8 @@ const MedicalAppointment = () => {
 
 
 export default MedicalAppointment;
+
+
+
 
 
