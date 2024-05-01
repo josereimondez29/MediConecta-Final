@@ -2,15 +2,15 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 
-export const ProfilePicture = () => {
-  const [loading, setLoading] = useState(false);
+export const UpdateAtachment =()=> {
+const [loading, setLoading] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const { store, actions } = useContext(Context);
   const userId = localStorage.getItem("id");
   const userType = localStorage.getItem("userType");
   const navigate = useNavigate();
 
-  const changeUploadImage = async (e) => {
+  const changeUploadFolder= async (e) => {
     try {
       setLoading(true); // Mostrar mensaje de carga
       const file = e.target.files[0];
@@ -36,7 +36,7 @@ export const ProfilePicture = () => {
     }
   };
 
-  const deletePicture = async () => {
+  const deleteFolder = async () => {
     try {
       await actions.deletePicture(userId);
       window.location.reload();
@@ -45,23 +45,9 @@ export const ProfilePicture = () => {
       setConfirmationMessage("Error al eliminar la imagen de perfil.");
     }
   };
-
-  return (
-    <div className="App">
-      <h1>SUBE TU IMAGEN</h1>
-      <div>
-        <label htmlFor="formFile" class="form-label">Carga imagenes que no sean mayores de 400 x 400 px</label>
-        <input class="form-control" accept="image/*" type="file" id="formFile" onChange={changeUploadImage}/>
-      
-        {loading && <p>Cargando...</p>} {/* Mostrar mensaje de carga */}
-        {confirmationMessage && <p>{confirmationMessage}</p>}
-        {store.imageUrl && (
-          <div>
-            <img src={store.imageUrl} alt="uploaded image" />
-            <button onClick={deletePicture}>Eliminar imagen</button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+    return(
+        <>
+        HOLA
+        </>
+    )
+}

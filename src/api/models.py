@@ -281,6 +281,29 @@ class Profile_Picture(db.Model):
             "patient_id": self.patient_id, 
             "doctor_id": self.doctor_id,
         }
+    
+class Attachment_File(db.Model):
+    __tablename__ = 'attachment_file'
+    id = db.Column(db.Integer, primary_key=True)
+    url_file = db.Column(db.String(255), nullable=False)
+    patient_id = db.Column(db.Integer, db.ForeignKey("patient.id", ondelete="CASCADE"), nullable=True)
+    patient_id_relationship = db.relationship('Patient', backref='attachment_file', uselist=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey("doctor.id", ondelete="CASCADE"), nullable=True)
+    doctor_id_relationship = db.relationship('Doctor', backref='attachment_file', uselist=False)
+    description = db.Column(db.String(255), nullable=False)
+
+    def __repr__(self):
+        return f"File ID: {self.id}, URL: {self.url_file}, Patient ID: {self.patient_id}, Doctor ID: {self.doctor_id}, Description:{self.description}"
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "url_file": self.url_file,    
+            "patient_id": self.patient_id, 
+            "doctor_id": self.doctor_id,
+            "description":self.description
+        }
+
 
 """class FavoriteSpeciality(db.Model):    
     __tablename__ = 'favorite_speciality'

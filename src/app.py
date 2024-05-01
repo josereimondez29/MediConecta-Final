@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 import requests
 from api.utils import APIException, generate_sitemap
-from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated, Profile_Picture
+from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated, Profile_Picture, Attachment_File
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -1163,14 +1163,19 @@ def delete_summary(summaryId):
 # Profile Pictures
 @app.route("/profilepicture", methods=["GET"])
 @cross_origin(supports_credentials=True)
-def get_picture():
-    profilespictures=Profile_Picture.query.all()
+def get_pictures():
+    profilespictures = Profile_Picture.query.all()
 
-    profilespictures_serialized=[]
-    for profilepicture in profilespictures:
-        profilespictures_serialized.append(profilepicture.serialize())
+    profilespictures_serialized = []
+    for profilespicture in profilespictures:
+        profilespictures_serialized.append(profilespicture.serialize())
 
-    return jsonify({"message":"Pictures add successfully"}), 200
+    response_body = {
+        "msg": "ok",
+        "result":  profilespictures_serialized
+    }
+
+    return jsonify(response_body), 200
 
 @app.route('/uploadprofilepicture', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -1196,25 +1201,17 @@ def upload_image():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['POST'])
+@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
 @cross_origin(supports_credentials=True)
-def upload_image_patient(patient_id):
-    try:
-        # Obtenemos el archivo de la solicitud
-        file = request.files['file']
-    
-        # Subimos la imagen a Cloudinary
-        upload_result = cloudinary.uploader.upload(file)
-
-        # Creamos una nueva entrada en la base de datos con la URL de la imagen
-        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
-        db.session.add(profile_picture)
-        db.session.commit()
-
-        # Devolvemos la URL de la imagen en la respuesta
-        return jsonify({'msg':'Picture update successfull'}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+def get_image_doctor(doctor_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
+    if profile_picture:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(profile_picture.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
 
 @app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -1236,18 +1233,6 @@ def upload_image_doctor(doctor_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
- 
-@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
-@cross_origin(supports_credentials=True)
-def get_image_doctor(doctor_id):
-    # Obtener el perfil de imagen del doctor por su ID
-    profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
-    if profile_picture:
-        # Si se encontró la imagen del perfil, devolver los datos serializados
-        return jsonify(profile_picture.serialize()), 200
-    else:
-        # Si no se encontró la imagen del perfil, devolver un mensaje de error
-        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
 
 @app.route('/deleteprofilepicture/doctor/<int:doctor_id>', methods=['DELETE'])
 @cross_origin(supports_credentials=True)
@@ -1273,6 +1258,26 @@ def get_image_patient(patient_id):
         # Si no se encontró la imagen del perfil, devolver un mensaje de error
         return jsonify({"error": "Perfil de imagen no encontrado"}), 404
 
+@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_image_patient(patient_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+    
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/deleteprofilepicture/patient/<int:patient_id>', methods=['DELETE'])
 @cross_origin(supports_credentials=True)
 def delete_image_patient(patient_id):
@@ -1282,8 +1287,72 @@ def delete_image_patient(patient_id):
         # Eliminar la entrada de Profile_Picture
         db.session.delete(profile_picture)
         db.session.commit()
-        return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
+        return jsonify({"message": "Profile picture and patient reference deleted"}), 200
     return jsonify({"message": "Profile picture not found"}), 404
+
+
+
+#ATTACHMENT FILES
+@app.route("/attachemntfiles", methods=["GET"])
+@cross_origin(supports_credentials=True)
+def get_files():
+    attachmentfiles = Attachment_File.query.all()
+
+    attachmentfiles_serialized = []
+    for attachmentfile in attachmentfiles:
+        attachmentfiles_serialized.append(attachmentfile.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result":  attachmentfiles_serialized 
+    }
+
+    return jsonify(response_body), 200
+
+
+@app.route('/uploadfile/patient/<int:patient_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_file_patient(patient_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
+    if attachment_file:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(attachment_file.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+    
+@app.route('/uploadattachmentfile/patient/<int:patient_id>', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_file_patient(patient_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+    
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        attachment_file = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
+        db.session.add(attachment_file)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/deletefile/patient/<int:patient_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_file_patient(patient_id):
+    # Buscar la imagen del perfil del doctor
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
+    if attachment_file:
+        # Eliminar la entrada de Profile_Picture
+        db.session.delete(attachment_file)
+        db.session.commit()
+        return jsonify({"message": "File and patient reference deleted"}), 200
+    return jsonify({"message": "Attachment file not found"}), 404
 
 # Favorite Routes
 

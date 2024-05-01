@@ -22,6 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			patients: [],
 			currentPatient: null,
 			profilespictures: [],
+			folder: [],
 			// appointments:[],
 			// meetings:[],
 		},
@@ -228,6 +229,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					setStore({ profilespictures: updatedPictures }); // Actualiza el estado de la tienda con los médicos actualizados
+					
+				});
+			},
+
+			getFolder: (id, userType) => { 
+				fetch(process.env.BACKEND_URL + `/${userType}/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+				// Aquí se asume que los datos del médico obtenidos del backend están en data
+					let updatedFolder = result; // Suponiendo que los datos del médico se encuentran en data.result
+					let updatedFolders = getStore().updatedFolders.map((Folder) => {
+						if (Folder.id === id) {
+							return updatedFolder; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+						} else {
+							return Folder; // Si el ID no coincide, conserva el médico sin cambios
+						}
+					});
+					setStore({ folder: updatedFolders }); // Actualiza el estado de la tienda con los médicos actualizados
 					
 				});
 			},

@@ -31,6 +31,7 @@ import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
+import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
 
 
 
@@ -154,7 +155,8 @@ const LayoutContent = () => {
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
         <Route element={<ProfilePicture/>} path="/img"/>
-
+        <Route element={<UpdateAtachment/>} path="/file"/>
+        
       </Routes>
       <Footer />
 
