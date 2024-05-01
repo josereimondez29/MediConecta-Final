@@ -21,6 +21,7 @@ export const PrivatePatient = () => {
     }, []); // Ejecutar solo una vez al cargar el componente
 
     return (
+
         <div className="container-fluid card mt-5" style={{ backgroundColor: "#EBF3F5" }}>
             <h1 className="text-center my-4">Información del Paciente</h1>
             <div className="d-flex justify-content-between align-items-start">
@@ -29,6 +30,7 @@ export const PrivatePatient = () => {
                     {store.currentPatient ? (
                         <div>
                              <ul class="list-group list-group-flush">
+
                     <li className="list-group-item mb-1" style={{ borderRadius: '10px' }}>
                     <p className="mb-0" style={{ fontFamily: 'Manrope', fontSize: 'inherit', display: 'flex', justifyContent: 'space-between' }}><span>Nombre: {store.currentPatient.name}</span><i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692"}}></i></p>
                     </li>

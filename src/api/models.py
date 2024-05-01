@@ -106,6 +106,7 @@ class Speciality(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
+    doctors = db.relationship('Doctor', back_populates='speciality')  # Relación inversa
 
     def __repr__(self):
         return f"ID{self.id}: {self.name}"
@@ -129,9 +130,8 @@ class Doctor(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     speciality_id = db.Column(db.Integer, db.ForeignKey("speciality.id"), nullable=True)
-    speciality_relationship = db.relationship('Speciality')
+    speciality = db.relationship('Speciality', back_populates='doctors')  # Corrección aquí
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    #availabilities = db.Column(db.Integer, db.ForeignKey("doctoravailability.id"), nullable=True)
     availabilities = db.relationship('DoctorAvailability')
 
     def __repr__(self):
