@@ -23,6 +23,7 @@ import uuid
 from random import choice
 from string import ascii_letters, digits
 import secrets
+from dateutil import tz
 
 # from models import Person
 
@@ -743,7 +744,8 @@ def register_medical_appointment():
     appointment_time_str = body.get('appointment_time')
 
     try:
-        appointment_time = datetime.fromisoformat(appointment_time_str)
+        # Convertir la fecha y hora recibidas en UTC
+        appointment_time_utc = datetime.fromisoformat(appointment_time_str).replace(tzinfo=tz.gettz('UTC')).astimezone(tz.gettz('UTC'))
     except ValueError:
         return jsonify({'msg': "Formato de fecha y hora incorrecto"}), 400
 
@@ -751,12 +753,12 @@ def register_medical_appointment():
     if doctor is None:
         return jsonify({'msg': "El doctor especificado no existe"}), 404
 
-    if not doctor.is_available(appointment_time):
+    if not doctor.is_available(appointment_time_utc):
         return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
 
     existing_appointment = Medical_Appointment.query.filter_by(
         doctor_id=doctor_id,
-        appointment_date=appointment_time
+        appointment_date=appointment_time_utc
     ).first()
 
     if existing_appointment:
@@ -766,7 +768,7 @@ def register_medical_appointment():
         speciality_id=body['speciality'],
         patient_id=patient_info.id,
         doctor_id=doctor_id,
-        appointment_date=appointment_time,
+        appointment_date=appointment_time_utc,
         is_active=True
     )
     
@@ -776,7 +778,7 @@ def register_medical_appointment():
     meeting_room_data = create_meeting()
     meeting_id = meeting_room_data.get('meetingId')
     meeting_data = {
-        "endDate": appointment_time.isoformat(),
+        "endDate": appointment_time_utc.isoformat(),
         "roomNamePrefix": meeting_room_data['roomUrl'],
         "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
         "meetingId": meeting_id
@@ -784,11 +786,11 @@ def register_medical_appointment():
     meeting_links = create_meeting_links(meeting_data)
     
     room_url = meeting_data.get('roomNamePrefix')
-    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time, room_url=room_url)
+    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time_utc, room_url=room_url)
     db.session.add(new_meeting)
     db.session.commit()
     
-    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time, meeting_links)
+    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time_utc, meeting_links)
 
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
 
@@ -809,6 +811,7 @@ def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor
     msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
     msg_doctor.html = f"<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
+
 
 
 

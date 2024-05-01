@@ -7,8 +7,6 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability, bookedApp
   const [selectedDate, setSelectedDate] = useState(null);
   const [workHours] = useState({ start: 9, end: 16, endMinutes: 30 }); // Horario laboral hasta las 16:30
 
-  // Transformar la disponibilidad del doctor para excluir las horas
-  // en las que no está disponible
   const transformAvailabilityToExcludeTimes = () => {
     if (!doctorAvailability) {
       return [];
@@ -21,17 +19,15 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability, bookedApp
     });
   };
 
-  // Filtrar horas que están fuera del horario laboral o ya reservadas
   const filterUnavailableTimes = (time) => {
     const isAvailable = isTimeAvailable(time);
     const isInWorkHours = filterWorkHours(time);
     return isAvailable && isInWorkHours;
   };
 
-  // Verificar si la hora está disponible (no reservada)
   const isTimeAvailable = (time) => {
     if (!bookedAppointments) {
-      return true; // Si no hay citas agendadas, todas las horas están disponibles
+      return true;
     }
 
     const appointmentTime = time.getTime();
@@ -41,25 +37,28 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability, bookedApp
     });
   };
 
-  // Filtrar días no laborables (sábado y domingo)
+  useEffect(() => {
+    console.log('Disponibilidad del médico:', doctorAvailability);
+  }, [doctorAvailability]);
+
+  const handleDateChange = date => {
+    // Convertir la hora seleccionada a la zona horaria del servidor (UTC)
+    const utcDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+    setSelectedDate(utcDate);
+    handleAppointment(utcDate);
+  };
+
   const filterWeekdays = (date) => {
     const day = getDay(date);
     return day !== 0 && day !== 6;
   };
 
-  // Filtrar horas dentro del horario laboral
   const filterWorkHours = (time) => {
     const hour = time.getHours();
     const minutes = time.getMinutes();
     const withinStartAndEnd = hour > workHours.start || (hour === workHours.start && minutes >= 0);
     const withinEnd = hour < workHours.end || (hour === workHours.end && minutes <= workHours.endMinutes);
     return withinStartAndEnd && withinEnd;
-  };
-
-  // Manejar el cambio de fecha
-  const handleDateChange = date => {
-    setSelectedDate(date);
-    handleAppointment(date);
   };
 
   return (
@@ -84,6 +83,12 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability, bookedApp
 };
 
 export default AvailabilityCalendar;
+
+
+
+
+
+
 
 
 
