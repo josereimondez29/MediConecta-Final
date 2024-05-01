@@ -1,6 +1,6 @@
 
   
-  .text {
+  .letras_ruben {
     display: flex;
     justify-content: center;
     transform: translateY(-50%);
@@ -8,22 +8,22 @@
     transition: transform 0.3s ease-in-out;
   }
   
-  .text:hover {
+  .letras_ruben:hover {
     transform: rotateX(35deg) translateY(-50%);
   }
   
-  .text:hover span:nth-child(odd) {
+  .letras_ruben:hover span:nth-child(odd) {
     color: #ccc;
     transform: skewY(15deg);
   }
   
-  .text:hover span:nth-child(even) {
+  .letras_ruben:hover span:nth-child(even) {
     background-color: #f9f9f9;
     color: #a6a6a6;
     transform: skewY(-15deg);
   }
   
-  .text > span {
+  .letras_ruben > span {
     display: block;
     background-color: #83a8b1;
     font-weight: bold;

@@ -44,12 +44,12 @@ export const Footer = () => {
                   <i className="fa-brands fa-facebook fa-xl"></i>
                   </button>
                 </li> */}
-                  <li><Link className="dropdown-item" to="/Dermatologia">Dermatología</Link></li>
-                  <li><Link className="dropdown-item" to="/Fisioterapia">Fisioterapia</Link></li>
-                  <li><Link className="dropdown-item" to="/MedicinaGeneral">Medicina General</Link></li>
-                  <li><Link className="dropdown-item" to="/Nutricion">Nutrición</Link></li>
-                  <li><Link className="dropdown-item" to="/Pediatria">Pediatría</Link></li>
-                  <li><Link className="dropdown-item" to="/Psicologia">Psicología</Link></li>
+                  <li><Link className="dropdown-item-footer" to="/Dermatologia">Dermatología</Link></li>
+                  <li><Link className="dropdown-item-footer" to="/Fisioterapia">Fisioterapia</Link></li>
+                  <li><Link className="dropdown-item-footer" to="/MedicinaGeneral">Medicina General</Link></li>
+                  <li><Link className="dropdown-item-footer" to="/Nutricion">Nutrición</Link></li>
+                  <li><Link className="dropdown-item-footer" to="/Pediatria">Pediatría</Link></li>
+                  <li><Link className="dropdown-item-footer" to="/Psicologia">Psicología</Link></li>
                 </ul>
               </div>
             </div>

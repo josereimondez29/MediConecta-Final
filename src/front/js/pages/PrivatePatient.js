@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
 import paciente2 from "../../img/paciente2.jpg"
 import { Link, useParams } from "react-router-dom";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
@@ -66,7 +65,7 @@ export const PrivatePatient = () => {
                         <form className="d-flex p-2">
                             {patientId && (
                                 <Link to={`/editPatient/${patientId}`}>
-                                    <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i class="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
+                                    <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i className="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
                                 </Link>
                             )}
                         </form>
