@@ -589,6 +589,20 @@ def get_doctor_availability(doctor_id):
     availability = [availability.serialize() for availability in doctor.availabilities]
     return jsonify({'availability': availability}), 200
 
+#Doctor Availability / ID
+@app.route("/api/doctor_appointments/<int:doctor_id>", methods=["GET"])
+def get_doctor_appointments(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'error': "El doctor especificado no existe", 'doctor_id': doctor_id}), 404
+
+    # Aquí deberías obtener las citas del doctor desde la base de datos
+    # Por ejemplo, asumiendo que las citas están almacenadas en una tabla llamada Appointment:
+    appointments = Medical_Appointment.query.filter_by(doctor_id=doctor_id).all()
+    appointment_data = [appointment.serialize() for appointment in appointments]
+
+    return jsonify({'appointments': appointment_data}), 200
+
 
 
 

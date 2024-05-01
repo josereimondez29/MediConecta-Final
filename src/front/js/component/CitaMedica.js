@@ -14,6 +14,25 @@ const MedicalAppointment = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [appointmentCreated, setAppointmentCreated] = useState(false);
   const [doctorAvailability, setDoctorAvailability] = useState(null); // Inicializamos como null
+  const [bookedAppointments, setBookedAppointments] = useState([]);
+
+  useEffect(() => {
+    if (selectedDoctor) {
+      fetch(`${process.env.BACKEND_URL}/api/doctor_appointments/${selectedDoctor}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error fetching doctor appointments');
+          }
+          return response.json();
+        })
+        .then(data => {
+          setBookedAppointments(data.appointments);
+        })
+        .catch(error => {
+          console.error('Error fetching doctor appointments:', error);
+        });
+    }
+  }, [selectedDoctor]);
 
   const handleDoctorSelect = async (doctorId) => {
     setSelectedDoctor(doctorId);
@@ -86,7 +105,11 @@ const MedicalAppointment = () => {
             </div>
             <div style={{ marginBottom: '20px' }}>
               {selectedDoctor && doctorAvailability && ( // Asegurarse de que doctorAvailability esté presente
-                <AvailabilityCalendar handleAppointment={setSelectedDate} doctorAvailability={doctorAvailability} />
+                <AvailabilityCalendar 
+                handleAppointment={setSelectedDate} 
+                doctorAvailability={doctorAvailability}
+                bookedAppointments={bookedAppointments} // Pasar las citas agendadas al componente AvailabilityCalendar 
+                />
               )}
             </div>
             <button style={{ backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px' }} className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
