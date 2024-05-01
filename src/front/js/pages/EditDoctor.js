@@ -67,7 +67,7 @@ export const EditDoctor = () => {
                 await actions.updateDoctor(editDoctor, id);
                 setFormSubmitted(true); // Marcar el formulario como enviado
                 setTimeout(() => {
-                    navigate(`/privatedoctor/${idFromUrl}`);
+                    navigate('/privatedoctor');
                 }, 3000);
             } catch (error) {
                 console.error("Error updating doctor:", error); 
@@ -158,7 +158,7 @@ export const EditDoctor = () => {
                  
                     {/* Botón de enviar */}
                     <div className='d-grid gap-2'>
-                        <button className="btn btn-primary" type="submit" >Update</button>
+                        <button className="btn btn-primario" type="submit" >Update</button>
                     </div>
                     {/* Mensaje de éxito */}
                     {formSubmitted && (
@@ -168,7 +168,7 @@ export const EditDoctor = () => {
                     )}
                 </form>
                 <Link to={"/"}>
-                    <button className='btn buttonContact' type="submit" >Cancel, get back to contacts</button>
+                    <button className='btn btn-secundario' type="submit" >Cancel, get back to Home</button>
                 </Link>
             </div>
         </>

@@ -20,8 +20,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 			doctors: [],
 			specialities: [],
 			patients: [],
-			currentPatient: null
-
+			currentPatient: null,
+			profilespictures: [],
+			folder: [],
+			// appointments:[],
+			// meetings:[],
 		},
 		actions: {
 
@@ -151,30 +154,51 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// Redireccionar al usuario a la página de inicio de sesión
 				},
 			
-			loadDoctors: ()=>{
-				fetch(process.env.BACKEND_URL + "/doctors")
-					.then((response) => response.json())
-					.then((data) => setStore({doctors:data.result}))
-					.catch((error) => console.error(error))
-				}, 
+				loadDoctors: ()=>{
+					fetch(process.env.BACKEND_URL + "/doctors")
+						.then((response) => response.json())
+						.then((data) => setStore({doctors:data.result}))
+						.catch((error) => console.error(error))
+					}, 
+	
+				loadSpecialities: ()=>{
+					fetch(process.env.BACKEND_URL + "/specialities")
+						.then((response) => response.json())
+						.then((data) => {
+							// console.log("fetchSpeciality FLUX",data)
+							// console.log("DATARESULT FLUX", data.result)
+							setStore({ specialities: data.result })})
+						.catch((error) => console.error(error))
+				},
 
-			loadSpecialities: ()=>{
-				fetch(process.env.BACKEND_URL + "/specialities")
-					.then((response) => response.json())
-					.then((data) => {
-						// console.log("fetchSpeciality FLUX",data)
-						// console.log("DATARESULT FLUX", data.result)
-						setStore({ specialities: data.result })})
-					.catch((error) => console.error(error))
-			},
+			// loadAppointment: ()=>{
+			// 	fetch(process.env.BACKEND_URL + "/medical_appoinments")
+			// 	.then((response)=> response.json())
+			// 	.then((data)=>{
+			// 		setStore({appointments: data.result})})
+			// 	.catch((err)=> console.error(err))
+			// },
+
+			// loadMeetings: ()=>{
+			// 	fetch(process.env.BACKEND_URL + "/meetings")
+			// 	.then((response)=>response.json())
+			// 	.then((data)=>{
+			// 		setStore({meetings: data.result})})
+			// 	.catch((err)=>console.err(err))
+			// },
 	
 
-			getinfoDoctor: (id) => { 
-				console.log("id es igual a:", id)
-				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
-				.then((response) => { console.log(response)
-					return response.json()})
+			loadPictures: ()=>{
+				fetch(process.env.BACKEND_URL + "/profilepicture")
+					.then((response) => response.json())
+					.then((data) => setStore({profilespictures:data.result}))
+					.catch((error) => console.error(error))
+				}, 
+			
 
+			getinfoDoctor: (id) => { 
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
+				.then((response) => response.json())
 				.then((result) => {
 				// Aquí se asume que los datos del médico obtenidos del backend están en data
 					let updatedDoctor = result; // Suponiendo que los datos del médico se encuentran en data.result
@@ -190,6 +214,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
+
+			getPicture: (id, userType) => { 
+				fetch(process.env.BACKEND_URL + `/${userType}/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+				// Aquí se asume que los datos del médico obtenidos del backend están en data
+					let updatedPicture = result; // Suponiendo que los datos del médico se encuentran en data.result
+					let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
+						if (Profilespicture.id === id) {
+							return updatedPicture; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+						} else {
+							return Profilespicture; // Si el ID no coincide, conserva el médico sin cambios
+						}
+					});
+					setStore({ profilespictures: updatedPictures }); // Actualiza el estado de la tienda con los médicos actualizados
+					
+				});
+			},
+
+			getFolder: (id, userType) => { 
+				fetch(process.env.BACKEND_URL + `/${userType}/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+				// Aquí se asume que los datos del médico obtenidos del backend están en data
+					let updatedFolder = result; // Suponiendo que los datos del médico se encuentran en data.result
+					let updatedFolders = getStore().updatedFolders.map((Folder) => {
+						if (Folder.id === id) {
+							return updatedFolder; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+						} else {
+							return Folder; // Si el ID no coincide, conserva el médico sin cambios
+						}
+					});
+					setStore({ folder: updatedFolders }); // Actualiza el estado de la tienda con los médicos actualizados
+					
+				});
+			},
+
+
 			updateDoctor: (editDoctor, id) => {
 
 				const requestOptions = {
@@ -200,7 +262,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				};
 				
-				fetch(process.env.BACKEND_URL + `doctor/${id}`, requestOptions)
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
 				.then((response) => {
 					if (!response.ok) {
 						throw new Error('Network response was not ok');
@@ -209,7 +271,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 				.then((result) => {
 					console.log("RESULT FLUX UPGRATE", result);
-					setStore({ doctors: result });
+					const conStore = getStore()
+					const doctorsUpdate = conStore.doctors.map((doctor)=>{if (doctor.id === id){
+						return result.doctor
+					} return doctor})
+					setStore({ doctors: doctorsUpdate });
 				})
 				.catch((error) => console.error("Fetch error:", error));
 
@@ -254,7 +320,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error(error))
 				}, 
 			
-			
 			getinfoPatient: (id) => { 
 
 				console.log("Fetching patient info for ID:", id);
@@ -272,36 +337,99 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
-			//PARA USAR EN EL PrivateMedico.js
-			getinfoMedico: (id) => { 
-				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
-				.then((response) => response.json())
-				.then((result) => {
-					// Actualizar el estado global con la información del paciente que ha iniciado sesión
-					setStore({ currentMedico: result });
-				})
-				.catch((error) => {
-					console.error("Error al obtener la información del paciente:", error);
-					setStore({ messageError: "Error al obtener la información del paciente" });
-				});
-			},
 
 			recoverPassword: (email, userType) => {
-				const requestOptions = {
-				  method: "POST",
-				  headers: { "Content-Type": "application/json" },
-				  body: JSON.stringify({
-					"email": email,
-					"userType": userType
-				})
-				};
 				
-				fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
-				  .then((response) => response.text())
-				  .then((result) => console.log(result))
-				  .catch((error) => console.error(error));
-			},
-			
+			   const requestOptions = {
+				 method: "POST",
+				 headers: { "Content-Type": "application/json",
+							   },
+				 body: JSON.stringify({
+				   "email": email,
+				   "userType": userType
+			   })
+			   };
+			   
+			   fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
+				 .then((response) => response.text())
+				 .then((result) => console.log(result))
+				 .catch((error) => console.error(error));
+		   },
+
+
+		   changePassword: (password, id) => {
+			   const userType = localStorage.getItem("userType")
+			   const requestOptions = {
+				   method: "PUT",
+				   body: JSON.stringify({ password }), // Envía los datos como un objeto
+				   headers: { "Content-Type": "application/json" },
+			   };
+		   
+			//    console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
+			//    console.log("NUEVA CONTRASEÑA", { password });
+		   
+			   fetch(process.env.BACKEND_URL + `/changepassword/${userType}/${id}`, requestOptions)
+				   .then((response) => {
+					   if (!response.ok) {
+						   throw new Error('Network response was not ok');
+					   }
+					   return true; 
+				   })
+				   .then((result) => {
+					   console.log("Contraseña actualizada exitosamente");
+				   })
+				   .catch((error) => console.error("Fetch error:", error));
+		   },
+
+		   changeUploadImage: async (formData, userId, userType) => {
+			try {
+			  const response = await fetch(process.env.BACKEND_URL + `/uploadprofilepicture/${userType}/${userId}`, {
+				method: "POST",
+				body: formData,
+			  });
+			   
+			  if (!response.ok) {
+				throw new Error("Failed to upload image");
+			  }
+			  
+			  const responseData = await response.json();
+		  
+			} catch (error) {
+			  console.error("Error uploading image:", error);
+			  throw new Error("Error al cargar la imagen. Inténtalo de nuevo."); // Agregar un mensaje de error específico
+			}
+		  },
+
+			deletePicture: () => {
+			const userType = localStorage.getItem("userType")
+			const id = localStorage.getItem("id")
+			fetch(process.env.BACKEND_URL + `/deleteprofilepicture/${userType}/${id}`, {
+				method: 'DELETE',
+			})
+			.then((response) => {
+				// Verificar el estado de la respuesta
+				if (!response.ok) {
+					console.log (userType)
+					console.log (id)
+					throw new Error('Error al eliminar la imagen de perfil');
+				}
+				// Devolver la respuesta en formato JSON
+				return response.json();
+				
+			})
+			.then((data) => {
+				console.log (userType)
+				// Manejar los datos de la respuesta
+				console.log("Respuesta del servidor: <3", data);
+				// Recargar la página para mostrar la imagen predeterminada
+				window.location.reload();
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+		},
+
+ 
 			privateZone: async () => {
 				try {
 					const token = localStorage.getItem('token');
