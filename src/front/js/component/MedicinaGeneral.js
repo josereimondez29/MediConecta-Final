@@ -16,7 +16,7 @@ const MedicinaGeneral = () => {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {medGenDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
@@ -39,10 +39,10 @@ const MedicinaGeneral = () => {
         <div className="text-container">
           <h2 className="title">Medicina General</h2>
           <p className="text">
-            Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas, incluida la Medicina General.
+          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
           </p>
           <p className="text">
-            La Medicina General es la base fundamental de la atención médica, abordando una amplia gama de problemas de salud que afectan a personas de todas las edades y condiciones. Nuestros médicos generales son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes.
+            La Medicina General es la base fundamental de la atención médica, abordando una amplia gama de problemas de salud que afectan a personas de todas las edades y condiciones. Nuestros médicos generales son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes. Tipos de terapias a realiar:
           </p>
           <ul className="service-list">
             <li>Consultas médicas virtuales</li>

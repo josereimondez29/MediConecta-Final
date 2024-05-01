@@ -11,12 +11,12 @@ const Nutricion = () => {
   const nutriDoctors = store.doctors.filter(doctor => doctor.speciality_id === nutriSpecialtyId?.id);
 
   let doctorsComponent;
-
+  
   if (nutriDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {nutriDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
@@ -39,23 +39,23 @@ const Nutricion = () => {
         <div className="text-container">
           <h2 className="title">Nutricion</h2>
           <p className="text">
-          Consulta online mediante videollamada (30 – 45 minutos) con un diagnóstico y un diseño de tratamiento basado en ejercicio terapéutico personalizado así como recomendaciones y pautas que seguir en base a su patología actual. 
+          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
           </p>
           <p className="text">
-          
+          Consulta online mediante videollamada (30 – 45 minutos) con un diagnóstico y un diseño de un plan nutricional que esté basado en una estrategia dietética bien definida. Tipos de terapias a realiar:
           </p>
           <ul className="service-list">
-            <li>Consultas médicas virtuales</li>
-            <li>Atención preventiva</li>
-            <li>Manejo de enfermedades crónicas</li>
-            <li>Referencias y coordinación de atención</li>
+            <li>Ganancia o pérdida de peso</li>
+            <li>Protección cardiovastular</li>
+            <li>Mejora de nuestro sistema inmunológico</li>
+            <li>Reducción o control de procesos inflamatorios</li>
           </ul>
           <p className="text">
             En MediConecta, estamos comprometidos a brindar atención médica de alta calidad y accesible a todos. Ya sea que necesites una consulta de rutina, atención preventiva o manejo de una enfermedad crónica, nuestro equipo de Medicina General está aquí para cuidarte. ¡Pide una cita con nosotros hoy mismo y toma el control de tu salud!
           </p>
         </div>
       </div>
-      <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Medicina General</h3></div>
+      <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Nutrición</h3></div>
       <div className="row justify-content-center mx-5" style={{marginBottom:"35px"}} >
         {doctorsComponent}
       </div>

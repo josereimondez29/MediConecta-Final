@@ -5,18 +5,19 @@ import { Context } from '../store/appContext';
 import CardDoctor from "./CardDoctor";
 
 const Dermatologia = () => {
-  const { store, actions } = useContext(Context);
 
-  const dermSpecialtyId = store.specialities.find(specialty => specialty.name === "Dermatologia");
+  const { store, actions } = useContext(Context);
+  
+  const dermSpecialtyId = store.specialities.find(specialty => specialty.name === "Dermatología");
   const dermDoctors = store.doctors.filter(doctor => doctor.speciality_id === dermSpecialtyId?.id);
 
   let doctorsComponent;
-
+  
   if (dermDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {dermDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
@@ -26,11 +27,10 @@ const Dermatologia = () => {
         ))}
       </div>
     );
+
   } else {
     doctorsComponent = <p className='text-center'>No hay doctores disponibles</p>;
   }
- 
-
 
   return (
     <>
@@ -42,10 +42,10 @@ const Dermatologia = () => {
     <div className="text-container">
       <h2 className="title">Dermatología</h2>
       <p className="text">
-        Bienvenido a MediConecta, donde la salud y el bienestar de la piel de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en dermatología dedicados a brindar atención especializada y personalizada para tus necesidades dermatológicas.
+      Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
       </p>
       <p className="text">
-        La Dermatología es una especialidad médica fundamental que se centra en el diagnóstico, tratamiento y prevención de enfermedades y condiciones de la piel, cabello y uñas. Nuestros dermatólogos son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes.
+        La Dermatología es una especialidad médica fundamental que se centra en el diagnóstico, tratamiento y prevención de enfermedades y condiciones de la piel, cabello y uñas. Nuestros dermatólogos son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes. Tipos de terapias a realiar:
       </p>
       <ul className="service-list">
         <li>Consulta dermatológica virtual</li>

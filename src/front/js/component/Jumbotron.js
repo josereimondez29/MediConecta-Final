@@ -4,7 +4,7 @@ import './../../styles/style.css';
 // Definir los componentes de los jumbotrons fuera de Jumbotron
 const HomePageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">CUIDAMOS SIN QUE SALGAS DE TU HOGAR</h1>
             <p className="lead">Obten una atención médica con nuestro equipo de profesionales</p>
 
@@ -14,16 +14,15 @@ const HomePageJumbotron = () => {
 
 const LoginPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">LOGIN</h1>
             <p className="lead">Accede a tu perfil</p>
         </div>
     );
-};   
-
+};
 const RegisterPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">REGISTRATE</h1>
             <p className="lead">Es el momento de cambiar tu salud a algo más positivo</p>
             <hr className="my-4" />
@@ -34,7 +33,7 @@ const RegisterPageJumbotron = () => {
 
 const PrivatePageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">ZONA PRIVADA</h1>
             <p className="lead">Donde encontrar tus datos personales y tus citas pendientes</p>
         </div>
@@ -43,26 +42,25 @@ const PrivatePageJumbotron = () => {
 
 const AppointmentPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">Pide una cita</h1>
             <p className="lead">No dudes en pedir una cita con tu medico de confianza</p>
         </div>
     );
 };
+const ChangePasswordPageJumbotron = () => {
+    return (
+        <div className="jumbotron mb-4">
+            <h1 className="display-4">CAMBIO DE CONTRASEÑA</h1>
+            {/* <p className="lead">No dudes en pedir una cita con tu medico de confianza</p> */}
+        </div>
+    );
+};
 
-// const SingleDoctorPageJumbotron = () => {
-    
-//     return (
-//         <div className="jumbotron">
-//             <h1 className="display-4">EQUIPO MÉDICO</h1>
-//             <p className="lead">El experto</p>
-//         </div>
-//     );
-// };
 
 const AllDoctorPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">EQUIPO MÉDICO</h1>
             <p className="lead">Profesionales que no dudarán de darte lo mejor</p>
             <hr className="my-4" />
@@ -73,7 +71,7 @@ const AllDoctorPageJumbotron = () => {
 
 const PricePageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">PRECIOS</h1>
             <p className="lead">Consulta nuestras tarifas</p>
         </div>
@@ -82,15 +80,16 @@ const PricePageJumbotron = () => {
 
 const EditPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">EDITAR PERFIL</h1>
             <p className="lead">Modifica los campos que necesites</p>
         </div>
     );
 };
+
 const InfoPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">AVISOS</h1>
         </div>
     );
@@ -109,7 +108,7 @@ const SpecialtyPageJumbotron = () => {
 
 const RecoverpasswordPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4">RECUPERAR CONTRASEÑA</h1>
             <p className="lead"></p>
             <hr className="my-4" />
@@ -120,20 +119,20 @@ const RecoverpasswordPageJumbotron = () => {
 
 const NullPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4"> </h1>
             <p className="lead"></p>
-     
+
         </div>
     );
 };
 
 const ContactPageJumbotron = () => {
     return (
-        <div className="jumbotron">
+        <div className="jumbotron mb-4">
             <h1 className="display-4"> CONTACTANOS </h1>
             <p className="lead">Estaremos encantados de ayudarte</p>
-     
+
         </div>
     );
 };
@@ -141,7 +140,7 @@ const ContactPageJumbotron = () => {
 
 // Ahora exportar Jumbotron como un componente separado
 const Jumbotron = ({ page }) => {
-    
+
     // Determina qué componente de Jumbotron mostrar según la página actual
     switch (page) {
         case 'home':
@@ -157,21 +156,23 @@ const Jumbotron = ({ page }) => {
         // case 'singleDoctor':
         //     return <SingleDoctorPageJumbotron />;
         case 'allDoctor':
-             return <AllDoctorPageJumbotron />;
+            return <AllDoctorPageJumbotron />;
         case 'price':
-             return <PricePageJumbotron />;
+            return <PricePageJumbotron />;
         case 'edit':
-            return <EditPageJumbotron />;    
+            return <EditPageJumbotron />;
         case 'info':
-            return <InfoPageJumbotron />;   
+            return <InfoPageJumbotron />;
         case 'specialty':
-            return <SpecialtyPageJumbotron />;    
+            return <SpecialtyPageJumbotron />;
         case 'undefined':
-            return <NullPageJumbotron />;             
+            return <NullPageJumbotron />;
         case 'contact':
-            return <ContactPageJumbotron/>;  
+            return <ContactPageJumbotron />;
         case 'recoverpassword':
-            return <RecoverpasswordPageJumbotron/>;                                         
+            return <RecoverpasswordPageJumbotron />;
+        case 'changepassword':
+            return <ChangePasswordPageJumbotron />
         default:
             return null;
     }

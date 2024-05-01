@@ -191,29 +191,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			updateDoctor: (editDoctor, id) => {
-
-				const requestOptions = {
-					method: "PUT",
-					body: JSON.stringify(editDoctor),
-					headers: { "Content-Type": "application/json" },
-					redirect: "follow"
-
-				};
-				
-				fetch(process.env.BACKEND_URL + `doctor/${id}`, requestOptions)
-				.then((response) => {
-					if (!response.ok) {
-						throw new Error('Network response was not ok');
-					}
-					return response.json();
-				})
-				.then((result) => {
-					console.log("RESULT FLUX UPGRATE", result);
-					setStore({ doctors: result });
-				})
-				.catch((error) => console.error("Fetch error:", error));
-
-			},
+                const requestOptions = {
+                    method: "PUT",
+                    body: JSON.stringify(editDoctor),
+                    headers: { "Content-Type": "application/json" },
+                    redirect: "follow"
+                };
+                fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((result) => {
+                    console.log("RESULT FLUX UPGRATE", result);
+                    const conStore = getStore()
+                    const doctorsUpdate = conStore.doctors.map((doctor)=>{if (doctor.id === id){
+                        return result.doctor
+                    } return doctor})
+                    setStore({ doctors: doctorsUpdate });
+                })
+                .catch((error) => console.error("Fetch error:", error));
+            },
 
 			updatePatient: async (editPatient, id) => {
 				try {
@@ -287,20 +287,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			recoverPassword: (email, userType) => {
-				const requestOptions = {
-				  method: "POST",
-				  headers: { "Content-Type": "application/json" },
-				  body: JSON.stringify({
-					"email": email,
-					"userType": userType
+                ;
+               const requestOptions = {
+                 method: "POST",
+                 headers: { "Content-Type": "application/json",
+                               },
+                 body: JSON.stringify({
+                   "email": email,
+                   "userType": userType
+               })
+               };
+               fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
+                 .then((response) => response.text())
+                 .then((result) => console.log(result))
+                 .catch((error) => console.error(error));
+           },
+
+		   changePassword: (password, id) => {
+			const userType = localStorage.getItem("userType")
+			const requestOptions = {
+				method: "PUT",
+				body: JSON.stringify({ password }), // Envía los datos como un objeto
+				headers: { "Content-Type": "application/json" },
+			};
+			console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
+			console.log("NUEVA CONTRASEÑA", { password });
+			fetch(process.env.BACKEND_URL + `/changepassword/${userType}/${id}`, requestOptions)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return true;
 				})
-				};
-				
-				fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
-				  .then((response) => response.text())
-				  .then((result) => console.log(result))
-				  .catch((error) => console.error(error));
-			},
+				.then((result) => {
+					console.log("Contraseña actualizada exitosamente");
+				})
+				.catch((error) => console.error("Fetch error:", error));
+		},
 			
 			privateZone: async () => {
 				try {

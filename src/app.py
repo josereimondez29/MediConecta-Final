@@ -23,6 +23,8 @@ import uuid
 from random import choice
 from string import ascii_letters, digits
 import secrets
+from flask import render_template
+
 
 # from models import Person
 
@@ -532,7 +534,7 @@ def get_doctor_details(doctor_id):
 
 #PUT Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['PUT'])
-@jwt_required
+
 def update_doctor(doctor_id):   
 
     # Obtener el doctor que se desea actualizar
@@ -1000,15 +1002,42 @@ def delete_medicated(medicated_id):
 def send_mail_to():
     data = request.get_json()
     email = data.get('email')
+    userType = data.get('userType')
+    name = data.get('name')
+    print("el nuevo es...", name)
+    print("el dato es...", data)
 
     if not email:
         return jsonify({"error": "Email address not provided"}), 400
 
-    msg = Message(subject="Prueba mail desde test", sender='mediconecta1@gmail.com',
-                  recipients=[email])
-    msg.html = "<h1> Bienvenido a MediConecta </h1>"
-    mail.send(msg)
-    return jsonify({"msg": "Mail enviado!!!"}), 200
+    if userType == 'patient':
+        patient = Patient.query.filter_by(email=email).first()
+        if patient:
+            name = f"{patient.name} {patient.surname}"
+        else:
+            return jsonify({"error": "Patient not found"}), 404
+
+    elif userType == 'doctor':
+        doctor = Doctor.query.filter_by(email=email).first()
+        if doctor:
+            name = f"{doctor.name} {doctor.surname}"
+        else:
+            return jsonify({"error": "Doctor not found"}), 404
+
+    if not name:
+        return jsonify({"error": "Name not provided"}), 400
+
+    try:
+        msg = Message(subject=f"Bienvenido a MediConecta {name}", sender='mediconecta1@gmail.com', recipients=[email])
+        msg.html = render_template('welcome_email.html', name=name)
+        mail.send(msg)
+        return jsonify({"msg": "Mail enviado!!!"}), 200
+    except Exception as e:
+        return jsonify({"error": "Error sending email: " + str(e)}), 500
+    
+
+
+  
 
 
 @app.route('/send_mail', methods=['POST'])
@@ -1047,21 +1076,22 @@ def send_password():
     user = None
     if userType == 'patient':
         user = Patient.query.filter_by(email=email).first()
+
     elif userType == 'doctor':
         user = Doctor.query.filter_by(email=email).first()
 
     if not user:
         return jsonify({"msn": f"No se encontró la dirección de correo electrónico en la base de datos para el userType: {userType}"}), 404
-
+    
     try:
         temporary_password = generate_temporary_password()
         hashed_temporary_password = bcrypt.generate_password_hash(temporary_password).decode('utf-8')
-
+       
         user.password = hashed_temporary_password
         db.session.commit()
-
+        
         send_temporary_password_email(email, temporary_password)
-
+        
         return jsonify({"msn": "Correo electrónico enviado correctamente"}), 200
     except Exception as e:
         return jsonify({"msn": "Error al enviar el correo electronico: " + str(e)}), 500
@@ -1071,9 +1101,26 @@ def generate_temporary_password():
 
 def send_temporary_password_email(email, temporary_password):
     msg = Message(subject="Nueva contraseña temporal", sender='mediconecta1@gmail.com', recipients=[email])
-    msg.html = f"<h1>Tu nueva contraseña temporal es: {temporary_password}</h1> <p>Por favor una vez acceda a la zona privada modifique la contraseña</p>"
+    msg.html = render_template('temporary_password_email.html', temporary_password=temporary_password)
     mail.send(msg)
 
+@app.route('/changepassword/doctor/<int:doctor_id>', methods=['PUT'])
+def update_doctor_password(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if not doctor:
+        return jsonify({"error": "Doctor no encontrado"}), 404
+    data = request.json  # Obtener los datos del cuerpo de la solicitud en formato JSON
+    password = data.get('password')  # Obtener la nueva contraseña del cuerpo de la solicitud
+    if not password:
+        return jsonify({"error": "Se requiere una nueva contraseña"}), 400
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    doctor.password = hashed_password
+    try:
+        db.session.commit()
+        return jsonify({"message": "Contraseña actualizada exitosamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al actualizar la contraseña"}), 500
 
 # Meetings
 

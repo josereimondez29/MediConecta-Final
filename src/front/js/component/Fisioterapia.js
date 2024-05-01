@@ -11,12 +11,12 @@ const Fisioterapia = () => {
   const fisioDoctors = store.doctors.filter(doctor => doctor.speciality_id === fisioSpecialtyId?.id);
 
   let doctorsComponent;
-
+  
   if (fisioDoctors.length > 0) {
     doctorsComponent = (
       <div className="row justify-content-center mx-5">
         {fisioDoctors.map(doctor => (
-          <CardDoctor 
+          <CardDoctor
             key={doctor.id}
             id={doctor.id}
             name={doctor.name}
@@ -38,23 +38,23 @@ const Fisioterapia = () => {
         <div className="text-container">
           <h2 className="title">Fisioterapia</h2>
           <p className="text">
-          Consulta online mediante videollamada (30 – 45 minutos) con un diagnóstico y un diseño de tratamiento basado en ejercicio terapéutico personalizado así como recomendaciones y pautas que seguir en base a su patología actual. 
+          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
           </p>
           <p className="text">
-          
+          Consulta online mediante videollamada (30 – 45 minutos) con un diagnóstico y un diseño de tratamiento basado en ejercicio terapéutico personalizado así como recomendaciones y pautas que seguir en base a su patología actual. Tipos de terapias a realiar:
           </p>
           <ul className="service-list">
-            <li>Consultas médicas virtuales</li>
-            <li>Atención preventiva</li>
-            <li>Manejo de enfermedades crónicas</li>
-            <li>Referencias y coordinación de atención</li>
+            <li>Fisioterapia neurológica</li>
+            <li>Fisioterapia respiratoria</li>
+            <li>Fisioterapia pediatrica</li>
+            <li>Rehabilitación</li>
           </ul>
           <p className="text">
             En MediConecta, estamos comprometidos a brindar atención médica de alta calidad y accesible a todos. Ya sea que necesites una consulta de rutina, atención preventiva o manejo de una enfermedad crónica, nuestro equipo de Medicina General está aquí para cuidarte. ¡Pide una cita con nosotros hoy mismo y toma el control de tu salud!
           </p>
         </div>
       </div>
-      <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Medicina General</h3></div>
+      <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Fisioterapia</h3></div>
       <div className="row justify-content-center mx-5" style={{marginBottom:"35px"}} >
         {doctorsComponent}
       </div>
