@@ -382,19 +382,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 		  },
 
 			deletePicture: () => {
+			const userType = localStorage.getItem("userType")
 			const id = localStorage.getItem("id")
-			fetch(process.env.BACKEND_URL + `/deleteprofilepicture/doctor/${id}`, {
+			fetch(process.env.BACKEND_URL + `/deleteprofilepicture/${userType}/${id}`, {
 				method: 'DELETE',
 			})
 			.then((response) => {
 				// Verificar el estado de la respuesta
 				if (!response.ok) {
+					console.log (userType)
+					console.log (id)
 					throw new Error('Error al eliminar la imagen de perfil');
 				}
 				// Devolver la respuesta en formato JSON
 				return response.json();
+				
 			})
 			.then((data) => {
+				console.log (userType)
 				// Manejar los datos de la respuesta
 				console.log("Respuesta del servidor: <3", data);
 				// Recargar la página para mostrar la imagen predeterminada

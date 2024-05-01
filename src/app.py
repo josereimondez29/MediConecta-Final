@@ -1261,6 +1261,30 @@ def delete_image_doctor(doctor_id):
         return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
     return jsonify({"message": "Profile picture not found"}), 404
 
+@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_image_patient(patient_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    profile_picture = Profile_Picture.query.filter_by(patient_id=patient_id).first()
+    if profile_picture:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(profile_picture.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+
+@app.route('/deleteprofilepicture/patient/<int:patient_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_image_patient(patient_id):
+    # Buscar la imagen del perfil del doctor
+    profile_picture = Profile_Picture.query.filter_by(patient_id=patient_id).first()
+    if profile_picture:
+        # Eliminar la entrada de Profile_Picture
+        db.session.delete(profile_picture)
+        db.session.commit()
+        return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
+    return jsonify({"message": "Profile picture not found"}), 404
+
 # Favorite Routes
 
 # @app.route('/user/favorites', methods=['GET'])

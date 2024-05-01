@@ -12,10 +12,11 @@ const GetProfilePicture = (props) => {
         getPicture(id);
     }, [id]);
 
-    const getPicture = (id) => {
-        
+    const getPicture = () => {
+        const userType = localStorage.getItem("userType")
+        const id = localStorage.getItem("id")
         // Hacer la solicitud al backend para obtener la imagen de perfil del usuario
-        fetch(process.env.BACKEND_URL + `/uploadprofilepicture/doctor/${id}`)
+        fetch(process.env.BACKEND_URL + `/uploadprofilepicture/${userType}/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error al obtener la imagen de perfil');
