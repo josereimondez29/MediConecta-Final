@@ -37,6 +37,27 @@ h1 {
     font-style: normal;
 }
 
+h2 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+h3 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+h4 {
+  font-family: "Manrope", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+
 .lead{
     font-family: "Manrope", sans-serif;
     font-optical-sizing: auto;
@@ -68,3 +89,38 @@ p {
   background-attachment: fixed;
 }
 
+.btn-primario{
+  background-color:#5C8692;
+  color: #fff;
+  border-color: #7A9CA5;
+}
+
+.btn-secundario{
+  background-color:#fff;
+  color: #5C8692;
+  border-color: #7A9CA5;
+}
+
+
+.dropdown-item{
+  color: white;
+}
+/* .cardDoctore{
+  border: 5px solid red;
+}
+
+.cardDoctor{
+  background-color: yellow;
+}
+
+.card-bodyDoctor{
+  background-color: aqua;
+}
+
+.card-titleDoctor{
+  background-color: green;
+}
+
+.card-img-topDoctor{
+  border: 5px solid purple;
+} */

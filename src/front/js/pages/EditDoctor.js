@@ -61,7 +61,7 @@ export const EditDoctor = () => {
                 await actions.updateDoctor(editDoctor, id);
                 setFormSubmitted(true); // Marcar el formulario como enviado
                 setTimeout(() => {
-                    navigate(`/privatedoctor/${idFromUrl}`);
+                    navigate('/privatedoctor');
                 }, 3000);
             } catch (error) {
                 console.error("Error updating doctor:", error);

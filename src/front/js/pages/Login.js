@@ -8,6 +8,7 @@ export const Login = () => {
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('patient');
   const { store, actions } = useContext(Context);
+  
   const navigate = useNavigate();
 
   const id = localStorage.getItem("id");
@@ -28,7 +29,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" style={{boxShadow: "10px 5px 5px grey"}}>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="text-center mb-4">Login</h2>
@@ -64,25 +65,24 @@ export const Login = () => {
                 <option value="doctor">Médico</option>
               </select>
             </div>
-            <button type="submit" style={{ backgroundColor: '#5C8692', color: '#fff' }} className="btn me-3">Login</button>
-            <Link to={"/"}>
-              <button type="button" className="btn btn-secondary">Back home</button>
-            </Link>
-            <Link to={"/recoverpassword"}>
-              <button type="button" className="btn btn-secondary">Recuperar contraseña</button>
-            </Link>
-
-          </form>
+            <div  className="text-center mt-4"> 
+              <button type="submit" className="btn btn-primario me-3">Login</button>
+              <Link to={"/"}>
+                <button type="button" className="btn btn-secundario ">Back home</button>
+              </Link>
+              <Link to={"/recoverpassword"}>
+                <button type="button" className="btn btn-primario mt-3">Recuperar contraseña</button>
+              </Link>
+            </div>
+            </form>
           {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
-
-
+          {store.authentication && (
+                    <div className="popup text-center">
+                        <p>¡Login exitoso!</p>
+                    </div>
+                )}
         </div>
-        {store.authentication && (
-          <div className="popup text-center">
-            <p>¡Login exitoso!</p>
-          </div>
-        )}
-
+       
       </div>
     </div>
   );

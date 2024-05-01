@@ -39,7 +39,7 @@ const Nutricion = () => {
         <div className="text-container">
           <h2 className="title">Nutricion</h2>
           <p className="text">
-          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
+          Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas. 
           </p>
           <p className="text">
           Consulta online mediante videollamada (30 – 45 minutos) con un diagnóstico y un diseño de un plan nutricional que esté basado en una estrategia dietética bien definida. Tipos de terapias a realiar:

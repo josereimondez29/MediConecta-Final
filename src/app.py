@@ -7,7 +7,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 import requests
 from api.utils import APIException, generate_sitemap
-from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated
+from api.models import Meetings, db, User, Patient, Doctor, Speciality, Medical_Appointment, Alergic, Medicated, Profile_Picture, Attachment_File
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_bcrypt import Bcrypt
@@ -23,7 +23,10 @@ import uuid
 from random import choice
 from string import ascii_letters, digits
 import secrets
+from dateutil import tz
 from flask import render_template
+import cloudinary.uploader
+
 
 
 # from models import Person
@@ -46,7 +49,7 @@ app.config.update(dict(
 
 mail= Mail(app)
 
-CORS(app)
+CORS(app,  supports_credentials=True)
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension
@@ -77,6 +80,7 @@ setup_commands(app)
 
 # Add all endpoints form the API with a "api" prefix
 #app.register_blueprint(api, url_prefix='/api')
+ 
 
 # Handle/serialize errors like a JSON object
 
@@ -86,6 +90,9 @@ def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
 # generate sitemap with all your endpoints
+
+
+
 
 
 @app.route('/')
@@ -464,6 +471,7 @@ def create_doctor_login():
 
 #GET Doctors
 @app.route('/doctors', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_doctors():
     doctors = Doctor.query.all()
 
@@ -481,7 +489,6 @@ def get_doctors():
 
 #GET Doctor by id
 @app.route('/doctor/<int:doctor_id>', methods=['GET'])
-@jwt_required()
 def get_doctor(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if doctor:
@@ -571,6 +578,16 @@ def delete_doctor(doctor_id):
         return jsonify({"message": "Doctor deleted"}), 200
     return jsonify({"message": "Doctor not found"}), 404
 
+#Doctor/Speciality
+@app.route('/doctors/speciality/<int:speciality_id>', methods=['GET'])
+def get_doctors_by_speciality(speciality_id):
+    doctors = Doctor.query.filter_by(speciality_id=speciality_id).all()
+    doctors_serialized = []
+    for doctor in doctors:
+        doctors_serialized.append(doctor.serialize())
+    return jsonify({"message": "Doctors found", "doctors": doctors_serialized}), 200
+
+
 #Doctor Availability
 @app.route("/api/doctor_availability/<int:doctor_id>", methods=["GET"])
 def get_doctor_availability(doctor_id):
@@ -580,6 +597,20 @@ def get_doctor_availability(doctor_id):
 
     availability = [availability.serialize() for availability in doctor.availabilities]
     return jsonify({'availability': availability}), 200
+
+#Doctor Availability / ID
+@app.route("/api/doctor_appointments/<int:doctor_id>", methods=["GET"])
+def get_doctor_appointments(doctor_id):
+    doctor = Doctor.query.get(doctor_id)
+    if doctor is None:
+        return jsonify({'error': "El doctor especificado no existe", 'doctor_id': doctor_id}), 404
+
+    # Aquí deberías obtener las citas del doctor desde la base de datos
+    # Por ejemplo, asumiendo que las citas están almacenadas en una tabla llamada Appointment:
+    appointments = Medical_Appointment.query.filter_by(doctor_id=doctor_id).all()
+    appointment_data = [appointment.serialize() for appointment in appointments]
+
+    return jsonify({'appointments': appointment_data}), 200
 
 
 
@@ -603,6 +634,7 @@ def register_speciality():
 
 #GET Speciality
 @app.route('/specialities', methods=['GET'])
+@cross_origin(supports_credentials=True)
 def get_specialities():
     specialities = Speciality.query.all()
 
@@ -633,7 +665,7 @@ def get_speciality(speciality_id):
 
 #PUT Speciality by id
 @app.route('/speciality/<int:speciality_id>', methods=['PUT'])
-@jwt_required()
+ 
 def update_speciality(speciality_id):
     speciality = Speciality.query.get(speciality_id)
     if speciality:
@@ -721,7 +753,8 @@ def register_medical_appointment():
     appointment_time_str = body.get('appointment_time')
 
     try:
-        appointment_time = datetime.fromisoformat(appointment_time_str)
+        # Convertir la fecha y hora recibidas en UTC
+        appointment_time_utc = datetime.fromisoformat(appointment_time_str).replace(tzinfo=tz.gettz('UTC')).astimezone(tz.gettz('UTC'))
     except ValueError:
         return jsonify({'msg': "Formato de fecha y hora incorrecto"}), 400
 
@@ -729,12 +762,12 @@ def register_medical_appointment():
     if doctor is None:
         return jsonify({'msg': "El doctor especificado no existe"}), 404
 
-    if not doctor.is_available(appointment_time):
+    if not doctor.is_available(appointment_time_utc):
         return jsonify({'msg': "El doctor no está disponible en la fecha y hora especificadas"}), 400
 
     existing_appointment = Medical_Appointment.query.filter_by(
         doctor_id=doctor_id,
-        appointment_date=appointment_time
+        appointment_date=appointment_time_utc
     ).first()
 
     if existing_appointment:
@@ -744,47 +777,42 @@ def register_medical_appointment():
         speciality_id=body['speciality'],
         patient_id=patient_info.id,
         doctor_id=doctor_id,
-        appointment_date=appointment_time,
+        appointment_date=appointment_time_utc,
         is_active=True
     )
     
     db.session.add(new_medical_appointment)
     db.session.commit()
 
-    # Genera los enlaces de videoconferencia para la cita médica
     meeting_room_data = create_meeting()
     meeting_id = meeting_room_data.get('meetingId')
     meeting_data = {
-        "endDate": appointment_time.isoformat(),
+        "endDate": appointment_time_utc.isoformat(),
         "roomNamePrefix": meeting_room_data['roomUrl'],
         "HostroomNamePrefix": meeting_room_data['hostRoomUrl'],
         "meetingId": meeting_id
     }
     meeting_links = create_meeting_links(meeting_data)
     
-    print(meeting_room_data) 
-    
-    # Almacena la información de la reunión en la base de datos
-    room_url = meeting_data.get('roomNamePrefix')  # Obtener la URL de la sala
-    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time, room_url=room_url)
+    room_url = meeting_data.get('roomNamePrefix')
+    new_meeting = Meetings(room_id=meeting_id, appointment_date=appointment_time_utc, room_url=room_url)
     db.session.add(new_meeting)
     db.session.commit()
     
-    # Envía correos electrónicos al paciente y al doctor
-    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time, meeting_links)
+    send_emails(patient_info.email, patient_info.id, patient_info.name, patient_info.surname, doctor.email, appointment_time_utc, meeting_links)
 
     return jsonify({"message": "La cita médica se registró correctamente"}), 201
 
+
 def create_meeting_links(data):
-    # Simulación de la generación de enlaces de videoconferencia
     room_url = f"{data['roomNamePrefix']}"
     host_room_url = f"{data['HostroomNamePrefix']}"
     return room_url, host_room_url
 
+
 def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor_email, appointment_time, meeting_links):
     room_url, host_room_url = meeting_links
     
-    # Construye el mensaje de correo electrónico con los detalles de la cita y los enlaces de videoconferencia
     msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
     msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
     mail.send(msg_patient)
@@ -1109,6 +1137,7 @@ def update_doctor_password(doctor_id):
     doctor = Doctor.query.get(doctor_id)
     if not doctor:
         return jsonify({"error": "Doctor no encontrado"}), 404
+
     data = request.json  # Obtener los datos del cuerpo de la solicitud en formato JSON
     password = data.get('password')  # Obtener la nueva contraseña del cuerpo de la solicitud
     if not password:
@@ -1177,6 +1206,201 @@ def delete_summary(summaryId):
     summaries = [summary for summary in summaries if summary["summaryId"] != summaryId]
     return jsonify({"message": "Summary deleted successfully"})
 
+
+# Profile Pictures
+@app.route("/profilepicture", methods=["GET"])
+@cross_origin(supports_credentials=True)
+def get_pictures():
+    profilespictures = Profile_Picture.query.all()
+
+    profilespictures_serialized = []
+    for profilespicture in profilespictures:
+        profilespictures_serialized.append(profilespicture.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result":  profilespictures_serialized
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/uploadprofilepicture', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_image():
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+        
+        # Obtenemos el ID del paciente o del doctor desde la solicitud
+        patient_id = request.form.get('patient_id')
+        doctor_id = request.form.get('doctor_id')
+
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id, doctor_id=doctor_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'imageUrl': profile_picture.url_picture}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_image_doctor(doctor_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
+    if profile_picture:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(profile_picture.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+
+@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_image_doctor(doctor_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+        
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], doctor_id=doctor_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/deleteprofilepicture/doctor/<int:doctor_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_image_doctor(doctor_id):
+    # Buscar la imagen del perfil del doctor
+    profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
+    if profile_picture:
+        # Eliminar la entrada de Profile_Picture
+        db.session.delete(profile_picture)
+        db.session.commit()
+        return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
+    return jsonify({"message": "Profile picture not found"}), 404
+
+@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_image_patient(patient_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    profile_picture = Profile_Picture.query.filter_by(patient_id=patient_id).first()
+    if profile_picture:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(profile_picture.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+
+@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_image_patient(patient_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+    
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
+        db.session.add(profile_picture)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/deleteprofilepicture/patient/<int:patient_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_image_patient(patient_id):
+    # Buscar la imagen del perfil del doctor
+    profile_picture = Profile_Picture.query.filter_by(patient_id=patient_id).first()
+    if profile_picture:
+        # Eliminar la entrada de Profile_Picture
+        db.session.delete(profile_picture)
+        db.session.commit()
+        return jsonify({"message": "Profile picture and patient reference deleted"}), 200
+    return jsonify({"message": "Profile picture not found"}), 404
+
+
+
+#ATTACHMENT FILES
+@app.route("/attachemntfiles", methods=["GET"])
+@cross_origin(supports_credentials=True)
+def get_files():
+    attachmentfiles = Attachment_File.query.all()
+
+    attachmentfiles_serialized = []
+    for attachmentfile in attachmentfiles:
+        attachmentfiles_serialized.append(attachmentfile.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result":  attachmentfiles_serialized 
+    }
+
+    return jsonify(response_body), 200
+
+
+@app.route('/uploadfile/patient/<int:patient_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_file_patient(patient_id):
+    # Obtener el perfil de imagen del doctor por su ID
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
+    if attachment_file:
+        # Si se encontró la imagen del perfil, devolver los datos serializados
+        return jsonify(attachment_file.serialize()), 200
+    else:
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+    
+@app.route('/uploadattachmentfile/patient/<int:patient_id>', methods=['POST'])
+@cross_origin(supports_credentials=True)
+def upload_file_patient(patient_id):
+    try:
+        # Obtenemos el archivo de la solicitud
+        file = request.files['file']
+    
+        # Subimos la imagen a Cloudinary
+        upload_result = cloudinary.uploader.upload(file)
+
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen
+        attachment_file = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
+        db.session.add(attachment_file)
+        db.session.commit()
+
+        # Devolvemos la URL de la imagen en la respuesta
+        return jsonify({'msg':'Picture update successfull'}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/deletefile/patient/<int:patient_id>', methods=['DELETE'])
+@cross_origin(supports_credentials=True)
+def delete_file_patient(patient_id):
+    # Buscar la imagen del perfil del doctor
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
+    if attachment_file:
+        # Eliminar la entrada de Profile_Picture
+        db.session.delete(attachment_file)
+        db.session.commit()
+        return jsonify({"message": "File and patient reference deleted"}), 200
+    return jsonify({"message": "Attachment file not found"}), 404
+
 # Favorite Routes
 
 # @app.route('/user/favorites', methods=['GET'])
@@ -1222,6 +1446,8 @@ def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user = get_jwt_identity()
     return jsonify(logged_in_as=current_user), 200
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

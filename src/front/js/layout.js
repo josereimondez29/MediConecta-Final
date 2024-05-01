@@ -12,14 +12,12 @@ import { SingleDoctor } from "./pages/SingleDoctor";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-
 import MedicalAppointment from "./component/CitaMedica";
 import PrivateDoctor from "./pages/PrivateDoctor";
 import { AllDoctors } from "./component/AllDoctors";
 import { AllPatients } from "./component/AllPatients";
 import { IsLogin } from "./component/IsLogin";
 import Jumbotron from "./component/Jumbotron";
-// import { ChangeLog } from "./component/ChangeLog";
 import { PrivatePatient } from "./pages/PrivatePatient";
 import Prices from "./component/Prices";
 import MedicinaGeneral from "./component/MedicinaGeneral";
@@ -32,6 +30,9 @@ import Fisioterapia from "./component/Fisioterapia";
 import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
+import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
+import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
+
 const Layout = () => {
   const basename = process.env.BASENAME || "";
 
@@ -64,7 +65,7 @@ const LayoutContent = () => {
       case "/register":
         setPage("register");
         break;
-        case `/privatedoctor/${id}`:
+      case "/privatedoctor":
           setPage("private");
           break;
       case `/editDoctor/${id}`:
@@ -130,7 +131,7 @@ const LayoutContent = () => {
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />
         <Route element={<Single />} path="/single/:theid" />
-        <Route element={<PrivateDoctor />} path="/privatedoctor/:id" />
+        <Route element={<PrivateDoctor />} path="/privatedoctor" />
         <Route element={<SingleDoctor />} path="/doctor/:id/details" />
         <Route element={<AllDoctors />} path="/alldoctors" />
         <Route element={<AllPatients />} path="/allpatients" />
@@ -149,6 +150,9 @@ const LayoutContent = () => {
         <Route element={<Contact/>} path = "/contact"/>
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
+        <Route element={<ProfilePicture/>} path="/img"/>
+        <Route element={<UpdateAtachment/>} path="/file"/>
+        
       </Routes>
       <Footer />
     </div>
