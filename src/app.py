@@ -49,7 +49,7 @@ app.config.update(dict(
 
 mail= Mail(app)
 
-CORS(app,  supports_credentials=True)
+CORS(app ) #supports_credentials=True
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension
@@ -90,9 +90,6 @@ def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
 # generate sitemap with all your endpoints
-
-
-
 
 
 @app.route('/')
@@ -471,7 +468,7 @@ def create_doctor_login():
 
 #GET Doctors
 @app.route('/doctors', methods=['GET'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def get_doctors():
     doctors = Doctor.query.all()
 
@@ -634,7 +631,7 @@ def register_speciality():
 
 #GET Speciality
 @app.route('/specialities', methods=['GET'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def get_specialities():
     specialities = Speciality.query.all()
 
@@ -1209,7 +1206,7 @@ def delete_summary(summaryId):
 
 # Profile Pictures
 @app.route("/profilepicture", methods=["GET"])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def get_pictures():
     profilespictures = Profile_Picture.query.all()
 
@@ -1225,7 +1222,7 @@ def get_pictures():
     return jsonify(response_body), 200
 
 @app.route('/uploadprofilepicture', methods=['POST'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def upload_image():
     try:
         # Obtenemos el archivo de la solicitud
@@ -1249,7 +1246,7 @@ def upload_image():
         return jsonify({'error': str(e)}), 500
 
 @app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def get_image_doctor(doctor_id):
     # Obtener el perfil de imagen del doctor por su ID
     profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
@@ -1261,7 +1258,7 @@ def get_image_doctor(doctor_id):
         return jsonify({"error": "Perfil de imagen no encontrado"}), 404
 
 @app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def upload_image_doctor(doctor_id):
     try:
         # Obtenemos el archivo de la solicitud
@@ -1282,7 +1279,7 @@ def upload_image_doctor(doctor_id):
 
 
 @app.route('/deleteprofilepicture/doctor/<int:doctor_id>', methods=['DELETE'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def delete_image_doctor(doctor_id):
     # Buscar la imagen del perfil del doctor
     profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
@@ -1294,7 +1291,7 @@ def delete_image_doctor(doctor_id):
     return jsonify({"message": "Profile picture not found"}), 404
 
 @app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['GET'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def get_image_patient(patient_id):
     # Obtener el perfil de imagen del doctor por su ID
     profile_picture = Profile_Picture.query.filter_by(patient_id=patient_id).first()
@@ -1306,7 +1303,7 @@ def get_image_patient(patient_id):
         return jsonify({"error": "Perfil de imagen no encontrado"}), 404
 
 @app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['POST'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def upload_image_patient(patient_id):
     try:
         # Obtenemos el archivo de la solicitud
@@ -1326,7 +1323,7 @@ def upload_image_patient(patient_id):
         return jsonify({'error': str(e)}), 500
 
 @app.route('/deleteprofilepicture/patient/<int:patient_id>', methods=['DELETE'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def delete_image_patient(patient_id):
     # Buscar la imagen del perfil del doctor
     profile_picture = Profile_Picture.query.filter_by(patient_id=patient_id).first()
@@ -1341,7 +1338,7 @@ def delete_image_patient(patient_id):
 
 #ATTACHMENT FILES
 @app.route("/attachemntfiles", methods=["GET"])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def get_files():
     attachmentfiles = Attachment_File.query.all()
 
@@ -1356,50 +1353,52 @@ def get_files():
 
     return jsonify(response_body), 200
 
-
-@app.route('/uploadfile/patient/<int:patient_id>', methods=['GET'])
-@cross_origin(supports_credentials=True)
-def get_file_patient(patient_id):
-    # Obtener el perfil de imagen del doctor por su ID
-    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
-    if attachment_file:
-        # Si se encontró la imagen del perfil, devolver los datos serializados
-        return jsonify(attachment_file.serialize()), 200
-    else:
-        # Si no se encontró la imagen del perfil, devolver un mensaje de error
-        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
     
+@app.route('/attachmentfile/patient/<int:patient_id>', methods=['GET'])
+#@cross_origin(supports_credentials=True)
+def get_file_patient(patient_id):
+    files_patient = Attachment_File.query.filter_by(patient_id=patient_id).all()
+    if files_patient:
+        # Si se encontraron archivos asociados al paciente, devolver los datos serializados
+        return jsonify([file.serialize() for file in files_patient]), 200
+    else:
+        # Si no se encontraron archivos asociados al paciente, devolver un mensaje de error
+        return jsonify({"error": "No se encontraron archivos asociados al paciente"}), 404
+
+
 @app.route('/uploadattachmentfile/patient/<int:patient_id>', methods=['POST'])
-@cross_origin(supports_credentials=True)
+#@cross_origin(supports_credentials=True)
 def upload_file_patient(patient_id):
     try:
         # Obtenemos el archivo de la solicitud
         file = request.files['file']
-    
+        description = request.form.get('description')  # Obtener la descripción del formulario
+
         # Subimos la imagen a Cloudinary
         upload_result = cloudinary.uploader.upload(file)
 
-        # Creamos una nueva entrada en la base de datos con la URL de la imagen
-        attachment_file = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id)
+        # Creamos una nueva entrada en la base de datos con la URL de la imagen y la descripción
+        attachment_file = Attachment_File(url_file=upload_result['secure_url'], patient_id=patient_id, description=description)
         db.session.add(attachment_file)
         db.session.commit()
 
-        # Devolvemos la URL de la imagen en la respuesta
-        return jsonify({'msg':'Picture update successfull'}), 201
+        # Devolvemos la URL del documento en la respuesta
+        return jsonify({'msg':'Document update successfull'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/deletefile/patient/<int:patient_id>', methods=['DELETE'])
-@cross_origin(supports_credentials=True)
-def delete_file_patient(patient_id):
-    # Buscar la imagen del perfil del doctor
-    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
+
+@app.route('/deletefile/patient/<int:patient_id>/<int:attachment_id>', methods=['DELETE'])
+def delete_attachment(patient_id, attachment_id):
+    # Buscar el archivo adjunto por su ID y el ID del paciente
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id, id=attachment_id).first()
     if attachment_file:
-        # Eliminar la entrada de Profile_Picture
+        # Eliminar el archivo adjunto
         db.session.delete(attachment_file)
         db.session.commit()
-        return jsonify({"message": "File and patient reference deleted"}), 200
+        return jsonify({"message": "Attachment file deleted successfully"}), 200
     return jsonify({"message": "Attachment file not found"}), 404
+
 
 # Favorite Routes
 

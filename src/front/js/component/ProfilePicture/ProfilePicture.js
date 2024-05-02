@@ -48,16 +48,15 @@ export const ProfilePicture = () => {
 
   return (
     <div className="App">
-      <h1>SUBE TU IMAGEN</h1>
+      <h1>SUBE TU DOCUMENTO</h1>
       <div>
         <label htmlFor="formFile" class="form-label">Carga imagenes que no sean mayores de 400 x 400 px</label>
-        <input class="form-control" accept="image/*" type="file" id="formFile" onChange={changeUploadImage}/>
+        <input class="form-control" accept="PDF/*" type="file" id="formFile" onChange={changeUploadImage}/>
       
         {loading && <p>Cargando...</p>} {/* Mostrar mensaje de carga */}
         {confirmationMessage && <p>{confirmationMessage}</p>}
-        {store.imageUrl && (
+        {store.profilespictures && (
           <div>
-            <img src={store.imageUrl} alt="uploaded image" />
             <button onClick={deletePicture}>Eliminar imagen</button>
           </div>
         )}

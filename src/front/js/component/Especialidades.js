@@ -32,23 +32,23 @@ const Especialidades = () => {
 
   return (
     <>
-      <div className="text d-flex justify-content-center mt-4">
+      <div className="texto_ruben d-flex justify-content-center mt-4">
         {/* <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83a8b1", color: "#fff" }}>Especialidades</button> */}
             {/* <h1 className="t-stroke t-shadow">ESPECIALIDADES</h1> */}
-  <span className="letras_ruben">E</span>
-  <span className="letras_ruben">S</span>
-  <span className="letras_ruben">P</span>
-  <span className="letras_ruben">E</span>
-  <span className="letras_ruben">C</span>
-  <span className="letras_ruben">I</span>
-  <span className="letras_ruben">A</span>
-  <span className="letras_ruben">L</span>
-  <span className="letras_ruben">I</span>  
-  <span className="letras_ruben">D</span>
-  <span className="letras_ruben">A</span>
-  <span className="letras_ruben">D</span>
-  <span className="letras_ruben">E</span>
-  <span className="letras_ruben">S</span>
+  <h4>E</h4>
+  <h4>S</h4>
+  <h4>P</h4>
+  <h4>E</h4>
+  <h4>C</h4>
+  <h4>i</h4>
+  <h4>A</h4>
+  <h4>L</h4>
+  <h4>I</h4>  
+  <h4>D</h4>
+  <h4>A</h4>
+  <h4>D</h4>
+  <h4>E</h4>
+  <h4>S</h4>
   
 
       </div>

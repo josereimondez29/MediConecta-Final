@@ -105,6 +105,10 @@ p {
 .dropdown-item-footer{
   color: white;
 }
+
+.link-document{
+  color:blue
+}
 /* .cardDoctore{
   border: 5px solid red;
 }

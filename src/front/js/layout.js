@@ -31,7 +31,7 @@ import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
-import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
+import { UpdateAttachment } from "./component/AttachmentFile/UpdateAttachment";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -151,7 +151,7 @@ const LayoutContent = () => {
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
         <Route element={<ProfilePicture/>} path="/img"/>
-        <Route element={<UpdateAtachment/>} path="/file"/>
+        <Route element={<UpdateAttachment/>} path="/file"/>
         
       </Routes>
       <Footer />
