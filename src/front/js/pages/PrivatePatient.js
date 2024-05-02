@@ -9,7 +9,18 @@ import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
 export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
     const [patientId, setPatientId] = useState(null);
-    const idURL = useParams();
+  
+    useEffect(() => {
+        // Obtener el ID del paciente almacenado en el almacenamiento local
+        const id = localStorage.getItem("id");
+        setPatientId(id);
+
+        // Verificar si el ID del paciente existe y es válido
+        if (id) {
+            // Llamar a la acción para obtener la información del paciente utilizando el ID almacenado
+            actions.getinfoPatient(id);
+        }
+    }, []); // Ejecutar solo una vez al cargar el componente
 
     useEffect(() => {
         // Obtener el ID del paciente almacenado en el almacenamiento local
@@ -91,9 +102,10 @@ export const PrivatePatient = () => {
                     </form>
                 </div>
             </div>
-            <div>
+            <div className="container">
                 <h2>Mis documentos</h2>
-                <LoadAttachment />
+                {/* Pasar el ID del paciente a LoadAttachment */}
+                {patientId && <LoadAttachment userId={patientId} />}
             </div>
         </>
     )

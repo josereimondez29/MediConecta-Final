@@ -8,6 +8,7 @@ import  ListDocument from "../component/Doctors/ListDocument";
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
     const id = localStorage.getItem("id");
+   
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const LoadAttachment = ({ userId }) => {
     const [files, setFiles] = useState([]);
+    const userType = localStorage.getItem("userType")
 
     useEffect(() => {
         const fetchAttachmentFiles = async () => {
@@ -53,7 +54,9 @@ const LoadAttachment = ({ userId }) => {
                                 <p className="card-text">
                                     <a href={file.url_file} target="_blank" rel="noopener noreferrer" className="link-document">{file.url_file}</a>
                                 </p>
-                                <button onClick={() => deleteFolder(file.id)} className="btn btn-danger">Eliminar</button>
+                                {userType === 'patient' && (
+    <button onClick={() => deleteFolder(file.id)} className="btn btn-danger">Eliminar</button>
+)}
                             </div>
                         </div>
                     ))}

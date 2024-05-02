@@ -385,6 +385,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+//<-- LISTADO DE CITAS
+			loadAppoinment: ()=>{
+
+			},
+
 			// getAttachmentFilesByPatientId: (id) => { 
 			// 	  fetch(process.env.BACKEND_URL + `/attachmentfile/patient/${id}`)
 			// 		.then((response) => response.json())
@@ -485,25 +490,5 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// 	.catch((err)=>console.err(err))
 			// },
 	
-
-			
-			
-
-			
-
-			
-
-			
-
-
-			
-
-
-			
-      
-		   
-
-
-
 
 export default getState;

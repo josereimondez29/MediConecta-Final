@@ -1203,6 +1203,18 @@ def delete_summary(summaryId):
     summaries = [summary for summary in summaries if summary["summaryId"] != summaryId]
     return jsonify({"message": "Summary deleted successfully"})
 
+# Meeting + Appoinment
+@app.route("/appoinment/<int:meeting_id>", methods=["GET"])
+#@cross_origin(supports_credentials=True)
+def get_appoinmetmeet(meeting_id):
+    appointment=Medical_Appointment(meeting_id)
+    print(meeting_id)
+    meeting = db.session.query(Medical_Appointment,Meetings).join(Medical_Appointment).filter(Meetings.room_id==Medical_Appointment.meeting_id).all()
+    meeting_serialized = []
+    for Medical_Appoinment_item, Meeting_item in meeting:
+         meeting_serialized.append({'Medical_Appoinment':Medical_Appoinment_item.serialize(),'Meeting_item':Meeting_item.serialize()})
+    print(appointment)
+
 
 # Profile Pictures
 @app.route("/profilepicture", methods=["GET"])

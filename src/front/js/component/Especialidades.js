@@ -40,7 +40,7 @@ const Especialidades = () => {
   <h4>P</h4>
   <h4>E</h4>
   <h4>C</h4>
-  <h4>i</h4>
+  <h4>I</h4>
   <h4>A</h4>
   <h4>L</h4>
   <h4>I</h4>  
