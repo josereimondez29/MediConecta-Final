@@ -3,6 +3,7 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
+import  ListDocument from "../component/Doctors/ListDocument";
 
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
@@ -94,10 +95,10 @@ const PrivateDoctor = (props) => {
                         {id && (
                             <>
                                 <Link to={`/editDoctor/${id}`} className="mx-2">
-                                    <button className="btn btn-primario">Modificar perfil</button>
+                                    <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i className="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
                                 </Link>
                                 <Link to={`/changepassword`} className="mx-2">
-                                    <button className="btn btn-secundario">Cambiar contraseña</button>
+                                <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Cambiar contraseña <i className="fa-solid fa-lock" style={{ marginLeft: "5px" }}></i></button>
                                 </Link>
                             </>
                         )}
@@ -108,6 +109,10 @@ const PrivateDoctor = (props) => {
         <div>
         <h1 className="text-center">Citas pendientes</h1>
             {/* <ListAppointment/> */}
+        </div>
+        <div>
+        <h1 className="text-center">Documentos de pacientes</h1>
+            <ListDocument/>
         </div>
         </>
     );

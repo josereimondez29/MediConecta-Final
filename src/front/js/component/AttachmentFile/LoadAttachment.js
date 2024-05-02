@@ -1,16 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../../store/appContext";
+import React, { useState, useEffect } from "react";
 
-const LoadAttachment = () => {
+const LoadAttachment = ({ userId }) => {
     const [files, setFiles] = useState([]);
-    const { actions } = useContext(Context);
-    const userId = localStorage.getItem("id");
-    
+
     useEffect(() => {
         const fetchAttachmentFiles = async () => {
             try {
-                const id = localStorage.getItem("id");
-                const response = await fetch(process.env.BACKEND_URL + `/attachmentfile/patient/${id}`);
+                const response = await fetch(`${process.env.BACKEND_URL}/attachmentfile/patient/${userId}`);
                 if (!response.ok) {
                     throw new Error("Error fetching attachment files");
                 }
@@ -24,7 +20,7 @@ const LoadAttachment = () => {
         };
 
         fetchAttachmentFiles();
-    }, []);
+    }, [userId]);
 
     const deleteFolder = async (attachment_id) => {
         try {
@@ -37,8 +33,7 @@ const LoadAttachment = () => {
                     throw new Error('Error al eliminar el documento del perfil');
                 }
                 // Actualizar el estado files después de eliminar el archivo
-                setFiles(files.filter(file => file.id !== attachment_id));
-                // No es necesario recargar la página aquí
+                setFiles(prevFiles => prevFiles.filter(file => file.id !== attachment_id));
             }
         } catch (error) {
             console.error("Error al eliminar el PDF:", error);
@@ -50,15 +45,19 @@ const LoadAttachment = () => {
         <>
             {/* Mostrar la lista de documentos cargados */}
             {files.length > 0 ? (
-                <ul>
+                <div>
                     {files.map((file, index) => (
-                        <li key={index}>
-                            <a className="link-document" href={file.url_file} target="_blank" rel="noopener noreferrer">{file.description}</a>
-                            {/* Pasar el attachmentId al llamar a la función deleteFolder */}
-                            <button onClick={() => deleteFolder(file.id)}>Eliminar fichero</button>
-                        </li>
+                        <div key={index} className="card mb-3">
+                            <div className="card-body">
+                                <h5 className="card-title">{file.description}</h5>
+                                <p className="card-text">
+                                    <a href={file.url_file} target="_blank" rel="noopener noreferrer" className="link-document">{file.url_file}</a>
+                                </p>
+                                <button onClick={() => deleteFolder(file.id)} className="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
                     ))}
-                </ul>
+                </div>
             ) : (
                 <p>No se han cargado archivos aún.</p>
             )}

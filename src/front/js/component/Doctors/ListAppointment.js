@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import { CardAppointment } from "./CardAppointment";
+import { Context } from "../../store/appContext";
+import { CardAppointment } from "../CardAppointment";
 
 export const ListAppointment = () => {
         const { store, actions } = useContext(Context);
