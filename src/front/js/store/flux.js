@@ -379,6 +379,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error(error))
 			},
 
+			// loadAppoinmentMeetingURL: ()=>{
+			// 	console.log("LISENT")
+			// 	fetch(process.env.BACKEND_URL + `/appointments_and_meetings`)
+			// 	.then((response) => response.json())
+			// 		.then((data) => {
+			// 			// console.log("fetchSpeciality FLUX",data)
+			// 			console.log("DATARESULT FLUX APPOINTMENT", data.result)
+			// 			setStore({ meetingsURL: data.result })})
+			// 		.catch((error) => console.error(error))
+			// },
+
 			// getinfoAttachment: (id) => { 
 			// 	console.log("Fetching MEETING-ATTACHMENT info for ID:", id);
 			// 	fetch(process.env.BACKEND_URL + `/appointments_and_meetings/${id}`)

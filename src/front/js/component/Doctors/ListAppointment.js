@@ -1,27 +1,41 @@
-import React, { useContext } from "react";
-import { Context } from "../../store/appContext";
-import { CardAppointment } from "./CardAppointment";
+import React, { useState, useEffect, useContext } from 'react';
+import MedicalAppointmentCard from './MedicalAppointmentCard';
+import { Context } from '../../store/appContext';
 
-export const ListAppointment = () => {
-    const { store } = useContext(Context);
+const ListAppointment = () => {
+  const [appointments, setAppointments] = useState([]);
+  const { store } = useContext(Context);
 
-    // Verificar si hay citas médicas en el almacén
-    if (!store.appointments || store.appointments.length === 0) {
-        return <p>No hay citas pendientes.</p>;
-    }
+  const loadAppointmentMeetingURL = () => {
+    fetch(`${process.env.BACKEND_URL}/appointments_and_meetings`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("DATARESULT FLUX APPOINTMENT", data.result);
+        setAppointments(data.result);
+      })
+      .catch((error) => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  };
 
-    return (
-        <>
-            {store.appointments.map(appointment => (
-                <CardAppointment
-                    key={appointment.id}
-                    appointmentId={appointment.id}
-                    patientName={appointment.patient_name} // Agregar el nombre del paciente
-                    doctorName={appointment.doctor_name} // Agregar el nombre del médico
-                    meetingURL={appointment.meeting_url} // Agregar la URL de la reunión
-                    meetingDate={appointment.meeting_date} // Agregar la fecha de la reunión
-                />
-            ))}
-        </>
-    );
+  useEffect(() => {
+    loadAppointmentMeetingURL();
+  }, []);
+
+  return (
+    <div>
+      {appointments.map((appointment) => {
+        console.log("Hola", store.currentPatient.id, appointment.patient_id)
+        if (store.currentPatient.id == appointment.patient_id)
+          {return <MedicalAppointmentCard key={appointment.id} appointment={appointment} /> } 
+      })}
+    </div>
+  );
 };
+
+export default ListAppointment;

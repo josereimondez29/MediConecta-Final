@@ -4,6 +4,7 @@ import paciente2 from "../../img/paciente2.jpg"
 import { Link, useParams } from "react-router-dom";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
 import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
+import ListAppointment from "../component/Doctors/ListAppointment";
 
 
 export const PrivatePatient = () => {
@@ -102,10 +103,18 @@ export const PrivatePatient = () => {
                     </form>
                 </div>
             </div>
-            <div className="container">
-                <h2>Mis documentos</h2>
-                {/* Pasar el ID del paciente a LoadAttachment */}
-                {patientId && <LoadAttachment userId={patientId} />}
+
+            <div className="container-fluid d-flex justify-content-around">
+                <div>
+                    <h1 className="text-center">Citas pendientes</h1>
+                    <div className="container">
+                    {patientId &&  <ListAppointment userId={patientId} />}
+                    </div>
+                </div>
+                <div>
+                    <h2>Mis documentos</h2>
+                    {patientId && <LoadAttachment userId={patientId} />}
+                </div>
             </div>
         </>
     )
