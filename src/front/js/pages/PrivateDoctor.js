@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
 import ListDocument from "../component/Doctors/ListDocument";
-import ListAppointment from "../component/Doctors/ListAppointment";
+import ListAppointmentDoctor from "../component/Doctors/ListAppointmentDoctor";
 
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
@@ -97,9 +97,7 @@ const PrivateDoctor = (props) => {
                 <div>
                     <h1 className="text-center">Citas pendientes</h1>
                     <div className="container">
-                        {/* Mostrar citas pendientes del médico */}
-                        {id && userType === 'doctor' && <ListAppointment doctorId={id} userType={userType} />}
-                        {id && userType === 'patient' && <ListAppointment patientId={id} userType={userType} />}
+                        {id &&  <ListAppointmentDoctor id={id}/>}
                     </div>
                 </div>
                 <div>
@@ -110,8 +108,10 @@ const PrivateDoctor = (props) => {
             </div>
         </>
     );
-}
+};
+
 PrivateDoctor.propTypes = {
     match: PropTypes.object
 };
+
 export default PrivateDoctor;

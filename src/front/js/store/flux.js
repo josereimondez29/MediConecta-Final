@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			specialities: [],
 			patients: [],
 			currentPatient: null,
+			currentDoctor: null,
 			profilespictures: [],
 			folder: [],
 			attachmentFiles: [],
@@ -107,12 +108,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then((data) => setStore({doctors:data.result}))
 					.catch((error) => console.error(error))
 				}, 
-
+			
 			getinfoDoctor: (id) => { 
 				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
 				.then((response) => response.json())
 				.then((result) => {
-				// Aquí se asume que los datos del médico obtenidos del backend están en data
+					// Aquí se asume que los datos del médico obtenidos del backend están en data
 					let updatedDoctor = result; // Suponiendo que los datos del médico se encuentran en data.result
 					let updatedDoctors = getStore().doctors.map((Doctor) => {
 						if (Doctor.id === id) {
@@ -121,7 +122,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							return Doctor; // Si el ID no coincide, conserva el médico sin cambios
 						}
 					});
-					setStore({ doctors: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados		
+					setStore({ currentDoctor: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados		
 					});
 				},
 

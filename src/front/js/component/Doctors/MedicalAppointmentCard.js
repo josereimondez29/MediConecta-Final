@@ -24,7 +24,6 @@ const MedicalAppointmentCard = ({ appointment }) => {
       <p>Fecha de cita: {new Date(appointment_date).toLocaleString()}</p>
       <p>Doctor: {doctorData ? `${doctorData.name} ${doctorData.surname}` : ' '}</p>
       <p>Paciente: {patientData ? `${patientData.name} ${patientData.surname}` : ' '}</p>
-      
       {meeting && (
         <div>
           <h4>Reunión</h4>

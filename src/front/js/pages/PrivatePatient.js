@@ -4,7 +4,7 @@ import paciente2 from "../../img/paciente2.jpg"
 import { Link, useParams } from "react-router-dom";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
 import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
-import ListAppointment from "../component/Doctors/ListAppointment";
+import ListAppointmentPatient from "../component/Doctors/ListAppointmentPatient";
 
 
 export const PrivatePatient = () => {
@@ -108,7 +108,7 @@ export const PrivatePatient = () => {
                 <div>
                     <h1 className="text-center">Citas pendientes</h1>
                     <div className="container">
-                    {patientId &&  <ListAppointment userId={patientId} />}
+                    {patientId &&  <ListAppointmentPatient userId={patientId} />}
                     </div>
                 </div>
                 <div>
