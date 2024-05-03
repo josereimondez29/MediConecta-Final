@@ -13,16 +13,7 @@ const PrivateDoctor = (props) => {
 
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
-    const [doctor, setDoctor] = useState({
-        name: "",
-        surname: "",
-        email: "",
-        age: "",
-        bio: "",
-        identification: "",
-        medical_license: "",
-        speciality_id: ""
-    });
+    const [doctor, setDoctor] = useState(null);
 
     useEffect(() => {
         if (id && store.doctors && store.doctors.length > 0 && store.specialities && store.specialities.length > 0) {

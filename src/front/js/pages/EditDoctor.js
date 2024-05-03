@@ -32,6 +32,7 @@ export const EditDoctor = () => {
     useEffect(() => {
         setSpecialities(store.specialities);
     }, [store.specialities]);
+
     useEffect(() => {
         const editDoctor = Array.isArray(store.doctors) ? store.doctors.find(doctor => doctor.id === idFromUrl) : null;
         if (editDoctor) {
@@ -47,6 +48,7 @@ export const EditDoctor = () => {
             });
         }
     }, [idFromUrl, store.doctors]);
+    
     useEffect(() => {
         if (editDoctor && editDoctor.speciality_id) {
             const foundSpeciality = specialities.find(speciality => speciality.id === editDoctor.speciality_id);

@@ -167,6 +167,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then((data) => setStore({patients:data.result}))
 					.catch((error) => console.error(error))
 				}, 
+
+				loadCurrentPatient: ()=>{
+					fetch(process.env.BACKEND_URL + "/patients")
+						.then((response) => response.json())
+						.then((data) => setStore({currentPatient:data.result}))
+						.catch((error) => console.error(error))
+					}, 
 			
 			getinfoPatient: (id) => { 
 				console.log("Fetching patient info for ID:", id);
