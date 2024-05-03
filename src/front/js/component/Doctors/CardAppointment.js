@@ -1,47 +1,45 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Context } from "../../store/appContext";
+import React, { useState, useEffect } from "react";
 
-export const CardAppointment = ({ appointmentId }) => {
-    const { store } = useContext(Context);
+export const CardAppointment = ({ appointmentId, patientName, doctorName, meetingURL, meetingDate }) => {
+    const [loading, setLoading] = useState(true);
     const [appointmentData, setAppointmentData] = useState(null);
 
-    useEffect (()=>{
-        const appointment = store.appointments.find(appointment => appointment.id === appointmentId);
-        if (appointment) {
-            // Buscar la reunión correspondiente
-            const meeting = store.meetings.find(meeting => meeting.id === appointment.meeting_id);
-            if (meeting) {
-                // Obtener la información del paciente y del doctor
-                const patient = store.patients.find(patient => patient.id === appointment.patient_id);
-                const doctor = store.doctors.find(doctor => doctor.id === appointment.doctor_id);
-
-                // Construir el objeto de datos de la cita médica con detalles adicionales
-                const appointmentWithDetails = {
-                    ...appointment,
-                    patient_name: patient ? `${patient.id}` : '',
-                    doctor_name: doctor ? `${doctor.id}` : '',
-                    meeting_url: meeting.room_url,
-                    meeting_date: meeting.appointment_date
-                };
-
-                setAppointmentData(appointmentWithDetails);
-            }
+    const getAppointmentAndMeetingInfo = async (id) => {
+        console.log("EY")
+        try {
+            const appointmentResponse = await fetch(`${process.env.BACKEND_URL}/appointments_and_meetings/${id}`);
+            console.log("EY")
+            const appointmentJson = await appointmentResponse.json();
+            setAppointmentData(appointmentJson);
+            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching appointment and meeting info:", error);
+            setLoading(false);
         }
-    }, [store.appointments, store.meetings, store.patients, store.doctors, appointmentId]);
+    };
 
-    if (!appointmentData) {
+    useEffect(() => {
+        getAppointmentAndMeetingInfo(appointmentId);
+    }, [appointmentId]);
+
+    if (loading) {
         return <p>Cargando cita...</p>;
     }
+
+    if (!appointmentData) {
+        return <p>No se encontraron datos para esta cita.</p>;
+    }
+    console.log("EY",appointmentData)
+
+    
 
     return (
         <div>
             <h2>Detalles de la Cita</h2>
-            <p>Fecha de la cita: {appointmentData.appointment_date}</p>
-            <p>URL de la cita: {appointmentData.meeting_url}</p>
-            <p>Paciente: {appointmentData.patient_name}</p>
-            <p>Doctor: {appointmentData.doctor_name}</p>
-            <p>Fecha de la reunión: {appointmentData.meeting_date}</p>
-            {/* Otros detalles de la cita si es necesario */}
+            <p>Nombre del Paciente: {patientName}</p>
+            <p>Nombre del Médico: {doctorName}</p>
+            <p>URL de la Reunión: {meetingURL}</p>
+            <p>Fecha de la Reunión: {meetingDate}</p>
         </div>
     );
 };

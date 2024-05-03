@@ -12,14 +12,16 @@ export const ListAppointment = () => {
 
     return (
         <>
-        
             {store.appointments.map(appointment => (
                 <CardAppointment
-                    key={appointment.id} // Asegúrate de incluir una clave única para cada componente
-                    appointmentId={appointment.id} // Corrige el nombre de la prop de ID de cita
+                    key={appointment.id}
+                    appointmentId={appointment.id}
+                    patientName={appointment.patient_name} // Agregar el nombre del paciente
+                    doctorName={appointment.doctor_name} // Agregar el nombre del médico
+                    meetingURL={appointment.meeting_url} // Agregar la URL de la reunión
+                    meetingDate={appointment.meeting_date} // Agregar la fecha de la reunión
                 />
             ))}
-         
         </>
     );
 };

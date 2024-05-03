@@ -1212,17 +1212,110 @@ def delete_summary(summaryId):
     return jsonify({"message": "Summary deleted successfully"})
 
 # Meeting + Appoinment
-# @app.route("/appoinment/<int:meeting_id>", methods=["GET"])
-# #@cross_origin(supports_credentials=True)
-# def get_appoinmetmeet(meeting_id):
-#     appointment=Medical_Appointment(meeting_id)
-#     print(meeting_id)
-#     meeting = db.session.query(Medical_Appointment,Meetings).join(Medical_Appointment).filter(Meetings.room_id==Medical_Appointment.meeting_id).all()
-#     meeting_serialized = []
-#     for Medical_Appoinment_item, Meeting_item in meeting:
-#          meeting_serialized.append({'Medical_Appoinment':Medical_Appoinment_item.serialize(),'Meeting_item':Meeting_item.serialize()})
-#     print(appointment)
+@app.route("/appointments_and_meetings", methods=["GET"])
+def get_appointments_and_meetings():
+    try:
+        appointments_and_meetings = []
 
+        # Obtener todas las citas médicas
+        appointments = Medical_Appointment.query.all()
+        
+        # Iterar sobre cada cita médica
+        for appointment in appointments:
+            # Obtener la información de la cita médica
+            appointment_data = {
+                "id": appointment.id,
+                "speciality_id": appointment.speciality_id,
+                "patient_id": appointment.patient_id,
+                "doctor_id": appointment.doctor_id,
+                "appointment_date": appointment.appointment_date.isoformat(),
+                "is_active": appointment.is_active
+            }
+
+            # Obtener la reunión asociada a la cita médica
+            meeting = Meetings.query.filter_by(appointment_date=appointment.appointment_date).first()
+
+            # Si se encuentra una reunión, agregar sus datos a la información de la cita médica
+            if meeting:
+                appointment_data["meeting"] = {
+                    "id": meeting.id,
+                    "room_id": meeting.room_id,
+                    "room_url": meeting.room_url
+                }
+            else:
+                appointment_data["meeting"] = None
+
+            # Agregar la información de la cita médica y la reunión a la lista
+            appointments_and_meetings.append(appointment_data)
+
+        return jsonify({"msg": "Medical appointments and meetings retrieved successfully", "result": appointments_and_meetings}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/appointments_and_meetings/<int:id>", methods=["GET"])
+def get_appointment_and_meeting(id):
+    try:
+        # Obtener la cita médica con el ID proporcionado
+        appointment = Medical_Appointment.query.get(id)
+        if not appointment:
+            return jsonify({"msg": "Medical appointment not found"}), 404
+
+        # Obtener la reunión asociada a la cita médica
+        meeting = Meetings.query.filter_by(appointment_date=appointment.appointment_date).first()
+
+        # Construir los datos de la cita médica y la reunión
+        appointment_data = {
+            "id": appointment.id,
+            "speciality_id": appointment.speciality_id,
+            "patient_id": appointment.patient_id,
+            "doctor_id": appointment.doctor_id,
+            "appointment_date": appointment.appointment_date.isoformat(),
+            "is_active": appointment.is_active
+        }
+
+        if meeting:
+            meeting_data = {
+                "id": meeting.id,
+                "room_id": meeting.room_id,
+                "room_url": meeting.room_url
+            }
+        else:
+            meeting_data = None
+
+        return jsonify({
+            "msg": "Medical appointment and meeting details retrieved successfully",
+            "appointment": appointment_data,
+            "meeting": meeting_data
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    # try:
+    #     # Obtener la cita médica por su ID
+    #     appointment = Medical_Appointment.query.get(id)
+    #     if not appointment:
+    #         return jsonify({"msg": "No se encontró la cita médica para el ID proporcionado"}), 404
+
+    #     # Buscar la reunión asociada a la cita médica por su meeting_id
+    #     meeting = Meetings.query.filter_by(id=appointment.meeting_id).first()
+    #     if not meeting:
+    #         return jsonify({"msg": "No se encontró la reunión asociada a la cita médica"}), 404
+
+    #     # Serializar los datos de la cita médica y la reunión
+    #     appointment_serialized = appointment.serialize()
+    #     meeting_serialized = meeting.serialize()
+
+    #     # Devolver los datos serializados
+    #     return jsonify({
+    #         "msg": "Datos de la cita médica y la reunión",
+    #         "appointment": appointment_serialized,
+    #         "meeting": meeting_serialized
+    #     }), 200
+
+    # except Exception as e:
+    #     return jsonify({"msg": "Error al obtener los datos de la cita médica y la reunión", "error": str(e)}), 500
 
 # Profile Pictures
 @app.route("/profilepicture", methods=["GET"])

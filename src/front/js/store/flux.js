@@ -14,6 +14,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			attachmentFiles: [],
 			appointments:[],
 			meetings:[],
+			meetingsURL:[]
 		},
 		actions: {
 
@@ -357,24 +358,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 //<-- LISTADO DE CITAS
 			loadAppoinment: ()=>{
+				console.log("LISENT")
 				fetch(process.env.BACKEND_URL + `/medical_appoinments`)
 				.then((response) => response.json())
 					.then((data) => {
 						// console.log("fetchSpeciality FLUX",data)
-						// console.log("DATARESULT FLUX", data.result)
+						console.log("DATARESULT FLUX APPOINTMENT", data.result)
 						setStore({ appointments: data.result })})
 					.catch((error) => console.error(error))
 			},
 			
 			loadMeeting: ()=>{
+				console.log("EY LINK")
 				fetch(process.env.BACKEND_URL + `/meetings`)
 				.then((response) => response.json())
 					.then((data) => {
 						// console.log("fetchSpeciality FLUX",data)
-						// console.log("DATARESULT FLUX", data.result)
+						console.log("DATARESULT FLUX MEETING", data.result)
 						setStore({ meetings: data.result })})
 					.catch((error) => console.error(error))
 			},
+
+			// getinfoAttachment: (id) => { 
+			// 	console.log("Fetching MEETING-ATTACHMENT info for ID:", id);
+			// 	fetch(process.env.BACKEND_URL + `/appointments_and_meetings/${id}`)
+			// 	.then((response) => response.json())
+			// 	.then((result) => {
+			// 		console.log("Received meeting info:", result);
+			// 		// Actualizar el estado global con la información del paciente que ha iniciado sesión
+			// 		setStore({ meetingsURL: result});
+			// 	})
+			// 	.catch((error) => {
+			// 		console.error("Error al obtener la información del meeting:", error);
+			// 		setStore({ messageError: "Error al obtener la información del meeting" });
+			// 	});
+			// },
+
+
 
 			// getAttachmentFilesByPatientId: (id) => { 
 			// 	  fetch(process.env.BACKEND_URL + `/attachmentfile/patient/${id}`)
