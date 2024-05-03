@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 const GetProfilePicture = (props) => {
     const { store, actions } = useContext(Context);
     const [profilePicture, setProfilePicture] = useState(null);
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem("id")
 
     useEffect(() => {
         // Llamar a la función para obtener la imagen de perfil
@@ -16,7 +16,7 @@ const GetProfilePicture = (props) => {
         const userType = localStorage.getItem("userType")
         const id = localStorage.getItem("id")
         // Hacer la solicitud al backend para obtener la imagen de perfil del usuario
-        fetch(process.env.BACKEND_URL + `/uploadprofilepicture/${userType}/${id}`)
+        fetch(process.env.BACKEND_URL + `/profilepicture/${userType}/${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Error al obtener la imagen de perfil');

@@ -10,6 +10,21 @@ export const SingleDoctor = (props) => {
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
+    const [profilePictureUrl, setProfilePictureUrl] = useState(""); 
+
+    useEffect(() => {
+        // Obtener la URL de la imagen del perfil
+        const fetchPicture = async () => {
+            try {
+                const response = await fetch(process.env.BACKEND_URL + `/profilepicture/doctor/${doctor.id}`);
+                const result = await response.json();
+                setProfilePictureUrl(result.url_picture);
+            } catch (error) {
+                console.error("Error obteniendo la imagen del perfil:", error);
+            }
+        };
+        fetchPicture();
+    }, [doctor]);
 
     useEffect(() => {
         const loadSpecialities = async () => {
@@ -23,6 +38,9 @@ export const SingleDoctor = (props) => {
         loadSpecialities();
 
     }, [])
+
+
+
 
     useEffect(() => {
 
@@ -41,6 +59,7 @@ export const SingleDoctor = (props) => {
         }
     }, [id, store.doctors, store.specialities]);
 
+    
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -60,7 +79,7 @@ export const SingleDoctor = (props) => {
             <div className="container">
                 <div className="d-flex">
                     <div className="image-container">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw_qLv_ueyszEkB_U0nWQxsPujgcsZe89czAjeWa5S7Q&s" alt="Medicina General" className="medicina-general-image half-size" />
+                        <img src={profilePictureUrl} alt="Medicina General" className="medicina-general-image half-size" />
                     </div>
                     <div className="text-container">
                         <h2 className="title">{doctor.name}&nbsp;{doctor.surname}</h2>

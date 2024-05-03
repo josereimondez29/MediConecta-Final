@@ -3,7 +3,8 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
-import  ListDocument from "../component/Doctors/ListDocument";
+import ListDocument from "../component/Doctors/ListDocument";
+import { ListAppointment } from "../component/Doctors/ListAppointment";
 
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
@@ -109,7 +110,9 @@ const PrivateDoctor = (props) => {
         </div>
         <div>
         <h1 className="text-center">Citas pendientes</h1>
-            {/* <ListAppointment/> */}
+        <div className="container">
+            <ListAppointment/>
+        </div>
         </div>
         <div>
         <h1 className="text-center">Documentos de pacientes</h1>

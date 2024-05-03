@@ -1150,13 +1150,21 @@ def update_doctor_password(doctor_id):
 
 # Meetings
 
-
-
-
-
 @app.route("/meetings", methods=["GET"])
 def get_meetings():
-    return jsonify(meetings)
+    meetings = Meetings.query.all()
+
+    meetings_serialized = []
+    for meeting in meetings:
+        meetings_serialized.append(meeting.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": meetings_serialized
+    }
+
+    return jsonify(response_body), 200
+  
 
 @app.route("/meetings/<meetingId>", methods=["GET"])
 def get_meeting(meetingId):
@@ -1204,16 +1212,16 @@ def delete_summary(summaryId):
     return jsonify({"message": "Summary deleted successfully"})
 
 # Meeting + Appoinment
-@app.route("/appoinment/<int:meeting_id>", methods=["GET"])
-#@cross_origin(supports_credentials=True)
-def get_appoinmetmeet(meeting_id):
-    appointment=Medical_Appointment(meeting_id)
-    print(meeting_id)
-    meeting = db.session.query(Medical_Appointment,Meetings).join(Medical_Appointment).filter(Meetings.room_id==Medical_Appointment.meeting_id).all()
-    meeting_serialized = []
-    for Medical_Appoinment_item, Meeting_item in meeting:
-         meeting_serialized.append({'Medical_Appoinment':Medical_Appoinment_item.serialize(),'Meeting_item':Meeting_item.serialize()})
-    print(appointment)
+# @app.route("/appoinment/<int:meeting_id>", methods=["GET"])
+# #@cross_origin(supports_credentials=True)
+# def get_appoinmetmeet(meeting_id):
+#     appointment=Medical_Appointment(meeting_id)
+#     print(meeting_id)
+#     meeting = db.session.query(Medical_Appointment,Meetings).join(Medical_Appointment).filter(Meetings.room_id==Medical_Appointment.meeting_id).all()
+#     meeting_serialized = []
+#     for Medical_Appoinment_item, Meeting_item in meeting:
+#          meeting_serialized.append({'Medical_Appoinment':Medical_Appoinment_item.serialize(),'Meeting_item':Meeting_item.serialize()})
+#     print(appointment)
 
 
 # Profile Pictures
@@ -1233,33 +1241,10 @@ def get_pictures():
 
     return jsonify(response_body), 200
 
-@app.route('/uploadprofilepicture', methods=['POST'])
+   
+@app.route('/profilepicture/doctor/<int:doctor_id>', methods=['GET'])
 #@cross_origin(supports_credentials=True)
-def upload_image():
-    try:
-        # Obtenemos el archivo de la solicitud
-        file = request.files['file']
-        
-        # Obtenemos el ID del paciente o del doctor desde la solicitud
-        patient_id = request.form.get('patient_id')
-        doctor_id = request.form.get('doctor_id')
-
-        # Subimos la imagen a Cloudinary
-        upload_result = cloudinary.uploader.upload(file)
-
-        # Creamos una nueva entrada en la base de datos con la URL de la imagen
-        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id, doctor_id=doctor_id)
-        db.session.add(profile_picture)
-        db.session.commit()
-
-        # Devolvemos la URL de la imagen en la respuesta
-        return jsonify({'imageUrl': profile_picture.url_picture}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
-#@cross_origin(supports_credentials=True)
-def get_image_doctor(doctor_id):
+def get_image_doctor_id(doctor_id):
     # Obtener el perfil de imagen del doctor por su ID
     profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
     if profile_picture:
@@ -1268,6 +1253,7 @@ def get_image_doctor(doctor_id):
     else:
         # Si no se encontró la imagen del perfil, devolver un mensaje de error
         return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+
 
 @app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
 #@cross_origin(supports_credentials=True)
@@ -1302,7 +1288,7 @@ def delete_image_doctor(doctor_id):
         return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
     return jsonify({"message": "Profile picture not found"}), 404
 
-@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['GET'])
+@app.route('/profilepicture/patient/<int:patient_id>', methods=['GET'])
 #@cross_origin(supports_credentials=True)
 def get_image_patient(patient_id):
     # Obtener el perfil de imagen del doctor por su ID

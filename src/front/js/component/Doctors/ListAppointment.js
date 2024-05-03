@@ -1,25 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../../store/appContext";
-import { CardAppointment } from "../CardAppointment";
+import { CardAppointment } from "./CardAppointment";
 
 export const ListAppointment = () => {
-        const { store, actions } = useContext(Context);
-    
+    const { store } = useContext(Context);
 
-        const displayAppointment = store.appointment ;
-    
-        return (
-            <>  
-                ({displayAppointment.map(appointment => (
-                    <CardAppointment 
-                        pacient_id={appointment.pacient_id}
-                        appointment_date={appointment.appointment_date}
-                        room_url={appointment.room_url}
-                    />
-                    ))}
-                ) : (
-                    <p>No hay citas pendientes.</p>)
+    // Verificar si hay citas médicas en el almacén
+    if (!store.appointments || store.appointments.length === 0) {
+        return <p>No hay citas pendientes.</p>;
+    }
+
+    return (
+        <>
         
-            </>
-        );
-    };   
+            {store.appointments.map(appointment => (
+                <CardAppointment
+                    key={appointment.id} // Asegúrate de incluir una clave única para cada componente
+                    appointmentId={appointment.id} // Corrige el nombre de la prop de ID de cita
+                />
+            ))}
+         
+        </>
+    );
+};

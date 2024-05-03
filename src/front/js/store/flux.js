@@ -12,8 +12,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			profilespictures: [],
 			folder: [],
 			attachmentFiles: [],
-			// appointments:[],
-			// meetings:[],
+			appointments:[],
+			meetings:[],
 		},
 		actions: {
 
@@ -257,38 +257,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error(error))
 				}, 
 
-				updatePatient: async (editPatient, id) => {
-			try {
-				console.log("ID in updatePatient:", id); // Agregar este console.log
-				console.log("Data to be sent:", editPatient)
-
-				const requestOptions = {
-					method: "PUT",
-					body: JSON.stringify(editPatient),
-					headers: { "Content-Type": "application/json" }
-				};
-
-				const response = await fetch(`${process.env.BACKEND_URL}/patient/${id}`, requestOptions);
-				const data = await response.json();
-
-				if (!response.ok) {
-					throw new Error(data.message || "Failed to update patient");
-				}
-
-				console.log("Response data:", data);
-
-				// Actualizar el estado global con los datos actualizados del paciente
-				setStore({ currentPatient: editPatient });
-
-				return data;
-			} catch (error) {
-				console.error("Error updating patient:", error);
-				throw error;
-			}
-			},
-
 			getPicture: (id, userType) => { 
-				fetch(process.env.BACKEND_URL + `/${userType}/${id}`)
+				fetch(process.env.BACKEND_URL + `/profilepicture/${userType}/${id}`)
 				.then((response) => response.json())
 				.then((result) => {
 				// Aquí se asume que los datos del médico obtenidos del backend están en data
@@ -387,7 +357,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 //<-- LISTADO DE CITAS
 			loadAppoinment: ()=>{
-
+				fetch(process.env.BACKEND_URL + `/medical_appoinments`)
+				.then((response) => response.json())
+					.then((data) => {
+						// console.log("fetchSpeciality FLUX",data)
+						// console.log("DATARESULT FLUX", data.result)
+						setStore({ appointments: data.result })})
+					.catch((error) => console.error(error))
+			},
+			
+			loadMeeting: ()=>{
+				fetch(process.env.BACKEND_URL + `/meetings`)
+				.then((response) => response.json())
+					.then((data) => {
+						// console.log("fetchSpeciality FLUX",data)
+						// console.log("DATARESULT FLUX", data.result)
+						setStore({ meetings: data.result })})
+					.catch((error) => console.error(error))
 			},
 
 			// getAttachmentFilesByPatientId: (id) => { 
