@@ -126,7 +126,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 				},
 
-			updateDoctor: (editDoctor, id) => {
+
+				updateDoctor: (editDoctor, id) => {
+
+					const requestOptions = {
+						method: "PUT",
+						body: JSON.stringify(editDoctor),
+						headers: { "Content-Type": "application/json" },
+						redirect: "follow"
+					};
+					
+					fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
+					.then((response) => {
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
+						}
+						return response.json();
+					})
+					.then((result) => {
+						console.log("RESULT FLUX UPGRATE", result);
+						setStore({ doctors: result });
+					})
+					.catch((error) => console.error("Fetch error:", error));
+	
+				},
+								
+			
+			idontknow: (editDoctor, id) => {
 				const requestOptions = {
 					method: "PUT",
 					body: JSON.stringify(editDoctor),
@@ -266,23 +292,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error(error))
 				}, 
 
-			getPicture: (id, userType) => { 
-				fetch(process.env.BACKEND_URL + `/profilepicture/${userType}/${id}`)
-				.then((response) => response.json())
-				.then((result) => {
-				// Aquí se asume que los datos del médico obtenidos del backend están en data
-					let updatedPicture = result; // Suponiendo que los datos del médico se encuentran en data.result
-					let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
-						if (Profilespicture.id === id) {
-							return updatedPicture; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+				getPicture: (id, userType) => { 
+					fetch(process.env.BACKEND_URL + `/profilepicture/${userType}/${id}`)
+					.then((response) => {
+						if (response.ok) {
+							return response.json();
 						} else {
-							return Profilespicture; // Si el ID no coincide, conserva el médico sin cambios
+							throw new Error('Imagen no encontrada');
 						}
+					})
+					.then((result) => {
+						let updatedPicture = result; 
+						let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
+							if (Profilespicture.id === id) {
+								return updatedPicture;
+							} else {
+								return Profilespicture;
+							}
+						});
+						setStore({ profilespictures: updatedPictures });
+					})
+					.catch((error) => {
+						console.error('Error al obtener la imagen:', error);
+						// Establecer la imagen por defecto aquí
+						let defaultPicture = { url: 'https://i.postimg.cc/sX2n2Rjy/Doctores.jpg', id: id };
+						let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
+							if (Profilespicture.id === id) {
+								return defaultPicture;
+							} else {
+								return Profilespicture;
+							}
+						});
+						setStore({ profilespictures: updatedPictures });
 					});
-					setStore({ profilespictures: updatedPictures }); // Actualiza el estado de la tienda con los médicos actualizados
-					
-				});
-			},
+				},
 
 			changeUploadImage: async (formData, userId, userType) => {
 				try {

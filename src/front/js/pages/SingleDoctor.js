@@ -13,17 +13,27 @@ export const SingleDoctor = (props) => {
     const [profilePictureUrl, setProfilePictureUrl] = useState(""); 
 
     useEffect(() => {
-        // Obtener la URL de la imagen del perfil
-        const fetchPicture = async () => {
-            try {
-                const response = await fetch(process.env.BACKEND_URL + `/profilepicture/doctor/${doctor.id}`);
-                const result = await response.json();
-                setProfilePictureUrl(result.url_picture);
-            } catch (error) {
-                console.error("Error obteniendo la imagen del perfil:", error);
-            }
-        };
-        fetchPicture();
+        // Verificar si el doctor está definido y si tiene un ID antes de realizar la solicitud
+        if (doctor && doctor.id) {
+            // Obtener la URL de la imagen del perfil
+            const fetchPicture = async () => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/profilepicture/doctor/${doctor.id}`);
+                    if (response.ok) {
+                        const result = await response.json();
+                        setProfilePictureUrl(result.url_picture);
+                    } else {
+                        throw new Error('Error al obtener la imagen del perfil');
+                    }
+                } catch (error) {
+                    // console.error("Error obteniendo la imagen del perfil:", error);
+                    // Establecer la imagen por defecto aquí
+                    const defaultPictureUrl = 'https://i.postimg.cc/sX2n2Rjy/Doctores.jpg';
+                    setProfilePictureUrl(defaultPictureUrl);
+                }
+            };
+            fetchPicture();
+        }
     }, [doctor]);
 
     useEffect(() => {
@@ -31,7 +41,7 @@ export const SingleDoctor = (props) => {
             try {
                 await actions.loadSpecialities();
             } catch (error) {
-                console.error("Error loading specialities:", error);
+                // console.error("Error loading specialities:", error);
             }
         };
 

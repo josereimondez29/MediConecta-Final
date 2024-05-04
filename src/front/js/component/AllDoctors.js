@@ -13,6 +13,8 @@ export const AllDoctors =()=> {
 
     const displayedDoctors = store.doctors
 
+    console.log(store.doctors)
+
     return (
         <>  
          

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import iconDoctor from "../../img/doctorIcon.png"
 
 const CardDoctor = (props) => {
     const { store } = useContext(Context);
     const [doctorData, setDoctorData] = useState(null);
     const [speciality, setSpeciality] = useState(null);
-    const [profilePictureUrl, setProfilePictureUrl] = useState(""); // Estado para almacenar la URL de la imagen del perfil
-
+    // const [profilePictureUrl, setProfilePictureUrl] = useState(""); // Estado para almacenar la URL de la imagen del perfil
+    const [defaultPictureUrl, setProfilePictureUrl] = useState(null);
     useEffect(() => {
         // Cuando se actualice el contexto con la información del médico, actualizar el estado local
         setDoctorData(store.doctors.find(doctor => doctor.id === props.id));
@@ -23,30 +24,42 @@ const CardDoctor = (props) => {
     }, [doctorData, store.specialities]);
 
     useEffect(() => {
-        // Obtener la URL de la imagen del perfil
         const fetchPicture = async () => {
             try {
                 const response = await fetch(process.env.BACKEND_URL + `/profilepicture/doctor/${props.id}`);
-                const result = await response.json();
-                setProfilePictureUrl(result.url_picture);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    setProfilePictureUrl(result.url_picture);
+                } else {
+                    throw new Error('Imagen no encontrada');
+                }
             } catch (error) {
-                console.error("Error obteniendo la imagen del perfil:", error);
+                // console.error("Error obteniendo la imagen del perfil:", error);
+                // Establecer la imagen por defecto aquí
+                const defaultPictureUrl = 'https://i.postimg.cc/sX2n2Rjy/Doctores.jpg';
+                setProfilePictureUrl(defaultPictureUrl);
             }
         };
+    
         fetchPicture();
     }, [props.id]);
 
-    // Esperar hasta que doctorData, speciality y profilePictureUrl tengan valor antes de renderizar el componente
-    if (!doctorData || !speciality || !profilePictureUrl) {
+    // // Verificar si profilePictureUrl está vacío y, si es así, establecer la URL de una imagen de perfil genérica
+    // const defaultProfilePictureUrl = {iconDoctor}; // Reemplaza esto con la URL de tu imagen predeterminada
+    // const pictureUrlToShow = profilePictureUrl || defaultProfilePictureUrl;
+
+    // Esperar hasta que doctorData, speciality y pictureUrlToShow tengan valor antes de renderizar el componente
+    if (!doctorData || !speciality) {
         return null; // O podrías mostrar un mensaje de carga
     }
 
     return (
-        <div className="col-md-4 mb-3 cardDoctore"> 
-            <div className="cardDoctor text-center">
-                <img src={profilePictureUrl} className="card-img-topDoctor mx-auto object-fit-sm-contain" alt="img_doc" style={{ width: "9rem", objectFit: "cover" }}/>
-                <div className="card-bodyDoctor justify-content-center">
-                    <h5 className="card-titleDoctor aling-text-center">{doctorData.name}&nbsp;{doctorData.surname}</h5>
+        <div className="col-md-4 mb-3" style={{width:"18rem"}}> 
+            <div className="text-center" >
+                <img src={defaultPictureUrl} className="card-img-topDoctor mx-auto object-fit-sm-contain" alt="img_doc" style={{ width: "9rem", objectFit: "cover" }}/>
+                <div className="card-body justify-content-center">
+                    <h5 className="card-title  aling-text-center">{doctorData.name}&nbsp;{doctorData.surname}</h5>
                     <h6>{speciality ? speciality.name : "Sin especialidad"}</h6>
                 </div>
                 <hr/>
