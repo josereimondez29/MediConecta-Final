@@ -811,11 +811,13 @@ def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor
     room_url, host_room_url = meeting_links
     
     msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
-    msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
+    # msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
+    msg_patient.html = render_template('correo_paciente.html', appointment_time=appointment_time, room_url=room_url)
     mail.send(msg_patient)
     
     msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
-    msg_doctor.html = f"<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
+    msg_doctor.html = render_template('correo_doctor.html', patient_name=patient_name, patient_surname=patient_surname, appointment_time=appointment_time, host_room_url=host_room_url)
+    # "<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
 
 
@@ -1064,7 +1066,7 @@ def send_mail_to():
 
   
 
-
+#MAIL CORREO
 @app.route('/send_mail', methods=['POST'])
 def send_mail():
     data = request.json

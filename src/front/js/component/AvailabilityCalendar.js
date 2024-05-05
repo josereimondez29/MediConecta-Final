@@ -43,7 +43,7 @@ const AvailabilityCalendar = ({ handleAppointment, doctorAvailability, bookedApp
 
   const handleDateChange = date => {
     // Convertir la hora seleccionada a la zona horaria del servidor (UTC)
-    const utcDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+    const utcDate = new Date(date.getTime());
     setSelectedDate(utcDate);
     handleAppointment(utcDate);
   };

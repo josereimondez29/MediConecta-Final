@@ -58,6 +58,7 @@ const ChangePasswordPageJumbotron = () => {
     );
 };
 
+
 const ChangeProfilePictureJumbotron = () => {
     return (
         <div className="jumbotron mb-4">
@@ -66,6 +67,7 @@ const ChangeProfilePictureJumbotron = () => {
         </div>
     );
 };
+
 
 const LoadFilesJumbotron = () => {
     return (
