@@ -37,9 +37,9 @@ const ListDocument = () => {
                 ))}
                 {/* Agrega más opciones según tus necesidades */}
             </select>
-
-            {/* Renderizar el componente LoadAttachment con el userId del paciente seleccionado */}
-            {selectedPatientId && <LoadAttachment userId={selectedPatientId} key={selectedPatientId} />}
+{/* 
+             Renderizar el componente LoadAttachment con el userId del paciente seleccionado */}
+            {selectedPatientId && <LoadAttachment userId={selectedPatientId} key={selectedPatientId} />} 
             </div>
         </>
     );

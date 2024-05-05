@@ -61,6 +61,7 @@ export const EditDoctor = () => {
         if (editDoctor.name && editDoctor.surname && editDoctor.email && editDoctor.age && editDoctor.bio && editDoctor.identification && editDoctor.medical_license && editDoctor.speciality_id) {
             try {
                 await actions.updateDoctor(editDoctor, id);
+                console.log("Doctor actualizado:", editDoctor);
                 setFormSubmitted(true); // Marcar el formulario como enviado
                 setTimeout(() => {
                     navigate('/privatedoctor');
@@ -72,6 +73,8 @@ export const EditDoctor = () => {
             // Mostrar mensaje de error o alerta si no todos los campos están completados
             alert("Por favor complete todos los campos antes de enviar el formulario.");
         }
+        console.log("Doctor antes de la actualización:", editDoctor);
+
     };
     return (
             <>

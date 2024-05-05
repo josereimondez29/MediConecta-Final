@@ -128,14 +128,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 				updateDoctor: (editDoctor, id) => {
-
 					const requestOptions = {
 						method: "PUT",
 						body: JSON.stringify(editDoctor),
 						headers: { "Content-Type": "application/json" },
 						redirect: "follow"
 					};
-					
+				
 					fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
 					.then((response) => {
 						if (!response.ok) {
@@ -145,10 +144,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then((result) => {
 						console.log("RESULT FLUX UPGRATE", result);
-						setStore({ doctors: result });
+						if (result && result.doctor) {
+							setStore(prevStore => ({
+								...prevStore,
+								doctors: prevStore.doctors.map(doctor => doctor.id === id ? result.doctor : doctor)
+							}));
+						}
 					})
 					.catch((error) => console.error("Fetch error:", error));
-	
 				},
 								
 			

@@ -109,4 +109,8 @@ p {
 .link-document{
   color:blue
 }
+
+.listDoctor{
+  flex-wrap: wrap;
+}
  
