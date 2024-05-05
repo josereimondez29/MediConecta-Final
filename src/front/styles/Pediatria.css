@@ -1,4 +1,4 @@
-.medicina-general-container {
+.pediatria-container {
   display: flex;
   justify-content: center; /* Centra el contenido horizontalmente */
   align-items: center; /* Centra el contenido verticalmente */
@@ -11,7 +11,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .medicina-general-container {
+  .pediatria-container {
     flex-direction: column; /* Cambia la dirección del flexbox a columna para dispositivos pequeños */
   }
 }
@@ -21,7 +21,7 @@
   max-width: 100%; /* La imagen ocupa todo el ancho del contenedor */
 }
 
-.medicina-general-image {
+.pediatria-image {
   width: 100%; /* La imagen ocupa todo el ancho disponible del contenedor */
   height: auto; /* Altura automática para mantener la proporción */
   border-radius: 10px;

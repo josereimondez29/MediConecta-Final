@@ -74,7 +74,7 @@ export const SingleDoctor = (props) => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid" style={{marginBottom: "15px"}}>
             <div className="jumbotron mb-4">
                 <h1 className="display-4">EQUIPO MÉDICO</h1>
                 <p className="lead">El experto</p>
@@ -100,7 +100,7 @@ export const SingleDoctor = (props) => {
                             <button className="btn btn-primario">Registrar cita</button>
                         </Link>
                         <Link to={"/"}>
-                            <button className="btn btn-secundario">Volver a Home</button>
+                            <button className="btn btn-secundario">Volver a Inicio</button>
                         </Link>
                     </div>
                 </div>

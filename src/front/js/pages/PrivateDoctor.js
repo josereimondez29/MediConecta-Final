@@ -69,7 +69,7 @@ const PrivateDoctor = (props) => {
       };
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid" style={{backgroundColor:"#EBF3F5", paddingTop:"15px"}}>
             <h1 className="text-center my-4">Información del Doctor</h1>
             <div className="row">
                 <div className="col-md-6">
