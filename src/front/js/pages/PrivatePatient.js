@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
 import paciente2 from "../../img/paciente2.jpg"
 import { Link, useParams } from "react-router-dom";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
-
+import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
 
 export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
     const [patientId, setPatientId] = useState(null);
-    const idURL = useParams();
 
     useEffect(() => {
         // Obtener el ID del paciente almacenado en el almacenamiento local
@@ -23,6 +21,16 @@ export const PrivatePatient = () => {
         }
     }, []); // Ejecutar solo una vez al cargar el componente
 
+    useEffect(() => {
+        // Obtener el ID del paciente almacenado en el almacenamiento local
+        const id = localStorage.getItem("id");
+        setPatientId(id);
+        // Verificar si el ID del paciente existe y es válido
+        if (id) {
+            // Llamar a la acción para obtener la información del paciente utilizando el ID almacenado
+            actions.getinfoPatient(id);
+        }
+    }, []); // Ejecutar solo una vez al cargar el componente
 
     console.log(store.currentPatient);
 
@@ -30,9 +38,10 @@ export const PrivatePatient = () => {
         <>
             <div className="d-flex justify-content-between align-items-center">
                 <div className="col-lg-6 container card mt-5">
-                      <div className="d-flex flex-column align-items-start">
+                <div className="d-flex flex-column align-items-start">
                     <GetProfilePicture />
-                    <h1>Información del paciente</h1>
+                    </div>
+                    <h4 className=" container d-flex justify-content-center align-items-center m-2 p-0">Información del paciente</h4>
                     {store.currentPatient ? (
                         <div>
                             <ul className="list-group list-group-flush">
@@ -66,27 +75,35 @@ export const PrivatePatient = () => {
                         <form className="d-flex p-2">
                             {patientId && (
                                 <Link to={`/editPatient/${patientId}`}>
-                                    <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i class="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
+                                    <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i className="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
                                 </Link>
                             )}
                         </form>
                     </div>
                     <div className="d-flex justify-content-center">
                         <Link to={`/`} className="mx-2">
-                            <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Cambiar contraseña <i class="fa-solid fa-lock" style={{ marginLeft: "5px" }}></i></button>
+                            <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Cambiar contraseña <i className="fa-solid fa-lock" style={{ marginLeft: "5px" }}></i></button>
                         </Link>
                     </div>
                     </div>
-                </div>
+
                 </div>
                 <div className="col-lg-6 d-flex flex-column justify-content-center align-items-center" style={{height: "600px"}}>
                     <img src= {paciente2} alt="Doctor" style={{ height: "400px", width: "600px", marginRight: "60px", marginBottom: "20px", borderRadius: "10px", marginLeft: "10px" }} />
                     <form className="d-flex p-2" role="log in">
                             <Link to={"/register/medical_appointment"}>
-                                <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", width: "200px", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Registrar cita<i className="fa-regular fa-calendar-days fa-xl" style={{ marginLeft: "15px" }}></i></button>
+                                <button className="btn" style={{ marginRight:"30px", backgroundColor: "#5C8692", color: "#fff", width: "200px", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Registrar cita<i className="fa-regular fa-calendar-days fa-xl" style={{ marginLeft: "15px" }}></i></button>
+                            </Link>
+                            <Link to={"/file"}>
+                                <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", width: "200px", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Subir documentos<i className="fa-solid fa-file-arrow-up fa-xl" style={{ marginLeft: "15px" }}></i></button>
                             </Link>
                     </form>
                 </div>
+            </div>
+            <div>
+                <h2>Mis documentos</h2>
+                {/* Pasar el ID del paciente a LoadAttachment */}
+                {patientId && <LoadAttachment userId={patientId} />}
             </div>
         </>
     )

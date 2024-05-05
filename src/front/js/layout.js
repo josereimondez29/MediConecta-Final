@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "@stripe/stripe-js"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
@@ -31,13 +32,15 @@ import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
-import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
+import { UpdateAttachment } from "./component/AttachmentFile/UpdateAttachment";
+
 
 const Layout = () => {
+
   const basename = process.env.BASENAME || "";
 
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL === "") return <BackendURL />;
-
+  
   return (
     <BrowserRouter basename={basename}>
       <ScrollToTop>
@@ -48,6 +51,7 @@ const Layout = () => {
 };
 
 const LayoutContent = () => {
+
   const location = useLocation();
   const [page, setPage] = useState("");
   const id = localStorage.getItem("id")
@@ -122,6 +126,7 @@ const LayoutContent = () => {
   }, [location.pathname]);
 
   return (
+
     <div>
       <Navbar />
       <Jumbotron page={page} />
@@ -151,8 +156,7 @@ const LayoutContent = () => {
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
         <Route element={<ProfilePicture/>} path="/img"/>
-        <Route element={<UpdateAtachment/>} path="/file"/>
-        
+        <Route element={<UpdateAttachment/>} path="/file"/>
       </Routes>
       <Footer />
     </div>

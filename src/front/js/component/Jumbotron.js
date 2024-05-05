@@ -48,14 +48,6 @@ const AppointmentPageJumbotron = () => {
         </div>
     );
 };
-const ChangePasswordPageJumbotron = () => {
-    return (
-        <div className="jumbotron mb-4">
-            <h1 className="display-4">CAMBIO DE CONTRASEÑA</h1>
-            {/* <p className="lead">No dudes en pedir una cita con tu medico de confianza</p> */}
-        </div>
-    );
-};
 
 
 const ChangePasswordPageJumbotron = () => {
