@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Link, useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
@@ -13,12 +13,12 @@ const PrivateDoctor = (props) => {
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
-    const [updateKey, setUpdateKey] = useState(0); 
+    const [updateKey, setUpdateKey] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
         actions.loadDoctors(),
-        actions.loadSpecialities()
+            actions.loadSpecialities()
     }, []);
 
     const loadInitialData = async () => {
@@ -30,10 +30,10 @@ const PrivateDoctor = (props) => {
                 const foundSpeciality = store.specialities.find(speciality => speciality.id === selectedDoctor.speciality_id);
                 setSpeciality(foundSpeciality);
             } else {
-                setLoading(false); 
+                setLoading(false);
             }
         } else {
-            setLoading(false); 
+            setLoading(false);
         }
     };
 
@@ -49,11 +49,11 @@ const PrivateDoctor = (props) => {
     }
 
 
-    
+
 
     const handleUpdateSuccess = async () => {
-        setUpdateKey(prevKey => prevKey + 1); 
-        await loadInitialData(); 
+        setUpdateKey(prevKey => prevKey + 1);
+        await loadInitialData();
     };
 
     if (loading) {
@@ -62,14 +62,14 @@ const PrivateDoctor = (props) => {
     if (!doctor) {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
- 
+
     const handleClick = () => {
         // Cambiar a otra ruta
         navigate('/');
-      };
+    };
 
     return (
-        <div className="container-fluid" style={{backgroundColor:"#EBF3F5", paddingTop:"15px"}}>
+        <div className="container-fluid" style={{ backgroundColor: "#EBF3F5", paddingTop: "15px" }}>
             <h1 className="text-center my-4">Información del Doctor</h1>
             <div className="row">
                 <div className="col-md-6">
@@ -107,27 +107,30 @@ const PrivateDoctor = (props) => {
             </div>
             <div className="row mt-3">
                 <div className="col-md-12 text-center">
-                    <form className="d-inline-block mx-2">
-                        <Link to={`/editDoctor/${id}`} className="btn btn-primary">Editar información</Link>
-                    </form>
-                    <form className="d-inline-block mx-2">
-                        <Link to={`/changepassword`} className="btn btn-primary">Cambiar contraseña</Link>
-                    </form>
+                   
+                    <Link to={`editDoctor/${id}`}>
+                        <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i className="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
+                    </Link>
+                    <Link to={`/changepassword`} className="mx-2">
+
+                        <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Cambiar contraseña <i className="fa-solid fa-lock" style={{ marginLeft: "5px" }}></i></button>
+                    </Link>
+                  
                 </div>
             </div>
             <div className="row mt-5">
                 <div className="col-md-6">
                     <h2 className="text-center">Citas pendientes</h2>
-                    <ListAppointmentDoctor id={id}/>
+                    <ListAppointmentDoctor id={id} />
                 </div>
                 <div className="col-md-6">
                     <h2 className="text-center">Documentos de pacientes</h2>
                     <ListDocument />
                 </div>
             </div>
-       
+
         </div>
-         
+
     );
 };
 
