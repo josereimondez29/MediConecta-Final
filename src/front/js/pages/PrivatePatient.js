@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import paciente2 from "../../img/paciente2.jpg"
-import { useParams } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
 import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
 import ListAppointmentPatient from "../component/Doctors/ListAppointmentPatient";
@@ -10,6 +10,8 @@ import ListAppointmentPatient from "../component/Doctors/ListAppointmentPatient"
 export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
     const [patientId, setPatientId] = useState(null);
+    const userType = localStorage.getItem("userType");
+    const navigate = useNavigate()
   
     useEffect(() => {
         // Obtener el ID del paciente almacenado en el almacenamiento local
@@ -23,29 +25,11 @@ export const PrivatePatient = () => {
         }
     }, []); // Ejecutar solo una vez al cargar el componente
 
-
-    useEffect(() => {
-        // Obtener el ID del paciente almacenado en el almacenamiento local
-        const id = localStorage.getItem("id");
-        setPatientId(id);
-
-        // Verificar si el ID del paciente existe y es válido
-        if (id) {
-            // Llamar a la acción para obtener la información del paciente utilizando el ID almacenado
-            actions.getinfoPatient(id);
-        }
-    }, []); // Ejecutar solo una vez al cargar el componente
-
-    useEffect(() => {
-        // Obtener el ID del paciente almacenado en el almacenamiento local
-        const id = localStorage.getItem("id");
-        setPatientId(id);
-        // Verificar si el ID del paciente existe y es válido
-        if (id) {
-            // Llamar a la acción para obtener la información del paciente utilizando el ID almacenado
-            actions.getinfoPatient(id);
-        }
-    }, []); // Ejecutar solo una vez al cargar el componente
+    if (!userType || userType !== "patient") {
+        // Si el usuario no está autenticado o no es un médico, redirige a la página de inicio
+        navigate('/');
+        return null; // No renderizar nada si el usuario no está autorizado
+    }
 
     console.log(store.currentPatient);
 
