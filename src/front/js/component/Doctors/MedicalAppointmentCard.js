@@ -20,14 +20,14 @@ const MedicalAppointmentCard = ({ appointment }) => {
   }, [store.patients, patient_id]);
 
   return (
-    <div className="card">
-      <p>Fecha de cita: {new Date(appointment_date).toLocaleString()}</p>
+    <div className="card" style={{marginBottom: "10px", padding:"13px"}}>
+      <p style={{color:"#18863d", fontWeight: "bold"}}>Fecha de cita: {new Date(appointment_date).toLocaleString()}</p>
       <p>Doctor: {doctorData ? `${doctorData.name} ${doctorData.surname}` : ' '}</p>
-      <p>Paciente: {patientData ? `${patientData.name} ${patientData.surname}` : ' '}</p>
+      {/* <p>Paciente: {patientData ? `${patientData.name} ${patientData.surname}` : ' '}</p> */}
       {meeting && (
         <div>
-          <h4>Reunión</h4>
-          <a className='url_meeting' style={{color:"black"}} href={meeting.room_url}>Acceder a la reunión</a>
+          <h4><strong>Reunión</strong></h4>
+          <a className='url_meeting' style={{color:"#e97f1d", fontWeight: "bold"}} href={meeting.room_url}>Acceder a la reunión</a>
         </div>
       )}
     </div>

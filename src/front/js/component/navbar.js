@@ -46,7 +46,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <div className="d-flex ms-3">
-                    <Link className="navbar-brand text-center" to="/home">MediConecta</Link>
+                    <Link className="navbar-brand text-center" to="/">MediConecta</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -60,9 +60,9 @@ export const Navbar = () => {
                             <li className="nav-item pe-5 ms-3">
                                 <Link className="nav-link p-2" to="/contact">Contacto</Link>
                             </li>
-                            <li className="nav-item pe-5 ms-3">
+                            {/* <li className="nav-item pe-5 ms-3">
                                 <Link className="nav-link p-2" to="/prices">Tarifas</Link>
-                            </li>
+                            </li> */}
                             <li className="nav-item dropdown pe-5 ms-3">
                                 <Link className="nav-link dropdown-toggle p-2" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Especialidades

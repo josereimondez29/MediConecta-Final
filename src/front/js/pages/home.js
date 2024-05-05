@@ -31,13 +31,13 @@ export const Home = () => {
         </div>
         </section>
 {/*PRECIOS*/}
-      <section className="section" id="prices-section">
+      {/* <section className="section" id="prices-section">
         <div className="container-fluid px-5 "  >
           <div className="row justify-content-center mx-5"  >
             <Prices />
           </div>
         </div>
-      </section>
+      </section> */}
 {/* CONTACT */}
       <section className="section contact-section" id="contact-section">
         <div className=" justify-content-center mb-5 pb-3">

@@ -82,7 +82,7 @@ export const EditDoctor = () => {
                 <form onSubmit={handleSubmit}>
                     <h1 className='tittle' style={{ textAlign: "center" }}><strong>Edit the contact</strong></h1>
                     <div className="mb-3">
-                        <label htmlFor="inputname" className="form-label">Name</label>
+                        <label htmlFor="inputname" className="form-label">Nombre</label>
                         <input type="text" className="form-control" id="inputname" name="name" placeholder="Name"
                             onChange={(e) => setEditDoctor({ ...editDoctor, name: e.target.value })}
                             value={editDoctor.name}
@@ -96,42 +96,42 @@ export const EditDoctor = () => {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputsurname" className="form-label">surname</label>
+                        <label htmlFor="inputsurname" className="form-label">Apellidos</label>
                         <input type="text" className="form-control" id="inputssurname" name="surname" rows="3" placeholder="Enter surname"
                             onChange={(e) => setEditDoctor({ ...editDoctor, surname: e.target.value })}
                             value={editDoctor.surname}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputAge" className="form-label">age</label>
+                        <label htmlFor="inputAge" className="form-label">Edad</label>
                         <input type="text" className="form-control" id="inputAge" rows="3" name="age" placeholder="Enter age"
                             onChange={(e) => setEditDoctor({ ...editDoctor, age: e.target.value })}
                             value={editDoctor.age}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputbio" className="form-label">bio</label>
+                        <label htmlFor="inputbio" className="form-label">Bio</label>
                         <input type="text" className="form-control" id="inputbio" rows="3" name="bio" placeholder="Enter bio"
                             onChange={(e) => setEditDoctor({ ...editDoctor, bio: e.target.value })}
                             value={editDoctor.bio}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputidentification" className="form-label">identification</label>
+                        <label htmlFor="inputidentification" className="form-label">DNI/NIE</label>
                         <input type="text" className="form-control" id="inputidentification" rows="3" name="identification" placeholder="Enter identification"
                             onChange={(e) => setEditDoctor({ ...editDoctor, identification: e.target.value })}
                             value={editDoctor.identification}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputmedical_license" className="form-label"> medical license</label>
+                        <label htmlFor="inputmedical_license" className="form-label"> Nª Colegiado/a</label>
                         <input type="text" className="form-control" id="inputmedical_license" rows="3" name="medical license<" placeholder="Enter  medical_license"
                             onChange={(e) => setEditDoctor({ ...editDoctor,  medical_license: e.target.value })}
                             value={editDoctor.medical_license}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputspeciality" className="form-label">Speciality</label>
+                        <label htmlFor="inputspeciality" className="form-label">Especialidad</label>
                         <select
                             className="form-select"
                             id="inputspeciality"

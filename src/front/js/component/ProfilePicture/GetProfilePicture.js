@@ -47,10 +47,10 @@ const GetProfilePicture = (props) => {
             {/* Agregar el evento onClick con la función deletePicture */}
             <div className="d-flex flex-column">
              
-              <Link to={"/img"}>
+              <Link to={"/uploadpicture"}>
                   <button className="btn" style={{ marginBottom:"15px",backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Subir foto <i className="fa-solid fa-circle-arrow-up" style={{ marginLeft: "5px" }}></i></button>
               </Link>
-              <button onClick={actions.deletePicture} className="btn btn-danger mb-2">Eliminar foto</button>
+              <button onClick={actions.deletePicture} className="btn btn-danger mb-2" >Eliminar foto <i className="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </div>

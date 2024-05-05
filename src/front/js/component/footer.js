@@ -59,13 +59,13 @@ export const Footer = () => {
               <h2 className="ftco-heading-2">Conócenos</h2>
 
               <ul className="list-unstyled">
-                <li><a href="#home-section">Inicio</a></li>
+                <li><a href="/">Inicio</a></li>
                 {/* <li><a href="#about-section">Sobre Nosotros</a></li> */}
-                <li><a href="#department-section">Departamentos</a></li>
-                <li><a href="#doctor-section">Doctores</a></li>
+                {/* <li><a href="#specialty-section">Departamentos</a></li> */}
+                <li><a href="/alldoctors">Doctores</a></li>
                 {/* <li><a href="#blog-section">Blog</a></li> */}
-                <li><a href="#">Precios</a></li>
-                <li><a href="#contact-section">Contactenos</a></li>
+                {/* <li><a href="#">Precios</a></li> */}
+                <li><a href="/contact">Contactenos</a></li>
               </ul>
             </div>
           </div>
@@ -105,8 +105,8 @@ export const Footer = () => {
               <h2 className="ftco-heading-2">Servicios</h2>
 
               <ul className="list-unstyled">
-                <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>Lunes a domingo</span> </li>
-                <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>24h</span></li>
+                <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>Lunes a viernes</span> </li>
+                <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>9.00 - 17.00 h</span></li>
               </ul>
             </div>
           </div>
@@ -117,7 +117,7 @@ export const Footer = () => {
                 <ul className="list-unstyled">
                   {/* <li><span className="icon icon-map-marker"></span><span className="text" style={{color:"#ffff"}}>203 Fake St. Mountain View, San Francisco, California, USA</span></li>
                   <li><a href="#"><span className="icon icon-phone"></span><span className="text" style={{color:"#ffff"}}>+32 569 874 875</span></a></li> */}
-                  <a href={mailToLink} className="card-text" style={{ marginBottom: "15px", textDecoration: "underline", color:"black" }}>{email}</a>
+                  <a href={mailToLink} className="card-text" style={{ marginBottom: "15px", textDecoration: "underline", color:"white" }}>{email}</a>
                 </ul>
               </div>
             </div>

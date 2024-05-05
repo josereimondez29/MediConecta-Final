@@ -97,15 +97,15 @@ export const PrivatePatient = () => {
                             <Link to={"/register/medical_appointment"}>
                                 <button className="btn" style={{ marginRight:"30px", backgroundColor: "#5C8692", color: "#fff", width: "200px", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Registrar cita<i className="fa-regular fa-calendar-days fa-xl" style={{ marginLeft: "15px" }}></i></button>
                             </Link>
-                            <Link to={"/file"}>
+                            <Link to={"/uploadfile"}>
                                 <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", width: "200px", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Subir documentos<i className="fa-solid fa-file-arrow-up fa-xl" style={{ marginLeft: "15px" }}></i></button>
                             </Link>
                     </form>
                 </div>
             </div>
 
-            <div className="container-fluid d-flex justify-content-around">
-                <div>
+            <div className="container-fluid d-flex justify-content-around" >
+                <div >
                     <h1 className="text-center">Citas pendientes</h1>
                     <div className="container">
                     {patientId &&  <ListAppointmentPatient userId={patientId} />}
