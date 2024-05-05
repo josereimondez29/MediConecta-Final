@@ -29,6 +29,7 @@ import cloudinary.uploader
 
 
 
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -48,6 +49,7 @@ app.config.update(dict(
 ))
 
 mail= Mail(app)
+
 
 CORS(app ) #supports_credentials=True
 app.url_map.strict_slashes = False
@@ -1336,10 +1338,12 @@ def get_pictures():
 
     return jsonify(response_body), 200
 
+
    
 @app.route('/profilepicture/doctor/<int:doctor_id>', methods=['GET'])
 #@cross_origin(supports_credentials=True)
 def get_image_doctor_id(doctor_id):
+
     # Obtener el perfil de imagen del doctor por su ID
     profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
     if profile_picture:
@@ -1441,12 +1445,12 @@ def get_files():
 
     response_body = {
         "msg": "ok",
-        "result":  attachmentfiles_serialized 
+        "result":  attachmentfiles_serialized
     }
 
     return jsonify(response_body), 200
 
-    
+
 @app.route('/attachmentfile/patient/<int:patient_id>', methods=['GET'])
 #@cross_origin(supports_credentials=True)
 def get_file_patient(patient_id):
@@ -1462,6 +1466,7 @@ def get_file_patient(patient_id):
 @app.route('/uploadattachmentfile/patient/<int:patient_id>', methods=['POST'])
 #@cross_origin(supports_credentials=True)
 def upload_file_patient(patient_id):
+
     try:
         # Obtenemos el archivo de la solicitud
         file = request.files['file']
@@ -1469,6 +1474,7 @@ def upload_file_patient(patient_id):
 
         # Subimos la imagen a Cloudinary
         upload_result = cloudinary.uploader.upload(file)
+
 
         # Creamos una nueva entrada en la base de datos con la URL de la imagen y la descripción
         attachment_file = Attachment_File(url_file=upload_result['secure_url'], patient_id=patient_id, description=description)
@@ -1479,6 +1485,22 @@ def upload_file_patient(patient_id):
         return jsonify({'msg':'Document update successfull'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+@app.route('/deletefile/patient/<int:patient_id>/<int:attachment_id>', methods=['DELETE'])
+def delete_attachment(patient_id, attachment_id):
+
+    # Buscar el archivo adjunto por su ID y el ID del paciente
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id, id=attachment_id).first()
+
+    if attachment_file:
+        # Eliminar el archivo adjunto
+        db.session.delete(attachment_file)
+        db.session.commit()
+        return jsonify({"message": "Attachment file deleted successfully"}), 200
+    return jsonify({"message": "Attachment file not found"}), 404
+
+
+    
 
 
 @app.route('/deletefile/patient/<int:patient_id>/<int:attachment_id>', methods=['DELETE'])

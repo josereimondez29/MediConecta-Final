@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "@stripe/stripe-js"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
@@ -33,11 +34,13 @@ import { CambioContraseña } from "./component/CambioContraseña";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
 import { UpdateAttachment } from "./component/AttachmentFile/UpdateAttachment";
 
+
 const Layout = () => {
+
   const basename = process.env.BASENAME || "";
 
   if (!process.env.BACKEND_URL || process.env.BACKEND_URL === "") return <BackendURL />;
-
+  
   return (
     <BrowserRouter basename={basename}>
       <ScrollToTop>
@@ -48,6 +51,7 @@ const Layout = () => {
 };
 
 const LayoutContent = () => {
+
   const location = useLocation();
   const [page, setPage] = useState("");
   const id = localStorage.getItem("id")
@@ -125,6 +129,7 @@ const LayoutContent = () => {
   }, [location.pathname]);
 
   return (
+
     <div>
       <Navbar />
       <Jumbotron page={page} />

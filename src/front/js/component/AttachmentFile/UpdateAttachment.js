@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 
 export const UpdateAttachment = () => {
+
   const [loading, setLoading] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [description, setDescription] = useState(""); // Estado para almacenar la descripción
@@ -12,6 +13,7 @@ export const UpdateAttachment = () => {
   const navigate = useNavigate();
 
   const changeUploadFolder = async (e) => {
+
     try {
       setLoading(true);
       const file = e.target.files[0];
@@ -31,6 +33,7 @@ export const UpdateAttachment = () => {
     } catch (error) {
       console.error("Error al cargar el PDF:", error);
       setConfirmationMessage("Error al cargar el PDF. Inténtalo de nuevo.");
+
     } finally {
       setLoading(false);
     }

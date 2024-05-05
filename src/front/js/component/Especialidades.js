@@ -48,10 +48,10 @@ const Especialidades = () => {
   <h4>A</h4>
   <h4>D</h4>
   <h4>E</h4>
-  <h4>S</h4>
-  
+  <h4>S</h4>  
 
       </div>
+
       <div id="carouselExampleControlsNoTouching" className="carousel slide" data-bs-touch="false">
         <div className="carousel-inner">
           {cardGroups.map((group, index) => (

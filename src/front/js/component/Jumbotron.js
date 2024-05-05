@@ -59,6 +59,7 @@ const ChangePasswordPageJumbotron = () => {
 };
 
 
+
 const ChangeProfilePictureJumbotron = () => {
     return (
         <div className="jumbotron mb-4">

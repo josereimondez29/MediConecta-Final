@@ -41,7 +41,7 @@ const LoadAttachment = ({ userId }) => {
             setConfirmationMessage("Error al eliminar el PDF. Inténtalo de nuevo.");
         }
     };
-    
+
     return (
         <>
             {/* Mostrar la lista de documentos cargados */}
