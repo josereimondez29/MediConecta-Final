@@ -5,21 +5,25 @@
   text-align: center;
   transition: transform 0.3s ease-in-out;
 }
+
 .texto_ruben:hover {
   transform: rotateX(35deg) translateY(-50%);
 }
+
 .texto_ruben:hover h4:nth-child(odd) {
   color: #ccc;
   transform: skewY(15deg);
 }
+
 .texto_ruben:hover h4:nth-child(even) {
-  background-color: #F9F9F9;
-  color: #A6A6A6;
+  background-color: #f9f9f9;
+  color: #a6a6a6;
   transform: skewY(-15deg);
 }
+
 .texto_ruben > h4 {
   display: block;
-  background-color: #83A8B1;
+  background-color: #83a8b1;
   font-weight: bold;
   color: #fff;
   width: 40px;

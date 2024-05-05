@@ -32,24 +32,26 @@ const Especialidades = () => {
 
   return (
     <>
-      <div className="texto_ruben d-flex justify-content-center mt-5">
-        {/* <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83A8B1", color: "#fff" }}>Especialidades</button> */}
+      <div className="texto_ruben d-flex justify-content-center mt-4">
+        {/* <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83a8b1", color: "#fff" }}>Especialidades</button> */}
             {/* <h1 className="t-stroke t-shadow">ESPECIALIDADES</h1> */}
   <h4>E</h4>
   <h4>S</h4>
   <h4>P</h4>
   <h4>E</h4>
   <h4>C</h4>
-  <h4>i</h4>
+  <h4>I</h4>
   <h4>A</h4>
   <h4>L</h4>
-  <h4>I</h4>
+  <h4>I</h4>  
   <h4>D</h4>
   <h4>A</h4>
   <h4>D</h4>
   <h4>E</h4>
-  <h4>S</h4>
-    </div>
+  <h4>S</h4>  
+
+      </div>
+
       <div id="carouselExampleControlsNoTouching" className="carousel slide" data-bs-touch="false">
         <div className="carousel-inner">
           {cardGroups.map((group, index) => (

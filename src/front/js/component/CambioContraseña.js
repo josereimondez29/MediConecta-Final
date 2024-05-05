@@ -61,9 +61,9 @@ return (
                 </div>
                 {error && <p style={{ color: "red" }}>{error}</p>} {/* Muestra el mensaje de error si existe */}
                 <div className="d-flex justify-content-around">
-                    <button type="submit" className="btn btn-primario">Submit</button>
+                    <button type="submit" className="btn btn-primario">Actualizar</button>
                     <Link to={"/"}>
-                        <button className="btn btn-secundario">Volver a Home</button>
+                        <button className="btn btn-secundario">Volver a Inicio</button>
                     </Link>
                 </div>
                 {formSubmitted && (

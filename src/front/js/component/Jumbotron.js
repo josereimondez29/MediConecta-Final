@@ -49,12 +49,32 @@ const AppointmentPageJumbotron = () => {
     );
 };
 
-
 const ChangePasswordPageJumbotron = () => {
     return (
         <div className="jumbotron mb-4">
             <h1 className="display-4">CAMBIO DE CONTRASEÑA</h1>
             {/* <p className="lead">No dudes en pedir una cita con tu medico de confianza</p> */}
+        </div>
+    );
+};
+
+
+
+const ChangeProfilePictureJumbotron = () => {
+    return (
+        <div className="jumbotron mb-4">
+            <h1 className="display-4">MI IMAGEN DE PERFIL</h1>
+            {/* <p className="lead">No dudes en pedir una cita con tu medico de confianza</p> */}
+        </div>
+    );
+};
+
+
+const LoadFilesJumbotron = () => {
+    return (
+        <div className="jumbotron mb-4">
+            <h1 className="display-4">MIS DOCUMENTOS</h1>
+            <p className="lead">Carga los documentos necesarios</p>
         </div>
     );
 };
@@ -184,7 +204,11 @@ const Jumbotron = ({ page }) => {
         case 'recoverpassword':
             return <RecoverpasswordPageJumbotron/>;    
         case 'changepassword':
-            return <ChangePasswordPageJumbotron/>                                     
+            return <ChangePasswordPageJumbotron/>;
+        case 'uploadpicture':
+            return <ChangeProfilePictureJumbotron/>;
+        case 'uploadfiles':
+            return <LoadFilesJumbotron />;                                         
         default:
             return null;
     }
