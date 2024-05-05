@@ -15,7 +15,9 @@
     flex-direction: column; /* Cambia la dirección del flexbox a columna para dispositivos pequeños */
   }
 }
-
+.text-black{
+  color:black
+}
 .image-container {
   flex: 1; /* Ocupa todo el espacio disponible */
   max-width: 100%; /* La imagen ocupa todo el ancho del contenedor */

@@ -26,7 +26,9 @@
   height: auto; /* Altura automática para mantener la proporción */
   border-radius: 10px;
 }
-
+.text-black{
+  color:black
+}
 .text-container {
   flex: 1; /* Ocupa todo el espacio disponible */
   padding: 0 20px; /* Añade un poco de espacio entre la imagen y el texto */

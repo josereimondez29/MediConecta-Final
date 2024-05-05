@@ -37,10 +37,10 @@ const Pediatria = () => {
         </div>
         <div className="text-container">
           <h2 className="title">Pediatria</h2>
-          <p className="text">
+          <p className="text-black">
            Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
           </p>
-          <p className="text">
+          <p className="text-black">
           El pediatra se encarga del cuidado completo de los más pequeños para velar por su salud y bienestar. Entre sus funciones está la de vigilar el crecimiento del niño, orientar a los padres sobre el estado y desarrollo de su hijo, solucionar problemas emocionales, mentales, conductuales y sociales, prevenir y atender las enfermedades más comunes, y dar apoyo en los asuntos relacionados con la adolescencia y pubertad, entre otras.
           </p>
           <ul className="service-list">
@@ -49,7 +49,7 @@ const Pediatria = () => {
             <li>Tratamientos de salud mental</li>
             <li>Tratamiento y prevención</li>
           </ul>
-          <p className="text">
+          <p className="text-black">
             En MediConecta, estamos comprometidos a brindar atención pediátrica de alta calidad y accesible a todos. ¡Pide una cita con nosotros hoy mismo y toma el control de la salud de tus hijos!
           </p>
         </div>

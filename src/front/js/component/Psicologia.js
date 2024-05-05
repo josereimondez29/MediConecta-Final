@@ -38,10 +38,10 @@ const Psicologia = () => {
         </div>
         <div className="text-container">
           <h2 className="title">Psicología</h2>
-          <p className="text">
+          <p className="text-black">
             Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
           </p>
-          <p className="text">
+          <p className="text-black">
             La psicología es fundamental para el bienestar mental. Nuestros especialistas en psicología pueden ayudarte con una amplia gama de servicios, desde el manejo de la ansiedad y la depresión hasta el tratamiento de trastornos específicos.
           </p>
           <ul className="service-list">
@@ -50,7 +50,7 @@ const Psicologia = () => {
             <li>Terapia de exposición para trastornos de ansiedad</li>
             <li>Terapia de pareja y familiar</li>
           </ul>
-          <p className="text">
+          <p className="text-black">
             Nuestro equipo de psicólogos está comprometido a brindarte la mejor atención posible para que puedas alcanzar tu bienestar mental. ¡Programa una consulta con nosotros hoy mismo!
           </p>
         </div>

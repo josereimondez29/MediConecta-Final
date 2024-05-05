@@ -38,10 +38,10 @@ const Dermatologia = () => {
         </div>
         <div className="text-container">
           <h2 className="title">Dermatología</h2>
-          <p className="text">
+          <p className="text-black">
             Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas. 
           </p>
-          <p className="text">
+          <p className="text-black">
             La Dermatología es una especialidad médica fundamental que se centra en el diagnóstico, tratamiento y prevención de enfermedades y condiciones de la piel, cabello y uñas. Nuestros dermatólogos son profesionales altamente capacitados y dedicados a proporcionar atención integral y continua a nuestros pacientes. Tipos de terapias a realizar:
           </p>
           <ul className="service-list">
@@ -50,7 +50,7 @@ const Dermatologia = () => {
             <li>Cuidado de la piel y procedimientos estéticos</li>
             <li>Manejo de enfermedades dermatológicas crónicas</li>
           </ul>
-          <p className="text">
+          <p className="text-black">
             En MediConecta, estamos comprometidos a brindar atención dermatológica de alta calidad y accesible a todos. Ya sea que necesites una consulta para un problema de piel específico, tratamiento de una enfermedad dermatológica o simplemente cuidado preventivo de la piel, nuestro equipo de dermatología está aquí para cuidarte. ¡Pide una cita con nosotros hoy mismo y toma el control de la salud de tu piel!
           </p>
         </div>

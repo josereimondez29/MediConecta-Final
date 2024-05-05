@@ -38,10 +38,10 @@ const Nutricion = () => {
         </div>
         <div className="text-container">
           <h2 className="title">Nutrición</h2>
-          <p className="text">
+          <p className="text-black">
             Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas. 
           </p>
-          <p className="text">
+          <p className="text-black">
             La nutrición es fundamental para la salud y el bienestar. Nuestros especialistas en nutrición pueden ayudarte con una amplia gama de servicios, desde la pérdida de peso hasta la mejora de tu dieta general para optimizar tu salud.
           </p>
           <ul className="service-list">
@@ -50,7 +50,7 @@ const Nutricion = () => {
             <li>Evaluación de necesidades dietéticas específicas</li>
             <li>Consejos sobre alimentación saludable</li>
           </ul>
-          <p className="text">
+          <p className="text-black">
             Nuestro equipo de nutricionistas está comprometido a brindarte la mejor atención posible para que puedas alcanzar tus objetivos de salud y bienestar. ¡Programa una consulta con nosotros hoy mismo!
           </p>
         </div>

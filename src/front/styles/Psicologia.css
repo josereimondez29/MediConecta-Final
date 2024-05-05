@@ -1,5 +1,7 @@
 .psicologia-container {
   display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
   max-width: 1500px;
   margin: 0 auto;
   padding: 40px;
@@ -29,7 +31,9 @@
   .psicologia-container {
     flex-direction: column;
   }
-
+  .text-black{
+    color:black
+  }
   .image-container {
     flex: none;
     margin-right: 0;

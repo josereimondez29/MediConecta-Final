@@ -1,11 +1,14 @@
 .dermatologia-container {
   display: flex;
+  justify-content: center; /* Centra el contenido horizontalmente */
+  align-items: center; /* Centra el contenido verticalmente */
   max-width: 1500px;
   margin: 0 auto;
   padding: 40px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 .image-container {
@@ -22,6 +25,11 @@
 
 .text-container {
   flex: 1;
+ 
+}
+
+.text-black{
+  color:black
 }
 
 /* Media query para pantallas pequeñas */
