@@ -293,6 +293,7 @@ def get_patients():
 #GET Patient by id
 
 @app.route('/patient/<int:patient_id>', methods=['GET'])
+
 def get_patient(patient_id):
     patient = Patient.query.get(patient_id)
     if patient:
@@ -1485,6 +1486,7 @@ def upload_file_patient(patient_id):
         return jsonify({'msg':'Document update successfull'}), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
     
 @app.route('/deletefile/patient/<int:patient_id>/<int:attachment_id>', methods=['DELETE'])
 def delete_attachment(patient_id, attachment_id):
@@ -1498,12 +1500,6 @@ def delete_attachment(patient_id, attachment_id):
         db.session.commit()
         return jsonify({"message": "Attachment file deleted successfully"}), 200
     return jsonify({"message": "Attachment file not found"}), 404
-
-
-    
-
-
-
 
 
 # Favorite Routes
