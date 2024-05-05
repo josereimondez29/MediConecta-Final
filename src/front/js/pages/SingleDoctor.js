@@ -10,19 +10,47 @@ export const SingleDoctor = (props) => {
     const [loading, setLoading] = useState(true);
     const [speciality, setSpeciality] = useState(null);
     const [doctor, setDoctor] = useState(null);
+    const [profilePictureUrl, setProfilePictureUrl] = useState(""); 
+
+    useEffect(() => {
+        // Verificar si el doctor está definido y si tiene un ID antes de realizar la solicitud
+        if (doctor && doctor.id) {
+            // Obtener la URL de la imagen del perfil
+            const fetchPicture = async () => {
+                try {
+                    const response = await fetch(process.env.BACKEND_URL + `/profilepicture/doctor/${doctor.id}`);
+                    if (response.ok) {
+                        const result = await response.json();
+                        setProfilePictureUrl(result.url_picture);
+                    } else {
+                        throw new Error('Error al obtener la imagen del perfil');
+                    }
+                } catch (error) {
+                    // console.error("Error obteniendo la imagen del perfil:", error);
+                    // Establecer la imagen por defecto aquí
+                    const defaultPictureUrl = 'https://i.postimg.cc/sX2n2Rjy/Doctores.jpg';
+                    setProfilePictureUrl(defaultPictureUrl);
+                }
+            };
+            fetchPicture();
+        }
+    }, [doctor]);
 
     useEffect(() => {
         const loadSpecialities = async () => {
             try {
                 await actions.loadSpecialities();
             } catch (error) {
-                console.error("Error loading specialities:", error);
+                // console.error("Error loading specialities:", error);
             }
         };
 
         loadSpecialities();
 
     }, [])
+
+
+
 
     useEffect(() => {
 
@@ -41,6 +69,7 @@ export const SingleDoctor = (props) => {
         }
     }, [id, store.doctors, store.specialities]);
 
+    
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -60,7 +89,7 @@ export const SingleDoctor = (props) => {
             <div className="container">
                 <div className="d-flex">
                     <div className="image-container">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw_qLv_ueyszEkB_U0nWQxsPujgcsZe89czAjeWa5S7Q&s" alt="Medicina General" className="medicina-general-image half-size" />
+                        <img src={profilePictureUrl} alt="Medicina General" className="medicina-general-image half-size" />
                     </div>
                     <div className="text-container">
                         <h2 className="title">{doctor.name}&nbsp;{doctor.surname}</h2>

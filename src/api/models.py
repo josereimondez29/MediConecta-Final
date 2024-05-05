@@ -266,8 +266,6 @@ class Meetings(db.Model):
         db.session.add(new_meeting)
         db.session.commit()
 
-
-
 class Profile_Picture(db.Model):
     __tablename__ = 'profiles_pictures'
     id = db.Column(db.Integer, primary_key=True)

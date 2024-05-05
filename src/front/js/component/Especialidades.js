@@ -32,23 +32,23 @@ const Especialidades = () => {
 
   return (
     <>
-      <div className="text d-flex justify-content-center mt-4">
+      <div className="texto_ruben d-flex justify-content-center mt-4">
         {/* <button className="btn btn-outline-secondary" style={{ backgroundColor: "#83a8b1", color: "#fff" }}>Especialidades</button> */}
             {/* <h1 className="t-stroke t-shadow">ESPECIALIDADES</h1> */}
-  <span>E</span>
-  <span>S</span>
-  <span>P</span>
-  <span>E</span>
-  <span>C</span>
-  <span>i</span>
-  <span>A</span>
-  <span>L</span>
-  <span>I</span>  
-  <span>D</span>
-  <span>A</span>
-  <span>D</span>
-  <span>E</span>
-  <span>S</span>
+  <h4>E</h4>
+  <h4>S</h4>
+  <h4>P</h4>
+  <h4>E</h4>
+  <h4>C</h4>
+  <h4>I</h4>
+  <h4>A</h4>
+  <h4>L</h4>
+  <h4>I</h4>  
+  <h4>D</h4>
+  <h4>A</h4>
+  <h4>D</h4>
+  <h4>E</h4>
+  <h4>S</h4>
   
 
       </div>

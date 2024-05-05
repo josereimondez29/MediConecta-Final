@@ -102,25 +102,16 @@ p {
 }
 
 
-.dropdown-item{
+.dropdown-item-footer{
   color: white;
 }
-/* .cardDoctore{
-  border: 5px solid red;
+
+.link-document{
+  color:blue
 }
 
-.cardDoctor{
-  background-color: yellow;
+.listDoctor{
+  flex-wrap: wrap;
 }
+ 
 
-.card-bodyDoctor{
-  background-color: aqua;
-}
-
-.card-titleDoctor{
-  background-color: green;
-}
-
-.card-img-topDoctor{
-  border: 5px solid purple;
-} */

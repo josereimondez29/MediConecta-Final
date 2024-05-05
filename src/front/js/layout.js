@@ -31,7 +31,7 @@ import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
-import { UpdateAtachment } from "./component/AttachmentFile/UpdateAtachment";
+import { UpdateAttachment } from "./component/AttachmentFile/UpdateAttachment";
 
 const Layout = () => {
   const basename = process.env.BASENAME || "";
@@ -71,7 +71,7 @@ const LayoutContent = () => {
       case `/editDoctor/${id}`:
           setPage("edit");
           break;
-      case "/privatepatient":
+      case "/PrivatePatient":
           setPage("private");
           break;
       case "/register/medical_appointment":
@@ -113,7 +113,10 @@ const LayoutContent = () => {
       case "/Dermatologia":
         setPage("specialty");
       break;
-
+      case "/uploadpicture": setPage("uploadpicture");
+      break;
+      case "/uploadfile": setPage("uploadfiles");
+      break;
       default:
 
         setPage(" ");
@@ -135,7 +138,7 @@ const LayoutContent = () => {
         <Route element={<SingleDoctor />} path="/doctor/:id/details" />
         <Route element={<AllDoctors />} path="/alldoctors" />
         <Route element={<AllPatients />} path="/allpatients" />
-        <Route element={<PrivatePatient />} path="/privatepatient" />
+        <Route element={<PrivatePatient />} path="/PrivatePatient" />
         <Route element={<Prices />} path="/prices" />
         <Route element={<IsLogin />} path="/log" />
         <Route element={<EditDoctor />} path="/editDoctor/:id" />
@@ -150,8 +153,8 @@ const LayoutContent = () => {
         <Route element={<Contact/>} path = "/contact"/>
         <Route element={<RecoverPassword/>} path = "/recoverpassword"/>
         <Route element={<CambioContraseña/>} path="/changepassword"/>
-        <Route element={<ProfilePicture/>} path="/img"/>
-        <Route element={<UpdateAtachment/>} path="/file"/>
+        <Route element={<ProfilePicture/>} path="/uploadpicture"/>
+        <Route element={<UpdateAttachment/>} path="/uploadfile"/>
         
       </Routes>
       <Footer />

@@ -32,6 +32,8 @@ const injectContext = PassedComponent => {
 			
 			state.actions.loadDoctors()
 			state.actions.loadSpecialities()
+			state.actions.loadPatients()
+			state.actions.loadCurrentPatient()
 
 
 		}, []);
