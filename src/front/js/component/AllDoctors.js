@@ -6,12 +6,14 @@ export const AllDoctors =()=> {
     const { store, actions } = useContext(Context);
     
 
-    const handleDoctors = () => {
-        // Redirige al componente Login
-        navigate('/alldoctors');
-      };
+    // const handleDoctors = () => {
+    //     // Redirige al componente Login
+    //     navigate('/alldoctors');
+    //   };
 
     const displayedDoctors = store.doctors
+
+    console.log(store.doctors)
 
     return (
         <>  

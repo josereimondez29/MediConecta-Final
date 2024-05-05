@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 
 export const UpdateAttachment = () => {
@@ -23,12 +23,13 @@ export const UpdateAttachment = () => {
       formData.append("upload_preset", process.env.CLOUDINARY_PRESENT);
       formData.append("id", userId);
       formData.append("userType", userType);
+
       await actions.changeUploadFile(formData, userId, userType);
+
       setConfirmationMessage("PDF cargado con éxito. Redirigiendo...");
       setTimeout(() => {
         navigate(-1);
       }, 3000);
-
     } catch (error) {
       console.error("Error al cargar el PDF:", error);
       setConfirmationMessage("Error al cargar el PDF. Inténtalo de nuevo.");
@@ -37,13 +38,11 @@ export const UpdateAttachment = () => {
       setLoading(false);
     }
   };
-  
+
   return (
-    <div className="App">
-      <h1>SUBE TU PDF</h1>
+    <div className="container" style={{ marginBottom: "25px" }}>
       <div>
-        <label htmlFor="formFile" className="form-label">Carga tu documento PDF</label>
-        <input className="form-control" accept=".pdf" type="file" id="formFile" onChange={changeUploadFolder}/>
+
         <div className="mb-3">
           <label htmlFor="description" className="form-label">Descripción</label>
           <input
@@ -54,9 +53,20 @@ export const UpdateAttachment = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+
+        <label htmlFor="formFile" className="form-label">Carga tu documento PDF</label>
+        <input className="form-control" accept=".pdf" type="file" id="formFile" onChange={changeUploadFolder} />
+
         {loading && <p>Cargando...</p>}
         {confirmationMessage && <p>{confirmationMessage}</p>}
+
+        
       </div>
+      <Link to={"/PrivatePatient"}>
+        <div className='text-center' style={{ marginTop: "15px" }}>
+          <button className='btn btn-secundario' type="submit">Cancelar</button>
+        </div>
+      </Link>
     </div>
   );
 };

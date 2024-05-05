@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, send_from_directory
+from flask import Flask, request, jsonify, url_for, send_from_directory,send_file
 from flask_migrate import Migrate
 from flask_swagger import swagger
 import requests
@@ -50,8 +50,8 @@ app.config.update(dict(
 
 mail= Mail(app)
 
-CORS(app)
-# supports_credentials=True
+
+CORS(app ) #supports_credentials=True
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended extension
@@ -92,9 +92,6 @@ def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
 # generate sitemap with all your endpoints
-
-
-
 
 
 @app.route('/')
@@ -816,11 +813,13 @@ def send_emails(patient_email, patient_id, patient_name, patient_surname, doctor
     room_url, host_room_url = meeting_links
     
     msg_patient = Message(subject="Detalles de tu cita médica", sender='mediconecta1@gmail.com', recipients=[patient_email])
-    msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
+    # msg_patient.html = f"<h1>Detalles de tu cita médica:</h1><h3>Su cita medica se ha agendado satisfactoriamente para el:</h3><p>Fecha y hora: {appointment_time}</p><h3>Ingrese al link en la fecha y hora indicada para ser atendido:</h3><p>Enlace de la sala de espera: {room_url}</p>"
+    msg_patient.html = render_template('correo_paciente.html', appointment_time=appointment_time, room_url=room_url)
     mail.send(msg_patient)
     
     msg_doctor = Message(subject="Nueva cita médica agendada", sender='mediconecta1@gmail.com', recipients=[doctor_email])
-    msg_doctor.html = f"<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
+    msg_doctor.html = render_template('correo_doctor.html', patient_name=patient_name, patient_surname=patient_surname, appointment_time=appointment_time, host_room_url=host_room_url)
+    # "<h1>Detalles de la cita médica:</h1><h3>ID:{patient_id} Nombre: {patient_name} {patient_surname}</h3><h3>Ingrese al link a la fecha y hora indicada:</h3><p>Fecha y hora: {appointment_time}</p><p>Enlace de la sala de host: {host_room_url}</p>"
     mail.send(msg_doctor)
 
 
@@ -1069,7 +1068,7 @@ def send_mail_to():
 
   
 
-
+#MAIL CORREO
 @app.route('/send_mail', methods=['POST'])
 def send_mail():
     data = request.json
@@ -1155,13 +1154,21 @@ def update_doctor_password(doctor_id):
 
 # Meetings
 
-
-
-
-
 @app.route("/meetings", methods=["GET"])
 def get_meetings():
-    return jsonify(meetings)
+    meetings = Meetings.query.all()
+
+    meetings_serialized = []
+    for meeting in meetings:
+        meetings_serialized.append(meeting.serialize())
+
+    response_body = {
+        "msg": "ok",
+        "result": meetings_serialized
+    }
+
+    return jsonify(response_body), 200
+  
 
 @app.route("/meetings/<meetingId>", methods=["GET"])
 def get_meeting(meetingId):
@@ -1208,6 +1215,111 @@ def delete_summary(summaryId):
     summaries = [summary for summary in summaries if summary["summaryId"] != summaryId]
     return jsonify({"message": "Summary deleted successfully"})
 
+# Meeting + Appoinment
+@app.route("/appointments_and_meetings", methods=["GET"])
+def get_appointments_and_meetings():
+    try:
+        appointments_and_meetings = []
+
+        # Obtener todas las citas médicas
+        appointments = Medical_Appointment.query.all()
+        
+        # Iterar sobre cada cita médica
+        for appointment in appointments:
+            # Obtener la información de la cita médica
+            appointment_data = {
+                "id": appointment.id,
+                "speciality_id": appointment.speciality_id,
+                "patient_id": appointment.patient_id,
+                "doctor_id": appointment.doctor_id,
+                "appointment_date": appointment.appointment_date.isoformat(),
+                "is_active": appointment.is_active
+            }
+
+            # Obtener la reunión asociada a la cita médica
+            meeting = Meetings.query.filter_by(appointment_date=appointment.appointment_date).first()
+
+            # Si se encuentra una reunión, agregar sus datos a la información de la cita médica
+            if meeting:
+                appointment_data["meeting"] = {
+                    "id": meeting.id,
+                    "room_id": meeting.room_id,
+                    "room_url": meeting.room_url
+                }
+            else:
+                appointment_data["meeting"] = None
+
+            # Agregar la información de la cita médica y la reunión a la lista
+            appointments_and_meetings.append(appointment_data)
+
+        return jsonify({"msg": "Medical appointments and meetings retrieved successfully", "result": appointments_and_meetings}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route("/appointments_and_meetings/<int:id>", methods=["GET"])
+def get_appointment_and_meeting(id):
+    try:
+        # Obtener la cita médica con el ID proporcionado
+        appointment = Medical_Appointment.query.get(id)
+        if not appointment:
+            return jsonify({"msg": "Medical appointment not found"}), 404
+
+        # Obtener la reunión asociada a la cita médica
+        meeting = Meetings.query.filter_by(appointment_date=appointment.appointment_date).first()
+
+        # Construir los datos de la cita médica y la reunión
+        appointment_data = {
+            "id": appointment.id,
+            "speciality_id": appointment.speciality_id,
+            "patient_id": appointment.patient_id,
+            "doctor_id": appointment.doctor_id,
+            "appointment_date": appointment.appointment_date.isoformat(),
+            "is_active": appointment.is_active
+        }
+
+        if meeting:
+            meeting_data = {
+                "id": meeting.id,
+                "room_id": meeting.room_id,
+                "room_url": meeting.room_url
+            }
+        else:
+            meeting_data = None
+
+        return jsonify({
+            "msg": "Medical appointment and meeting details retrieved successfully",
+            "appointment": appointment_data,
+            "meeting": meeting_data
+        }), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+    # try:
+    #     # Obtener la cita médica por su ID
+    #     appointment = Medical_Appointment.query.get(id)
+    #     if not appointment:
+    #         return jsonify({"msg": "No se encontró la cita médica para el ID proporcionado"}), 404
+
+    #     # Buscar la reunión asociada a la cita médica por su meeting_id
+    #     meeting = Meetings.query.filter_by(id=appointment.meeting_id).first()
+    #     if not meeting:
+    #         return jsonify({"msg": "No se encontró la reunión asociada a la cita médica"}), 404
+
+    #     # Serializar los datos de la cita médica y la reunión
+    #     appointment_serialized = appointment.serialize()
+    #     meeting_serialized = meeting.serialize()
+
+    #     # Devolver los datos serializados
+    #     return jsonify({
+    #         "msg": "Datos de la cita médica y la reunión",
+    #         "appointment": appointment_serialized,
+    #         "meeting": meeting_serialized
+    #     }), 200
+
+    # except Exception as e:
+    #     return jsonify({"msg": "Error al obtener los datos de la cita médica y la reunión", "error": str(e)}), 500
 
 # Profile Pictures
 @app.route("/profilepicture", methods=["GET"])
@@ -1226,33 +1338,12 @@ def get_pictures():
 
     return jsonify(response_body), 200
 
-@app.route('/uploadprofilepicture', methods=['POST'])
+
+   
+@app.route('/profilepicture/doctor/<int:doctor_id>', methods=['GET'])
 #@cross_origin(supports_credentials=True)
-def upload_image():
-    try:
-        # Obtenemos el archivo de la solicitud
-        file = request.files['file']
-        
-        # Obtenemos el ID del paciente o del doctor desde la solicitud
-        patient_id = request.form.get('patient_id')
-        doctor_id = request.form.get('doctor_id')
+def get_image_doctor_id(doctor_id):
 
-        # Subimos la imagen a Cloudinary
-        upload_result = cloudinary.uploader.upload(file)
-
-        # Creamos una nueva entrada en la base de datos con la URL de la imagen
-        profile_picture = Profile_Picture(url_picture=upload_result['secure_url'], patient_id=patient_id, doctor_id=doctor_id)
-        db.session.add(profile_picture)
-        db.session.commit()
-
-        # Devolvemos la URL de la imagen en la respuesta
-        return jsonify({'imageUrl': profile_picture.url_picture}), 201
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['GET'])
-#@cross_origin(supports_credentials=True)
-def get_image_doctor(doctor_id):
     # Obtener el perfil de imagen del doctor por su ID
     profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
     if profile_picture:
@@ -1261,6 +1352,7 @@ def get_image_doctor(doctor_id):
     else:
         # Si no se encontró la imagen del perfil, devolver un mensaje de error
         return jsonify({"error": "Perfil de imagen no encontrado"}), 404
+
 
 @app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
 #@cross_origin(supports_credentials=True)
@@ -1295,7 +1387,7 @@ def delete_image_doctor(doctor_id):
         return jsonify({"message": "Profile picture and doctor reference deleted"}), 200
     return jsonify({"message": "Profile picture not found"}), 404
 
-@app.route('/uploadprofilepicture/patient/<int:patient_id>', methods=['GET'])
+@app.route('/profilepicture/patient/<int:patient_id>', methods=['GET'])
 #@cross_origin(supports_credentials=True)
 def get_image_patient(patient_id):
     # Obtener el perfil de imagen del doctor por su ID
@@ -1379,12 +1471,16 @@ def upload_file_patient(patient_id):
         # Obtenemos el archivo de la solicitud
         file = request.files['file']
         description = request.form.get('description')  # Obtener la descripción del formulario
+
         # Subimos la imagen a Cloudinary
         upload_result = cloudinary.uploader.upload(file)
+
+
         # Creamos una nueva entrada en la base de datos con la URL de la imagen y la descripción
         attachment_file = Attachment_File(url_file=upload_result['secure_url'], patient_id=patient_id, description=description)
         db.session.add(attachment_file)
         db.session.commit()
+
         # Devolvemos la URL del documento en la respuesta
         return jsonify({'msg':'Document update successfull'}), 201
     except Exception as e:
@@ -1406,17 +1502,19 @@ def delete_attachment(patient_id, attachment_id):
 
     
 
-@app.route('/deletefile/patient/<int:patient_id>', methods=['DELETE'])
-#@cross_origin(supports_credentials=True)
-def delete_file_patient(patient_id):
-    # Buscar la imagen del perfil del doctor
-    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id).first()
+
+@app.route('/deletefile/patient/<int:patient_id>/<int:attachment_id>', methods=['DELETE'])
+def delete_attachment(patient_id, attachment_id):
+    # Buscar el archivo adjunto por su ID y el ID del paciente
+    attachment_file = Attachment_File.query.filter_by(patient_id=patient_id, id=attachment_id).first()
     if attachment_file:
-        # Eliminar la entrada de Profile_Picture
+        # Eliminar el archivo adjunto
         db.session.delete(attachment_file)
         db.session.commit()
-        return jsonify({"message": "File and patient reference deleted"}), 200
+        return jsonify({"message": "Attachment file deleted successfully"}), 200
     return jsonify({"message": "Attachment file not found"}), 404
+
+
 
 # Favorite Routes
 

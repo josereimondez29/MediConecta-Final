@@ -69,7 +69,7 @@ export const Register = () => {
     <div className="container mt-5" style={{boxShadow: "10px 5px 5px grey"}}>
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <h2 className="text-center mb-4">Register</h2>
+ 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Nombre:</label>

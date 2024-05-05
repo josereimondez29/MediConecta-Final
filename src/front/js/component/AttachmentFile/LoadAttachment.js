@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const LoadAttachment = ({ userId }) => {
     const [files, setFiles] = useState([]);
     const userType = localStorage.getItem("userType")
+
     useEffect(() => {
         const fetchAttachmentFiles = async () => {
             try {
@@ -18,8 +19,10 @@ const LoadAttachment = ({ userId }) => {
                 // Aquí podrías mostrar un mensaje de error al usuario
             }
         };
+
         fetchAttachmentFiles();
     }, [userId]);
+
     const deleteFolder = async (attachment_id) => {
         try {
             const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este PDF?");
@@ -38,6 +41,7 @@ const LoadAttachment = ({ userId }) => {
             setConfirmationMessage("Error al eliminar el PDF. Inténtalo de nuevo.");
         }
     };
+
     return (
         <>
             {/* Mostrar la lista de documentos cargados */}
@@ -63,4 +67,5 @@ const LoadAttachment = ({ userId }) => {
         </>
     );
 };
+
 export default LoadAttachment;

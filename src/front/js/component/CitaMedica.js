@@ -51,6 +51,7 @@ const MedicalAppointment = () => {
 
   const handleRegisterAppointment = async () => {
     if (selectedSpeciality && selectedDoctor && selectedDate) {
+      console.log("selected date", selectedDate)
       const token = localStorage.getItem('token');
 
       // Verificar si selectedDate es una instancia válida de Date
@@ -60,7 +61,28 @@ const MedicalAppointment = () => {
       }
 
       // Formatear la fecha en el formato 'YYYY-MM-DDTHH:MM:SS'
-      const formattedDate = selectedDate.toISOString().slice(0, 19).replace('T', ' ');
+      // const formattedDate = selectedDate.toUTCString().slice(0, 25).replace('T', ' ');
+      // const formattedDate = selectedDate.toISOString().slice(0, 25).replace('T', ' ');
+      // console.log("selected to locale", selectedDate.toLocaleString('se-SE'))
+      // console.log("selectedDate", selectedDate)
+      // Ajuste de la zona horaria a UTC+2
+selectedDate.setHours(selectedDate.getHours());
+
+// Formatear la fecha en el formato 'YYYY-MM-DDTHH:MM:SS'
+const formattedDate = selectedDate.getFullYear() + '-' + 
+                      pad(selectedDate.getMonth() + 1) + '-' + 
+                      pad(selectedDate.getDate()) + 'T' + 
+                      pad(selectedDate.getHours()) + ':' + 
+                      pad(selectedDate.getMinutes()) + ':' + 
+                      pad(selectedDate.getSeconds());
+
+// Función auxiliar para rellenar con cero a la izquierda si es necesario
+function pad(number) {
+  if (number < 10) {
+    return '0' + number;
+  }
+  return number;
+}
 
       const response = await fetch(process.env.BACKEND_URL + "/api/register/medical_appointment", {
         method: "POST",
