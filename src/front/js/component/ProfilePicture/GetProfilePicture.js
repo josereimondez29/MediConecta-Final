@@ -49,9 +49,9 @@ const GetProfilePicture = (props) => {
   <div className="col-fluid-md-4 mb-3 cardDoctore" >
     <div className="cardDoctor d-flex flex-row text-center align-items-center justify-content-between" style={{marginLeft: "80px"}}>
       {/* Renderizado condicional para mostrar la imagen de perfil */}
-      <div className="d-flex flex-column align-items-start">
-        <img src={profilePicture ? profilePicture.url_picture : "https://cdn-icons-png.freepik.com/512/3177/3177438.png"} alt="Imagen del perfil" style={{ width: "9rem", objectFit: "cover" }} />
-      </div>
+      <div className="d-flex flex-column align-items-start" style={{ maxWidth: "200px", maxHeight: "400px", marginRight: "20px" }}>
+    <img src={profilePicture ? profilePicture.url_picture : "https://cdn-icons-png.freepik.com/512/3177/3177438.png"} alt="Imagen del perfil" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    </div>
       <div className="buttons mt-3" style={{ width: "50%" }}>
         {/* Agregar el evento onClick con la función deletePicture */}
         <div className="d-flex flex-column">
