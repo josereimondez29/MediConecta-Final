@@ -2,8 +2,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			signupSuccesful:null, 
-			authentication:false, 
+			signupSuccesful: null,
+			authentication: false,
 			messageError: null,
 			doctors: [],
 			specialities: [],
@@ -13,57 +13,57 @@ const getState = ({ getStore, getActions, setStore }) => {
 			profilespictures: [],
 			folder: [],
 			attachmentFiles: [],
-			appointments:[],
-			meetings:[],
-			meetingsURL:[]
+			appointments: [],
+			meetings: [],
+			meetingsURL: []
 		},
 		actions: {
 
 			login: (email, password, userType) => {
-                const requestOptions = {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    "email": email,
-                    "password": password
-                  })
-                };
-                fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
-                .then((response) => {
-                  console.log(response.status)
-                  if (response.status === 200){
-                    setStore({ authentication: true });
-                  }
-                  return response.json();
-                })
-                .then((data) => {
-                  localStorage.setItem("token", data.token);
-                  sessionStorage.setItem("token", data.token);
-                  localStorage.setItem("authentication", true);
-                  sessionStorage.setItem("authentication", true);
-                  if (userType === 'patient') {
-                    localStorage.setItem("id", data.patient.id);
-                    sessionStorage.setItem("id", data.patient.id);
-                    localStorage.setItem("name", data.patient.name);
-                    sessionStorage.setItem("name", data.patient.name);
-                  } else if (userType === 'doctor') {
-                    localStorage.setItem("id", data.doctor.id);
-                    sessionStorage.setItem("id", data.doctor.id);
-                    localStorage.setItem("name", data.doctor.name);
-                    sessionStorage.setItem("name", data.doctor.name);
-                  }
-                  localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
-                  console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
-                  console.log("DATA LOGIN ->", data);
-                })
-                .catch((error) => {
-                  console.error( error);
-                  setStore({ messageError: error.message });
-                });
-              },
+				const requestOptions = {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				};
+				fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
+					.then((response) => {
+						console.log(response.status)
+						if (response.status === 200) {
+							setStore({ authentication: true });
+						}
+						return response.json();
+					})
+					.then((data) => {
+						localStorage.setItem("token", data.token);
+						sessionStorage.setItem("token", data.token);
+						localStorage.setItem("authentication", true);
+						sessionStorage.setItem("authentication", true);
+						if (userType === 'patient') {
+							localStorage.setItem("id", data.patient.id);
+							sessionStorage.setItem("id", data.patient.id);
+							localStorage.setItem("name", data.patient.name);
+							sessionStorage.setItem("name", data.patient.name);
+						} else if (userType === 'doctor') {
+							localStorage.setItem("id", data.doctor.id);
+							sessionStorage.setItem("id", data.doctor.id);
+							localStorage.setItem("name", data.doctor.name);
+							sessionStorage.setItem("name", data.doctor.name);
+						}
+						localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
+						console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
+						console.log("DATA LOGIN ->", data);
+					})
+					.catch((error) => {
+						console.error(error);
+						setStore({ messageError: error.message });
+					});
+			},
 
 
-			  
+
 			register: async (userData, userType, id) => {
 				try {
 					const resp = await fetch(process.env.BACKEND_URL + `/api/register/${userType}`, {
@@ -72,22 +72,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(userData)
 					});
 					if (!resp.ok) {
-						
+
 						throw new Error("There was a problem in the registration request");
 					}
 					const data = await resp.json();
 					setStore({ signupSuccesful: "Successful registration! Now you can log in." });
-					
+
 				} catch (error) {
 					setStore({ messageError: error.message });
 				}
 			},
 
-			
 
-			logout: ()=>{
+
+			logout: () => {
 				setStore({ authentication: false });
-			        // Eliminar el token del almacenamiento local
+				// Eliminar el token del almacenamiento local
 				localStorage.removeItem('token');
 				localStorage.removeItem('name');
 				localStorage.removeItem('authentication');
@@ -98,44 +98,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 				sessionStorage.removeItem('authentication');
 				sessionStorage.removeItem('token');
 				sessionStorage.removeItem('name');
-					// Redireccionar al usuario a la página de inicio de sesión
-				},
+				// Redireccionar al usuario a la página de inicio de sesión
+			},
 
-//<-- DOCTORS
-			loadDoctors: ()=>{
+			//<-- DOCTORS
+			loadDoctors: () => {
 				fetch(process.env.BACKEND_URL + "/doctors")
 					.then((response) => response.json())
-					.then((data) => setStore({doctors:data.result}))
+					.then((data) => setStore({ doctors: data.result }))
 					.catch((error) => console.error(error))
-				}, 
-			
-			getinfoDoctor: (id) => { 
+			},
+
+			getinfoDoctor: (id) => {
 				fetch(process.env.BACKEND_URL + `/doctor/${id}`)
-				.then((response) => response.json())
-				.then((result) => {
-					// Aquí se asume que los datos del médico obtenidos del backend están en data
-					let updatedDoctor = result; // Suponiendo que los datos del médico se encuentran en data.result
-					let updatedDoctors = getStore().doctors.map((Doctor) => {
-						if (Doctor.id === id) {
-							return updatedDoctor; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
-						} else {
-							return Doctor; // Si el ID no coincide, conserva el médico sin cambios
-						}
+					.then((response) => response.json())
+					.then((result) => {
+						// Aquí se asume que los datos del médico obtenidos del backend están en data
+						let updatedDoctor = result; // Suponiendo que los datos del médico se encuentran en data.result
+						let updatedDoctors = getStore().doctors.map((Doctor) => {
+							if (Doctor.id === id) {
+								return updatedDoctor; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+							} else {
+								return Doctor; // Si el ID no coincide, conserva el médico sin cambios
+							}
+						});
+						setStore({ currentDoctor: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados		
 					});
-					setStore({ currentDoctor: updatedDoctors }); // Actualiza el estado de la tienda con los médicos actualizados		
-					});
-				},
+			},
 
 
-				updateDoctor: (editDoctor, id) => {
-					const requestOptions = {
-						method: "PUT",
-						body: JSON.stringify(editDoctor),
-						headers: { "Content-Type": "application/json" },
-						redirect: "follow"
-					};
-				
-					fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
+			updateDoctor: (editDoctor, id) => {
+				const requestOptions = {
+					method: "PUT",
+					body: JSON.stringify(editDoctor),
+					headers: { "Content-Type": "application/json" },
+					redirect: "follow"
+				};
+
+				fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
 					.then((response) => {
 						if (!response.ok) {
 							throw new Error('Network response was not ok');
@@ -152,16 +152,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					})
 					.catch((error) => console.error("Fetch error:", error));
-				},
-								
-			
+			},
+
+
 			idontknow: (editDoctor, id) => {
 				const requestOptions = {
 					method: "PUT",
 					body: JSON.stringify(editDoctor),
 					headers: { "Content-Type": "application/json" },
 					redirect: "follow"
-				};		
+				};
 				fetch(process.env.BACKEND_URL + `/doctor/${id}`, requestOptions)
 					.then((response) => {
 						if (!response.ok) {
@@ -172,52 +172,55 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then((result) => {
 						console.log("RESULT FLUX UPGRATE", result);
 						const conStore = getStore()
-						const doctorsUpdate = conStore.doctors.map((doctor)=>{if (doctor.id === id){
-							return result.doctor
-						} return doctor})
+						const doctorsUpdate = conStore.doctors.map((doctor) => {
+							if (doctor.id === id) {
+								return result.doctor
+							} return doctor
+						})
 						setStore({ doctors: doctorsUpdate });
 					})
 					.catch((error) => console.error("Fetch error:", error));
-				},				
-		
-//<-- SPECIALTY  
-			loadSpecialities: ()=>{
+			},
+
+			//<-- SPECIALTY  
+			loadSpecialities: () => {
 				fetch(process.env.BACKEND_URL + "/specialities")
 					.then((response) => response.json())
 					.then((data) => {
 						// console.log("fetchSpeciality FLUX",data)
 						// console.log("DATARESULT FLUX", data.result)
-						setStore({ specialities: data.result })})
+						setStore({ specialities: data.result })
+					})
 					.catch((error) => console.error(error))
 			},
-//<-- PATIENT
-			loadPatients: ()=>{
+			//<-- PATIENT
+			loadPatients: () => {
 				fetch(process.env.BACKEND_URL + "/patients")
 					.then((response) => response.json())
-					.then((data) => setStore({patients:data.result}))
+					.then((data) => setStore({ patients: data.result }))
 					.catch((error) => console.error(error))
-				}, 
+			},
 
-				loadCurrentPatient: ()=>{
-					fetch(process.env.BACKEND_URL + "/patients")
-						.then((response) => response.json())
-						.then((data) => setStore({currentPatient:data.result}))
-						.catch((error) => console.error(error))
-					}, 
-			
-			getinfoPatient: (id) => { 
+			loadCurrentPatient: () => {
+				fetch(process.env.BACKEND_URL + "/patients")
+					.then((response) => response.json())
+					.then((data) => setStore({ currentPatient: data.result }))
+					.catch((error) => console.error(error))
+			},
+
+			getinfoPatient: (id) => {
 				console.log("Fetching patient info for ID:", id);
 				fetch(process.env.BACKEND_URL + `/patient/${id}`)
-				.then((response) => response.json())
-				.then((result) => {
-					console.log("Received patient info:", result);
-					// Actualizar el estado global con la información del paciente que ha iniciado sesión
-					setStore({ currentPatient: result.patient });
-				})
-				.catch((error) => {
-					console.error("Error al obtener la información del paciente:", error);
-					setStore({ messageError: "Error al obtener la información del paciente" });
-				});
+					.then((response) => response.json())
+					.then((result) => {
+						console.log("Received patient info:", result);
+						// Actualizar el estado global con la información del paciente que ha iniciado sesión
+						setStore({ currentPatient: result.patient });
+					})
+					.catch((error) => {
+						console.error("Error al obtener la información del paciente:", error);
+						setStore({ messageError: "Error al obtener la información del paciente" });
+					});
 			},
 
 			updatePatient: async (editPatient, id) => {
@@ -244,22 +247,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-//<-- PASSWORD
-			recoverPassword: (email, userType) => {	
+			//<-- PASSWORD
+			recoverPassword: (email, userType) => {
 				const requestOptions = {
-				method: "POST",
-				headers: { "Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					"email": email,
-					"userType": userType
-				})
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						"email": email,
+						"userType": userType
+					})
 				};
-				
+
 				fetch(process.env.BACKEND_URL + "/send_password", requestOptions)
-				.then((response) => response.text())
-				.then((result) => console.log(result))
-				.catch((error) => console.error(error));
+					.then((response) => response.text())
+					.then((result) => console.log(result))
+					.catch((error) => console.error(error));
 			},
 
 			changePassword: (password, id) => {
@@ -270,15 +274,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					headers: { "Content-Type": "application/json" },
 				};
 
-			//    console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
-			//    console.log("NUEVA CONTRASEÑA", { password });
+				//    console.log("URL:", process.env.BACKEND_URL + `/changepassword/${userType}/${id}`);
+				//    console.log("NUEVA CONTRASEÑA", { password });
 
 				fetch(process.env.BACKEND_URL + `/changepassword/${userType}/${id}`, requestOptions)
 					.then((response) => {
 						if (!response.ok) {
 							throw new Error('Network response was not ok');
 						}
-						return true; 
+						return true;
 					})
 					.then((result) => {
 						console.log("Contraseña actualizada exitosamente");
@@ -287,7 +291,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 
-//<-- PROFILE PICTURE
+			//<-- PROFILE PICTURE
 			loadPictures: ()=>{
 				fetch(process.env.BACKEND_URL + "/profilepicture")
 					.then((response) => response.json())
@@ -295,40 +299,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch((error) => console.error(error))
 				}, 
 
-				getPicture: (id, userType) => { 
-					fetch(process.env.BACKEND_URL + `/profilepicture/${userType}/${id}`)
-					.then((response) => {
-						if (response.ok) {
-							return response.json();
+			getPicture: (id, userType) => { 
+				fetch(process.env.BACKEND_URL + `/profilepicture/${userType}/${id}`)
+				.then((response) => response.json())
+				.then((result) => {
+				// Aquí se asume que los datos del médico obtenidos del backend están en data
+					let updatedPicture = result; // Suponiendo que los datos del médico se encuentran en data.result
+					let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
+						if (Profilespicture.id === id) {
+							return updatedPicture; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
 						} else {
-							throw new Error('Imagen no encontrada');
+							return Profilespicture; // Si el ID no coincide, conserva el médico sin cambios
 						}
-					})
-					.then((result) => {
-						let updatedPicture = result; 
-						let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
-							if (Profilespicture.id === id) {
-								return updatedPicture;
-							} else {
-								return Profilespicture;
-							}
-						});
-						setStore({ profilespictures: updatedPictures });
-					})
-					.catch((error) => {
-						console.error('Error al obtener la imagen:', error);
-						// Establecer la imagen por defecto aquí
-						let defaultPicture = { url: 'https://i.postimg.cc/sX2n2Rjy/Doctores.jpg', id: id };
-						let updatedPictures = getStore().profilespictures.map((Profilespicture) => {
-							if (Profilespicture.id === id) {
-								return defaultPicture;
-							} else {
-								return Profilespicture;
-							}
-						});
-						setStore({ profilespictures: updatedPictures });
 					});
-				},
+					setStore({ profilespictures: updatedPictures }); // Actualiza el estado de la tienda con los médicos actualizados
+					
+				});
+			},
 
 			changeUploadImage: async (formData, userId, userType) => {
 				try {
@@ -378,17 +365,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			},
 
-//<-- ATTACHMENT FILE 
-			loadFolder: () => { 
+			//<-- ATTACHMENT FILE 
+			loadFolder: () => {
 				fetch(process.env.BACKEND_URL + `/attachemntfiles`)
-				.then((response) => response.json())
+					.then((response) => response.json())
 					.then((data) => {
 						// console.log("fetchSpeciality FLUX",data)
 						// console.log("DATARESULT FLUX", data.result)
-						setStore({ attachmentFiles: data.result })})
+						setStore({ attachmentFiles: data.result })
+					})
 					.catch((error) => console.error(error))
 			},
-				
+
 			changeUploadFile: async (formData, id) => {
 				try {
 					const response = await fetch(process.env.BACKEND_URL + `/uploadattachmentfile/patient/${id}`, {
@@ -410,26 +398,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-//<-- LISTADO DE CITAS
-			loadAppoinment: ()=>{
+			//<-- LISTADO DE CITAS
+			loadAppoinment: () => {
 				console.log("LISENT")
 				fetch(process.env.BACKEND_URL + `/medical_appoinments`)
-				.then((response) => response.json())
+					.then((response) => response.json())
 					.then((data) => {
 						// console.log("fetchSpeciality FLUX",data)
 						console.log("DATARESULT FLUX APPOINTMENT", data.result)
-						setStore({ appointments: data.result })})
+						setStore({ appointments: data.result })
+					})
 					.catch((error) => console.error(error))
 			},
-			
-			loadMeeting: ()=>{
+
+			loadMeeting: () => {
 				console.log("EY LINK")
 				fetch(process.env.BACKEND_URL + `/meetings`)
-				.then((response) => response.json())
+					.then((response) => response.json())
 					.then((data) => {
 						// console.log("fetchSpeciality FLUX",data)
 						console.log("DATARESULT FLUX MEETING", data.result)
-						setStore({ meetings: data.result })})
+						setStore({ meetings: data.result })
+					})
 					.catch((error) => console.error(error))
 			},
 
@@ -466,21 +456,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// 		.then((response) => response.json())
 			// 		.then((result) => console.log("getAttachmentFilesByPatientId",result))
 			// 		.catch((error) => console.error(error));
-				
-				// .then((response) => response.json())
-				// .then((result) => {
-				// // Aquí se asume que los datos del médico obtenidos del backend están en data
-				// 	let updatedaAttachmentFile = result; // Suponiendo que los datos del médico se encuentran en data.result
-				// 	let updatedaAttachmentFiles = getStore().attachmentFiles.map((Attachemntfiles) => {
-				// 		if (Attachemntfiles.id === id) {
-				// 			return updatedaAttachmentFile; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
-				// 		} else {
-				// 			return Profilespicture; // Si el ID no coincide, conserva el médico sin cambios
-				// 		}
-				// 	});
-				// 	setStore({ attachmentFiles: updatedaAttachmentFiles }); // Actualiza el estado de la tienda con los médicos actualizados
-					
-				// });
+
+			// .then((response) => response.json())
+			// .then((result) => {
+			// // Aquí se asume que los datos del médico obtenidos del backend están en data
+			// 	let updatedaAttachmentFile = result; // Suponiendo que los datos del médico se encuentran en data.result
+			// 	let updatedaAttachmentFiles = getStore().attachmentFiles.map((Attachemntfiles) => {
+			// 		if (Attachemntfiles.id === id) {
+			// 			return updatedaAttachmentFile; // Si el ID coincide, reemplaza el médico existente con los nuevos datos
+			// 		} else {
+			// 			return Profilespicture; // Si el ID no coincide, conserva el médico sin cambios
+			// 		}
+			// 	});
+			// 	setStore({ attachmentFiles: updatedaAttachmentFiles }); // Actualiza el estado de la tienda con los médicos actualizados
+
+			// });
 			//},
 
 			// deleteFolder: (id, attachment_id) => {
@@ -507,59 +497,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 
-			
 
-			
-				privateZone: async () => {
-					try {
-						const token = localStorage.getItem('token');
-						
-						const requestOptions = {
-							method: 'GET',
-							headers: { 
-								"Content-Type": "application/json",
-								'Authorization': 'Bearer ' + token
-							} 
-						};
 
-						const resp = await fetch(process.env.BACKEND_URL + "/api/protected", requestOptions);
 
-						if (!resp.ok) {
-							throw new Error("There was a problem in the login request");
-						} else if (resp.status === 403) {
-							throw new Error("Missing or invalid token");
+			privateZone: async () => {
+				try {
+					const token = localStorage.getItem('token');
+
+					const requestOptions = {
+						method: 'GET',
+						headers: {
+							"Content-Type": "application/json",
+							'Authorization': 'Bearer ' + token
 						}
+					};
 
-						const data = await resp.json();
-						console.log("This is the data you requested", data);
-						return data;
-					} catch (error) {
-						console.error(error);
-					
+					const resp = await fetch(process.env.BACKEND_URL + "/api/protected", requestOptions);
+
+					if (!resp.ok) {
+						throw new Error("There was a problem in the login request");
+					} else if (resp.status === 403) {
+						throw new Error("Missing or invalid token");
 					}
-				
-			},
+
+					const data = await resp.json();
+					console.log("This is the data you requested", data);
+					return data;
+				} catch (error) {
+					console.error(error);
+
+				}
 
 			},
-			}
-			};
+
+		},
+	}
+};
 
 
-			// loadAppointment: ()=>{
-			// 	fetch(process.env.BACKEND_URL + "/medical_appoinments")
-			// 	.then((response)=> response.json())
-			// 	.then((data)=>{
-			// 		setStore({appointments: data.result})})
-			// 	.catch((err)=> console.error(err))
-			// },
+// loadAppointment: ()=>{
+// 	fetch(process.env.BACKEND_URL + "/medical_appoinments")
+// 	.then((response)=> response.json())
+// 	.then((data)=>{
+// 		setStore({appointments: data.result})})
+// 	.catch((err)=> console.error(err))
+// },
 
-			// loadMeetings: ()=>{
-			// 	fetch(process.env.BACKEND_URL + "/meetings")
-			// 	.then((response)=>response.json())
-			// 	.then((data)=>{
-			// 		setStore({meetings: data.result})})
-			// 	.catch((err)=>console.err(err))
-			// },
-	
+// loadMeetings: ()=>{
+// 	fetch(process.env.BACKEND_URL + "/meetings")
+// 	.then((response)=>response.json())
+// 	.then((data)=>{
+// 		setStore({meetings: data.result})})
+// 	.catch((err)=>console.err(err))
+// },
+
 
 export default getState;

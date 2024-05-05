@@ -84,7 +84,7 @@ export const PrivatePatient = () => {
                         </form>
                     </div>
                     <div className="d-flex justify-content-center">
-                        <Link to={`/`} className="mx-2">
+                        <Link to={`/changepassword`} className="mx-2">
                             <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Cambiar contraseña <i className="fa-solid fa-lock" style={{ marginLeft: "5px" }}></i></button>
                         </Link>
                     </div>

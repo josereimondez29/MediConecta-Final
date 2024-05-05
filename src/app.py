@@ -1336,18 +1336,16 @@ def get_pictures():
 
    
 @app.route('/profilepicture/doctor/<int:doctor_id>', methods=['GET'])
+#@cross_origin(supports_credentials=True)
 def get_image_doctor_id(doctor_id):
     # Obtener el perfil de imagen del doctor por su ID
     profile_picture = Profile_Picture.query.filter_by(doctor_id=doctor_id).first()
     if profile_picture:
         # Si se encontró la imagen del perfil, devolver los datos serializados
-        # En este ejemplo, supongo que el nombre del archivo de imagen se encuentra en el campo 'file_name' del objeto profile_picture
-        return send_file(profile_picture.file_name, mimetype='image/png')  # Cambia 'image/png' al tipo de imagen adecuado
+        return jsonify(profile_picture.serialize()), 200
     else:
-        # Si no se encontró la imagen del perfil, devolver una imagen por defecto
-        # En este ejemplo, supongo que la imagen por defecto se encuentra en 'default_picture_path'
-        default_picture_path = "/workspaces/Proyecto-Final---4Geeks/src/front/img/Doctores.jpg"
-        return send_file(default_picture_path, mimetype='image/png')  # Cambia 'image/png' al tipo de imagen adecuado
+        # Si no se encontró la imagen del perfil, devolver un mensaje de error
+        return jsonify({"error": "Perfil de imagen no encontrado"}), 404
 
 
 @app.route('/uploadprofilepicture/doctor/<int:doctor_id>', methods=['POST'])
@@ -1491,6 +1489,7 @@ def delete_attachment(patient_id, attachment_id):
         db.session.commit()
         return jsonify({"message": "Attachment file deleted successfully"}), 200
     return jsonify({"message": "Attachment file not found"}), 404
+
 
 
 # Favorite Routes

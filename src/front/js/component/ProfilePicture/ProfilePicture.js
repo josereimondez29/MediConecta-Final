@@ -8,7 +8,7 @@ export const ProfilePicture = () => {
   const { store, actions } = useContext(Context);
   const userId = localStorage.getItem("id");
   const userType = localStorage.getItem("userType");
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // Llamar a useNavigate fuera de la función
 
   const changeUploadImage = async (e) => {
     try {
@@ -36,28 +36,21 @@ export const ProfilePicture = () => {
     }
   };
 
-  const deletePicture = async () => {
-    try {
-      await actions.deletePicture(userId);
-      window.location.reload();
-    } catch (error) {
-      console.error(error);
-      setConfirmationMessage("Error al eliminar la imagen de perfil.");
-    }
+  const goBack = () => {
+    navigate(-1); // Llamar a navigate dentro de la función goBack
   };
 
   return (
-    <div className="App">
-      <h1>SUBE TU DOCUMENTO</h1>
-      <div>
-        <label htmlFor="formFile" class="form-label">Carga imagenes que no sean mayores de 400 x 400 px</label>
-        <input class="form-control" accept="PDF/*" type="file" id="formFile" onChange={changeUploadImage}/>
+    <div className="container text-center">
+      <div >
+        <label htmlFor="formFile" className="form-label">Carga imágenes que no sean mayores de 400 x 400 px</label>
+        <input className="form-control" accept="image/*" type="file" id="formFile" onChange={changeUploadImage}/>
       
         {loading && <p>Cargando...</p>} {/* Mostrar mensaje de carga */}
         {confirmationMessage && <p>{confirmationMessage}</p>}
         {store.profilespictures && (
-          <div>
-            <button onClick={deletePicture}>Eliminar imagen</button>
+          <div className="mt-3">
+            <button className="btn btn-secondary" onClick={goBack}>Volver</button>
           </div>
         )}
       </div>

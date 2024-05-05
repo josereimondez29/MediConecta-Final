@@ -48,7 +48,7 @@ export const EditDoctor = () => {
             });
         }
     }, [idFromUrl, store.doctors]);
-    
+
     useEffect(() => {
         if (editDoctor && editDoctor.speciality_id) {
             const foundSpeciality = specialities.find(speciality => speciality.id === editDoctor.speciality_id);
@@ -77,12 +77,12 @@ export const EditDoctor = () => {
 
     };
     return (
-            <>
-             <div className='content' style={{ padding: "50px" }}>
+        <>
+            <div className='content' style={{ padding: "50px" }}>
                 <form onSubmit={handleSubmit}>
-                    <h1 className='tittle' style={{ textAlign: "center" }}><strong>Edit the contact</strong></h1>
+                   
                     <div className="mb-3">
-                        <label htmlFor="inputname" className="form-label">Nombre</label>
+                        <label htmlFor="inputname" className="form-label">Name</label>
                         <input type="text" className="form-control" id="inputname" name="name" placeholder="Name"
                             onChange={(e) => setEditDoctor({ ...editDoctor, name: e.target.value })}
                             value={editDoctor.name}
@@ -96,21 +96,21 @@ export const EditDoctor = () => {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputsurname" className="form-label">Apellidos</label>
+                        <label htmlFor="inputsurname" className="form-label">surname</label>
                         <input type="text" className="form-control" id="inputssurname" name="surname" rows="3" placeholder="Enter surname"
                             onChange={(e) => setEditDoctor({ ...editDoctor, surname: e.target.value })}
                             value={editDoctor.surname}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputAge" className="form-label">Edad</label>
-                        <input type="text" className="form-control" id="inputAge" rows="3" name="age" placeholder="Enter age"
+                        <label htmlFor="inputAge" className="form-label">age</label>
+                        <input type="number" className="form-control" id="inputAge" rows="3" name="age" placeholder="Enter age"
                             onChange={(e) => setEditDoctor({ ...editDoctor, age: e.target.value })}
                             value={editDoctor.age}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputbio" className="form-label">Bio</label>
+                        <label htmlFor="inputbio" className="form-label">bio</label>
                         <input type="text" className="form-control" id="inputbio" rows="3" name="bio" placeholder="Enter bio"
                             onChange={(e) => setEditDoctor({ ...editDoctor, bio: e.target.value })}
                             value={editDoctor.bio}
@@ -118,20 +118,20 @@ export const EditDoctor = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputidentification" className="form-label">DNI/NIE</label>
-                        <input type="text" className="form-control" id="inputidentification" rows="3" name="identification" placeholder="Enter identification"
+                        <input type="number" className="form-control" id="inputidentification" rows="3" name="identification" placeholder="Enter identification"
                             onChange={(e) => setEditDoctor({ ...editDoctor, identification: e.target.value })}
                             value={editDoctor.identification}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputmedical_license" className="form-label"> Nª Colegiado/a</label>
-                        <input type="text" className="form-control" id="inputmedical_license" rows="3" name="medical license<" placeholder="Enter  medical_license"
-                            onChange={(e) => setEditDoctor({ ...editDoctor,  medical_license: e.target.value })}
+                        <label htmlFor="inputmedical_license" className="form-label">Nº Colegiado/a</label>
+                        <input type="number" className="form-control" id="inputmedical_license" rows="3" name="medical license<" placeholder="Enter  medical_license"
+                            onChange={(e) => setEditDoctor({ ...editDoctor, medical_license: e.target.value })}
                             value={editDoctor.medical_license}
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputspeciality" className="form-label">Especialidad</label>
+                        <label htmlFor="inputspeciality" className="form-label">Speciality</label>
                         <select
                             className="form-select"
                             id="inputspeciality"
@@ -152,7 +152,7 @@ export const EditDoctor = () => {
                     </div>
                     {/* Botón de enviar */}
                     <div className='d-grid gap-2'>
-                        <button className="btn btn-primario" type="submit" >Update</button>
+                        <button className="btn btn-primario" type="submit" >Actualzar</button>
                     </div>
                     {/* Mensaje de éxito */}
                     {formSubmitted && (
@@ -160,10 +160,14 @@ export const EditDoctor = () => {
                             <p>¡Actualización exitosa!</p>
                         </div>
                     )}
+
+                    <Link to={"/privatedoctor"}>
+                        <div className='d-grid gap-2' style={{marginTop:"15px"}}>
+                            <button className='btn btn-outline-danger' type="submit">Cancelar</button>
+                        </div>
+                    </Link>
                 </form>
-                <Link to={"/"}>
-                    <button className='btn btn-secundario' type="submit" >Cancel, get back to Home</button>
-                </Link>
+
             </div>
         </>
     );

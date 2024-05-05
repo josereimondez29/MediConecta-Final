@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../../store/appContext";
 
 export const UpdateAttachment = () => {
@@ -37,24 +37,33 @@ export const UpdateAttachment = () => {
   };
 
   return (
-    <div className="App">
-      <h1>SUBE TU PDF</h1>
+    <div className="container" style={{ marginBottom: "25px" }}>
       <div>
-        <label htmlFor="formFile" className="form-label">Carga tu documento PDF</label>
-        <input className="form-control" accept=".pdf" type="file" id="formFile" onChange={changeUploadFolder}/>
+
         <div className="mb-3">
           <label htmlFor="description" className="form-label">Descripción</label>
-          <input 
-            type="text" 
-            className="form-control" 
-            id="description" 
-            value={description} 
-            onChange={(e) => setDescription(e.target.value)} 
+          <input
+            type="text"
+            className="form-control"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
+
+        <label htmlFor="formFile" className="form-label">Carga tu documento PDF</label>
+        <input className="form-control" accept=".pdf" type="file" id="formFile" onChange={changeUploadFolder} />
+
         {loading && <p>Cargando...</p>}
         {confirmationMessage && <p>{confirmationMessage}</p>}
+
+        
       </div>
+      <Link to={"/PrivatePatient"}>
+        <div className='text-center' style={{ marginTop: "15px" }}>
+          <button className='btn btn-secundario' type="submit">Cancelar</button>
+        </div>
+      </Link>
     </div>
   );
 };

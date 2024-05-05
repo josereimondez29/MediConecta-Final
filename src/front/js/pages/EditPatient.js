@@ -72,11 +72,11 @@ export const EditPatient = () => {
                     <input type="number" className="form-control" id="age" value={editPatient.age || ""} onChange={e => setEditPatient({ ...editPatient, age: e.target.value })} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="identification" className="form-label">DNI/NIE</label>
+                    <label htmlFor="identification" className="form-label">Identificación</label>
                     <input type="number" className="form-control" id="identification" value={editPatient.identification || ""} onChange={e => setEditPatient({ ...editPatient, identification: e.target.value })} />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="social_security" className="form-label">Nª Seguridad Social</label>
+                    <label htmlFor="social_security" className="form-label">Seguro Social</label>
                     <input type="number" className="form-control" id="social_security" value={editPatient.social_security || ""} onChange={e => setEditPatient({ ...editPatient, social_security: e.target.value })} />
                 </div>
                 <div className="mb-3">
