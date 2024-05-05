@@ -3,13 +3,14 @@
 
  
 .footer {
-    background-color: #83a8b1; 
+    background: linear-gradient(to bottom, #83a8b1, black);
 }
+
 
 
 .footer-last-div {
     width: 100%;
-    background-color: #000000; /* Color de fondo del último div del footer */
+    background-color: #00000000; /* Color de fondo del último div del footer */
     color: #ffffff;
     position: absolute;
     bottom: 0;

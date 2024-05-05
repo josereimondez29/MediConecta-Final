@@ -124,7 +124,7 @@ export const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="row" style={{ backgroundColor: "#000000", color: "#ffff", width: "100%", margin:"0", paddingTop:"15px"}}>
+      <div className="row" style={{ color: "#ffff", width: "100%", margin:"0", paddingTop:"15px"}}>
           <div className="col-md-12 text-center">
             <p>Todos los derechos reservados | Web diseñada por Diana Pérez - José Reimondez - Ruben MP para <a href="https://4geeksacademy.com/es/inicio" target="_blank" rel="noopener noreferrer">4geek</a> © Copyright 2024</p>
           </div>
