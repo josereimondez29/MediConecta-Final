@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import paciente2 from "../../img/paciente2.jpg";
-import { Link } from "react-router-dom";
+import paciente2 from "../../img/paciente2.jpg"
+import { Link, useNavigate } from 'react-router-dom';
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
 import ListAppointmentPatient from "../component/Doctors/ListAppointmentPatient";
 import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
@@ -10,6 +10,10 @@ export const PrivatePatient = () => {
     const { store, actions } = useContext(Context);
     const [patientId, setPatientId] = useState(null);
 
+    const userType = localStorage.getItem("userType");
+    const navigate = useNavigate()
+  
+
     useEffect(() => {
         const id = localStorage.getItem("id");
         setPatientId(id);
@@ -17,7 +21,16 @@ export const PrivatePatient = () => {
         if (id) {
             actions.getinfoPatient(id);
         }
-    }, []);
+
+    }, []); // Ejecutar solo una vez al cargar el componente
+
+    if (!userType || userType !== "patient") {
+        // Si el usuario no está autenticado o no es un médico, redirige a la página de inicio
+        navigate('/');
+        return null; // No renderizar nada si el usuario no está autorizado
+    }
+
+    console.log(store.currentPatient);
 
     return (
         <>

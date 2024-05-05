@@ -1502,9 +1502,6 @@ def delete_attachment(patient_id, attachment_id):
     return jsonify({"message": "Attachment file not found"}), 404
 
 
-
-
-
 # Favorite Routes
 
 # @app.route('/user/favorites', methods=['GET'])
