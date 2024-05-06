@@ -80,7 +80,7 @@ export const SingleDoctor = (props) => {
                 <p className="lead">El experto</p>
             </div>
 
-            <div className="row">
+            <div className="row justify-content-center">
                 <div className="col-md-6">
                     <img src={profilePictureUrl} alt="Medicina General" className="medicina-general-image img-fluid" />
                 </div>
