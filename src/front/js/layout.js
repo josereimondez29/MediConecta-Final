@@ -74,6 +74,9 @@ const LayoutContent = () => {
       case `/editDoctor/${id}`:
           setPage("edit");
           break;
+      case `/editPatient/${id}`:
+            setPage("edit");
+            break;
       case "/PrivatePatient":
           setPage("private");
           break;

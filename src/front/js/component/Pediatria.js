@@ -36,7 +36,7 @@ const Pediatria = () => {
           <img src={pediatria} alt="Pediatria" className="pediatria-image" />
         </div>
         <div className="text-container">
-          <h2 className="title">Pediatria</h2>
+          <h2 className="title">Pediatría</h2>
           <p className="text-black">
            Bienvenido a MediConecta, donde la salud y el bienestar de nuestros pacientes son nuestra prioridad número uno. En nuestro equipo, contamos con expertos en diversas especialidades médicas.
           </p>
@@ -54,7 +54,7 @@ const Pediatria = () => {
           </p>
         </div>
       </div>
-      <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Pediatria</h3></div>
+      <div className='container d-flex justify-content-center text-align-center mt-4'><h3>Especialistas en Pediatría</h3></div>
       <div className="container-fluid px-5 "  >
         <div className="row justify-content-center mx-5 text-cen" style={{marginBottom:"35px"}} >
           {doctorsComponent}
