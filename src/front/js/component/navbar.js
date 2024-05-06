@@ -1,82 +1,109 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
 
-  const handleLoginButtonClickLogin = () => {
-    // Redirige al componente Login
-    navigate('/login');
-  };
+    const handleLoginButtonClickMedicos = () => {
+        // Redirige al componente de registro
+        navigate('/register');
+    };
 
-  const handleLoginButtonClickRegister = () => {
-    // Redirige al componente Register
-    navigate('/register');
-  };
+    const handleLoginButtonClickPacientes = () => {
+        // Redirige al componente de inicio de sesión
+        navigate('/login');
+    };
 
-  return (
-    <div>
-      <div data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-        <div className="top bg-primary top mt-auto">
-          <div className="container">
-            <div className="row no-gutters d-flex align-items-start align-items-center">
-              <div className="col-lg-12 d-block">
-                <div className="row d-flex">
-                  <div className="col-md-4 pr-4 d-flex topper align-items-center">
-                    <div className="icon mr-2 d-flex justify-content-center align-items-center"><span className="icon-phone2"></span></div>
-                    <span className="text text-white">6666666666</span>
-                  </div>
-                  <div className="col-md-4 pr-4 d-flex topper align-items-center">
-                    <div className="icon mr-2 d-flex justify-content-center align-items-center"><span className="icon-paper-plane"></span></div>
-                    <span className="text text-white">info@mediconecta.com</span>
-                  </div>
-                  <div className="col-md-4 pr-4 d-flex topper align-items-center">
-                    {/*Button trigger Login */}
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={handleLoginButtonClickLogin}
-                    >
-                      Ingrese
+    const handlePrivate = () => {
+        // Obtener el tipo de usuario del almacenamiento local
+        const userType = localStorage.getItem("userType");
+        // Obtener el id del usuario del almacenamiento local si está disponible
+        const userId = localStorage.getItem("id");
+        
+        // Verificar si el tipo de usuario y el id del usuario están definidos y son válidos
+        if (userType && (userType === "doctor" || userType === "patient") && userId) {
+            // Redirigir al componente de zona privada correspondiente
+            navigate(`/${userType === "doctor" ? 'privatedoctor' : "PrivatePatient"}`);
+        } else {
+            console.error("Tipo de usuario o ID de usuario no reconocido");
+        }
+    };
+
+    // useEffect(() => {
+    //     console.log("cambió el token")
+    //     console.log(localStorage.getItem("token"))
+    // }, [store.authentication]);
+
+    function submitLogout() {
+        actions.logout();
+        localStorage.removeItem("authentication"); // Elimina la autenticación del localStorage al cerrar sesión
+        navigate("/"); // Cambia "/login" por la ruta correcta si es diferente
+    }
+
+    return (
+        <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <div className="container-fluid">
+                <div className="d-flex ms-3">
+                    <Link className="navbar-brand text-center" to="/">MediConecta</Link>
+                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
                     </button>
-                    
-                    {/*Button trigger Register*/}
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={handleLoginButtonClickRegister}
-                    >
-                      Registro
-                    </button>
-                  </div>
                 </div>
-              </div>
+                <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                    <div className="d-flex ms-3">
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li className="nav-item pe-5 ms-3">
+                                <Link className="nav-link active p-2" aria-current="page" to="/">Home</Link>
+                            </li>
+                            <li className="nav-item pe-5 ms-3">
+                                <Link className="nav-link p-2" to="/contact">Contacto</Link>
+                            </li>
+                            {/* <li className="nav-item pe-5 ms-3">
+                                <Link className="nav-link p-2" to="/prices">Tarifas</Link>
+                            </li> */}
+                            <li className="nav-item dropdown pe-5 ms-3">
+                                <Link className="nav-link dropdown-toggle p-2" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Especialidades
+                                </Link>
+                                <ul className="dropdown-menu">
+                                    <li><Link className="dropdown-item" to="/MedicinaGeneral">Medicina General</Link></li>
+                                    <li><Link className="dropdown-item" to="/Dermatologia">Dermatología</Link></li>
+                                    <li><Link className="dropdown-item" to="/Pediatria">Pediatría</Link></li>
+                                    <li><Link className="dropdown-item" to="/Psicologia">Psicología</Link></li>
+                                    <li><Link className="dropdown-item" to="/Nutricion">Nutrición</Link></li>
+                                    <li><Link className="dropdown-item" to="/Fisioterapia">Fisioterapia</Link></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    {localStorage.getItem("token") ? (
+                        <div className="d-flex ms-auto">
+                            <form className="d-flex p-2" role="log out">
+                                <button onClick={submitLogout} className="btn btn-outline-danger" type="button">Logout</button>
+                            </form>
+                            <form className="d-flex p-2" role="log out">
+                                <button onClick={handlePrivate} className="btn btn-primario" type="button">Zona Privada</button>
+                            </form>
+                        </div>
+                    ) : (
+                        <div className="d-flex ms-auto">
+                            <form className="d-flex p-2" role="register">
+                                <button className="btn btn-primario me-2" onClick={handleLoginButtonClickMedicos} type="button">Registrate</button>
+                            </form>
+                            <form className="d-flex p-2" role="log in">
+                                <button className="btn btn-primario" onClick={handleLoginButtonClickPacientes} type="button">Login</button>
+                            </form>
+                            <form className="d-flex p-2" role="log in">
+                                <Link to={"/register/medical_appointment"}>
+                                    <button className="btn btn-primario" >Registrar cita</button>
+                                </Link>
+                            </form>
+                        </div>
+                    )}
+                </div>
             </div>
-          </div>
-        </div>
-
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light site-navbar-target" id="ftco-navbar">
-          <div className="container">
-            <a className="navbar-brand" href="index.html">MediConecta</a>
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="oi oi-menu"></span> Menu
-            </button>
-
-            <div className="collapse navbar-collapse" id="ftco-nav">
-              <ul className="navbar-nav ml-auto">
-                <li className="nav-item"><a href="#home-section" className="nav-link"><span>Inicio</span></a></li>
-                <li className="nav-item"><a href="#about-section" className="nav-link"><span>Sobre Nosotros</span></a></li>
-                <li className="nav-item"><a href="#department-section" className="nav-link"><span>Departmentos</span></a></li>
-                <li className="nav-item"><a href="#doctor-section" className="nav-link"><span>Doctores</span></a></li>
-                <li className="nav-item"><a href="#blog-section" className="nav-link"><span>Blog</span></a></li>
-                <li className="nav-item"><a href="#contact-section" className="nav-link"><span>Contacto</span></a></li>
-                <li className="nav-item cta mr-md-2"><a href="appointment.html" className="nav-link">Cita</a></li>
-              </ul>
-            </div>
-          </div>
         </nav>
-      </div>
-    </div>
-  );
+    );
 };
-
