@@ -90,7 +90,7 @@ export const Navbar = () => {
                     ) : (
                         <div className="d-flex ms-auto">
                             <form className="d-flex p-2" role="register">
-                                <button className="btn btn-primario me-2" onClick={handleLoginButtonClickMedicos} type="button">Registrate</button>
+                                <button className="btn btn-primario me-2" onClick={handleLoginButtonClickMedicos} type="button">Regístrate</button>
                             </form>
                             <form className="d-flex p-2" role="log in">
                                 <button className="btn btn-primario" onClick={handleLoginButtonClickPacientes} type="button">Login</button>

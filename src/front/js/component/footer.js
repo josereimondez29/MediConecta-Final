@@ -65,7 +65,7 @@ export const Footer = () => {
                 <li><a href="/alldoctors">Doctores</a></li>
                 {/* <li><a href="#blog-section">Blog</a></li> */}
                 {/* <li><a href="#">Precios</a></li> */}
-                <li><a href="/contact">Contactenos</a></li>
+                <li><a href="/contact">Contáctenos</a></li>
               </ul>
             </div>
           </div>
@@ -105,7 +105,7 @@ export const Footer = () => {
               <h2 className="ftco-heading-2">Servicios</h2>
 
               <ul className="list-unstyled">
-                <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>Lunes a viernes</span> </li>
+                <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>Lunes a Viernes</span> </li>
                 <li> <span className="icon-long-arrow-right mr-2" style={{color:"#ffff"}}>9.00 - 17.00 h</span></li>
               </ul>
             </div>
@@ -126,7 +126,7 @@ export const Footer = () => {
       </div>
       <div className="row" style={{ color: "#ffff", width: "100%", margin:"0", paddingTop:"15px"}}>
           <div className="col-md-12 text-center">
-            <p>Todos los derechos reservados | Web diseñada por Diana Pérez - José Reimondez - Ruben MP para <a href="https://4geeksacademy.com/es/inicio" target="_blank" rel="noopener noreferrer">4geek</a> © Copyright 2024</p>
+            <p>Todos los derechos reservados | Web diseñada por Diana Pérez - José Reimondez - Rubén Marcos para <a href="https://4geeksacademy.com/es/inicio" target="_blank" rel="noopener noreferrer">4geek</a> © Copyright 2024</p>
           </div>
         </div>
     </footer>

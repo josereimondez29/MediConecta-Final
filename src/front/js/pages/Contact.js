@@ -17,7 +17,7 @@ export const Contact = () => {
                             </div>
                             <div className="col-md-8 d-flex align-items-center">
                                 <div className="card-body text-center">
-                                    <h1 className="card-title" style={{ marginBottom: "15px" }}>Como contactar</h1>
+                                    <h1 className="card-title" style={{ marginBottom: "15px" }}>Cómo contactar</h1>
                                     <h5 className="card-text" style={{ marginBottom: "15px" }}>Mándanos un correo a la siguiente dirección:</h5>
                                     <a href={mailToLink} className="card-text" style={{ marginBottom: "15px", textDecoration: "underline", color:"black" }}>{email}</a>
                                 </div>
