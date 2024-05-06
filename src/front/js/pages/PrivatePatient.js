@@ -84,7 +84,7 @@ export const PrivatePatient = () => {
                     </div>
                 </div>
                 <div className="col-lg-6 d-flex flex-column justify-content-center align-items-center" style={{ height: "600px" }}>
-                    <img src={paciente2} alt="Doctor" className="img-fluid rounded mb-3" style={{ maxWidth: "100%", maxHeight: "400px" }} />
+                    <img src={paciente2} alt="Patient" className="img-fluid rounded mb-3" style={{ maxWidth: "100%", maxHeight: "400px" }} />
                     <form className="d-flex flex-column align-items-center" role="log in">
                         <Link to={"/register/medical_appointment"} className="mb-2">
                             <button className="btn w-100" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Registrar cita<i className="fa-regular fa-calendar-days ms-2"></i></button>
