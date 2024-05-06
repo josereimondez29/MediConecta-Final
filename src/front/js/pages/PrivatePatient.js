@@ -110,6 +110,7 @@ export const PrivatePatient = () => {
                     <div className="col-lg-6">
                         <h2 className="text-center">Mis documentos</h2>
                         {patientId && <LoadAttachment userId={patientId} />}
+
                     </div>
                 </div>
             </div>
