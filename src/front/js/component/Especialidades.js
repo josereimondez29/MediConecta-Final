@@ -53,28 +53,29 @@ const Especialidades = () => {
       </div>
 
       <div id="carouselExampleControlsNoTouching" className="carousel slide" data-bs-touch="false">
-        <div className="carousel-inner">
-          {cardGroups.map((group, index) => (
-            <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-              <div className="d-flex justify-content-center">
-                {group.map((card, cardIndex) => (
-                  <div key={cardIndex} className="p-2">
-                    <Especialidad title={card.title} text={card.text} image={card.image} link={card.link} />
-                  </div>
-                ))}
-              </div>
+  <div className="carousel-inner">
+    {cardGroups.map((group, index) => (
+      <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
+        <div className="row justify-content-center">
+          {group.map((card, cardIndex) => (
+            <div key={cardIndex} className="col-sm-6 col-md-4 col-lg-3 p-2">
+              <Especialidad title={card.title} text={card.text} image={card.image} link={card.link} />
             </div>
           ))}
         </div>
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev" style={{ color: 'black', backgroundColor: 'transparent' }}>
-          <span className="carousel-control-prev-icon" style={{ backgroundColor: "#5C8692" }} aria-hidden="true"></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next" style={{ color: 'black', backgroundColor: 'transparent' }}>
-          <span className="carousel-control-next-icon" style={{ backgroundColor: "#5C8692" }} aria-hidden="true"></span>
-          <span className="visually-hidden">Next</span>
-        </button>
       </div>
+    ))}
+  </div>
+  <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev" style={{ color: 'black', backgroundColor: 'transparent' }}>
+    <span className="carousel-control-prev-icon" style={{ backgroundColor: "#5C8692" }} aria-hidden="true"></span>
+    <span className="visually-hidden">Previous</span>
+  </button>
+  <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next" style={{ color: 'black', backgroundColor: 'transparent' }}>
+    <span className="carousel-control-next-icon" style={{ backgroundColor: "#5C8692" }} aria-hidden="true"></span>
+    <span className="visually-hidden">Next</span>
+  </button>
+</div>
+
     </>
   );
 };

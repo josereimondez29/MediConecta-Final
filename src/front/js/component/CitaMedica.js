@@ -142,6 +142,7 @@ function pad(number) {
                 />
               )}
             </div>
+            <div className=''style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <button style={{ backgroundColor: isButtonDisabled ? '#7A9CA5' : '#5C8692', color: '#fff', marginBottom: '20px' }} className="btn" onClick={handleRegisterAppointment} disabled={isButtonDisabled}>
               Registrar cita
             </button>
@@ -150,6 +151,7 @@ function pad(number) {
               Volver a zona privada
             </button>
             </Link>
+            </div>
             {appointmentCreated && (
               <div className="alert alert-success" role="alert">
                 Cita creada satisfactoriamente! A su email le llegarán los datos y link de su cita online!
