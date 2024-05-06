@@ -56,8 +56,7 @@ export const EditPatient = () => {
     };
 
     return (
-        <div className="container">
-            <h1>Edit Patient</h1>
+        <div className="container mt-4">
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Nombre</label>

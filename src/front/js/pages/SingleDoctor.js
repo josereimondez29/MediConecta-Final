@@ -82,7 +82,7 @@ export const SingleDoctor = (props) => {
             </div>
 
             <div className="row justify-content-center">
-                <div className="col-md-6">
+                <div className="col-md-6" style={{maxWidth: "400px", maxHeight: "400px"}}>
                     <img src={profilePictureUrl} alt="Medicina General" className="medicina-general-image img-fluid" />
                 </div>
                 <div className="col-md-6">

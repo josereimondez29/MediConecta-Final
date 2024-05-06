@@ -86,7 +86,6 @@ export const PrivatePatient = () => {
                         <div className="card">
                             <img src={paciente2} alt="Doctor" className="card-img-top" style={{ maxHeight: "400px", objectFit: "cover" }} />
                             <div className="card-body text-center d-flex flex-column justify-content-center">
-                                <h5 className="card-title">Acciones rápidas</h5>
                                 <div className="d-flex justify-content-between">
                                     <Link to={"/register/medical_appointment"} className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", marginRight: "5px" }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>
                                         Registrar cita <i className="fa-regular fa-calendar-days ms-1"></i>

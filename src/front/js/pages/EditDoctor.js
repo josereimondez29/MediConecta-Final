@@ -110,7 +110,7 @@ export const EditDoctor = () => {
                         />
                     </div>
                     <div className="mb-3">
-                        <label htmlFor="inputbio" className="form-label">bio</label>
+                        <label htmlFor="inputbio" className="form-label">Bio</label>
                         <input type="text" className="form-control" id="inputbio" rows="3" name="bio" placeholder="Enter bio"
                             onChange={(e) => setEditDoctor({ ...editDoctor, bio: e.target.value })}
                             value={editDoctor.bio}
@@ -152,7 +152,7 @@ export const EditDoctor = () => {
                     </div>
                     {/* Botón de enviar */}
                     <div className='d-grid gap-2'>
-                        <button className="btn btn-primario" type="submit" >Actualzar</button>
+                        <button className="btn btn-primario" type="submit" >Actualizar</button>
                     </div>
                     {/* Mensaje de éxito */}
                     {formSubmitted && (
