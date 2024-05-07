@@ -83,49 +83,49 @@ export const EditDoctor = () => {
                    
                     <div className="mb-3">
                         <label htmlFor="inputname" className="form-label">Nombre</label>
-                        <input type="text" className="form-control" id="inputname" name="name" placeholder="Name"
+                        <input type="text" className="form-control" id="inputname" name="name" placeholder="Nombre"
                             onChange={(e) => setEditDoctor({ ...editDoctor, name: e.target.value })}
                             value={editDoctor.name}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputEmail" className="form-label">Email</label>
-                        <input type="email" className="form-control" id="inputEmail" name="email" rows="3" placeholder="Enter email"
+                        <input type="email" className="form-control" id="inputEmail" name="email" rows="3" placeholder="Correo electrónico"
                             onChange={(e) => setEditDoctor({ ...editDoctor, email: e.target.value })}
                             value={editDoctor.email}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputsurname" className="form-label">Apellidos</label>
-                        <input type="text" className="form-control" id="inputssurname" name="surname" rows="3" placeholder="Enter surname"
+                        <input type="text" className="form-control" id="inputssurname" name="surname" rows="3" placeholder="Apellido"
                             onChange={(e) => setEditDoctor({ ...editDoctor, surname: e.target.value })}
                             value={editDoctor.surname}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputAge" className="form-label">Edad</label>
-                        <input type="number" className="form-control" id="inputAge" rows="3" name="age" placeholder="Enter age"
+                        <input type="number" className="form-control" id="inputAge" rows="3" name="age" placeholder="Edad"
                             onChange={(e) => setEditDoctor({ ...editDoctor, age: e.target.value })}
                             value={editDoctor.age}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputbio" className="form-label">Bio</label>
-                        <input type="text" className="form-control" id="inputbio" rows="3" name="bio" placeholder="Enter bio"
+                        <input type="text" className="form-control" id="inputbio" rows="3" name="bio" placeholder="Biografía"
                             onChange={(e) => setEditDoctor({ ...editDoctor, bio: e.target.value })}
                             value={editDoctor.bio}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputidentification" className="form-label">DNI/NIE</label>
-                        <input type="number" className="form-control" id="inputidentification" rows="3" name="identification" placeholder="Enter identification"
+                        <input type="number" className="form-control" id="inputidentification" rows="3" name="identification" placeholder="Identificación"
                             onChange={(e) => setEditDoctor({ ...editDoctor, identification: e.target.value })}
                             value={editDoctor.identification}
                         />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="inputmedical_license" className="form-label">Nº Colegiado/a</label>
-                        <input type="number" className="form-control" id="inputmedical_license" rows="3" name="medical license<" placeholder="Enter  medical_license"
+                        <input type="number" className="form-control" id="inputmedical_license" rows="3" name="medical license<" placeholder="Licencia médica o Número de colegiado"
                             onChange={(e) => setEditDoctor({ ...editDoctor, medical_license: e.target.value })}
                             value={editDoctor.medical_license}
                         />

@@ -40,7 +40,7 @@ export const UpdateAttachment = () => {
   };
 
   return (
-    <div className="container" style={{ marginBottom: "25px" }}>
+    <div className="container mt-2" style={{ marginBottom: "25px" }}>
       <div>
 
         <div className="mb-3">

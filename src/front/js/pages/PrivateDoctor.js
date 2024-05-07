@@ -41,20 +41,11 @@ const PrivateDoctor = (props) => {
         loadInitialData();
     }, [id, store.doctors, store.specialities, actions]);
 
-
     if (!userType || userType !== "doctor") {
         // Si el usuario no está autenticado o no es un médico, redirige a la página de inicio
         navigate('/');
         return null; // No renderizar nada si el usuario no está autorizado
     }
-
-
-
-
-    const handleUpdateSuccess = async () => {
-        setUpdateKey(prevKey => prevKey + 1);
-        await loadInitialData();
-    };
 
     if (loading) {
         return <p>Cargando...</p>;
@@ -62,11 +53,6 @@ const PrivateDoctor = (props) => {
     if (!doctor) {
         return <p>No se pudo encontrar la información del médico.</p>;
     }
-
-    const handleClick = () => {
-        // Cambiar a otra ruta
-        navigate('/');
-    };
 
     return (
         <div className="container-fluid" style={{ backgroundColor: "#EBF3F5", paddingTop: "15px" }}>
@@ -76,28 +62,28 @@ const PrivateDoctor = (props) => {
                     <GetProfilePicture />
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b> Nombre: </b> {doctor.name}</p>
+                            <p className="mb-0"><b> Nombre: </b> {doctor.name} <i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Apellido:</b> {doctor.surname}</p>
+                            <p className="mb-0"><b>Apellido:</b> {doctor.surname} <i className="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Edad: </b>{doctor.age}</p>
+                            <p className="mb-0"><b>Edad: </b>{doctor.age}<i className="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Identificación: </b>{doctor.identification}</p>
+                            <p className="mb-0"><b>Identificación: </b>{doctor.identification} <i className="fa-solid fa-id-card fa-xl" style={{ objectPosition:"end", color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Email: </b>{doctor.email}</p>
+                            <p className="mb-0"><b>Email: </b>{doctor.email}<i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Medical License: </b>{doctor.medical_license}</p>
+                            <p className="mb-0"><b>Medical License: </b>{doctor.medical_license}<i className="fa-solid fa-user-doctor fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Especialidad: </b>{speciality ? speciality.name : 'No disponible'}</p>
+                            <p className="mb-0"><b>Especialidad: </b>{speciality ? speciality.name : 'No disponible'}<i className="fa-solid fa-stethoscope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Bio: </b>{doctor.bio}</p>
+                            <p className="mb-0"><b>Bio: </b>{doctor.bio}<i className="fa-solid fa-comment-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
                         </li>
                     </ul>
                 </div>
@@ -106,16 +92,14 @@ const PrivateDoctor = (props) => {
                 </div>
             </div>
             <div className="row mt-3">
+            
                 <div className="col-md-12 text-center">
-                   
                     <Link to={`/editDoctor/${id}`}>
                         <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i className="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>
                     </Link>
                     <Link to={`/changepassword`} className="mx-2">
-
                         <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Cambiar contraseña <i className="fa-solid fa-lock" style={{ marginLeft: "5px" }}></i></button>
                     </Link>
-                  
                 </div>
             </div>
             <div className="row mt-5">
@@ -128,14 +112,10 @@ const PrivateDoctor = (props) => {
                     <ListDocument />
                 </div>
             </div>
-
         </div>
-
     );
 };
-
 PrivateDoctor.propTypes = {
     match: PropTypes.object
 };
-
 export default PrivateDoctor;
