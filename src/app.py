@@ -1153,6 +1153,25 @@ def update_doctor_password(doctor_id):
         db.session.rollback()
         return jsonify({"error": "Error al actualizar la contraseña"}), 500
 
+
+@app.route('/changepassword/patient/<int:patient_id>', methods=['PUT'])
+def update_patient_password(patient_id):
+    patient = Patient.query.get(patient_id)
+    if not patient:
+        return jsonify({"error": "Paciente no encontrado"}), 404
+
+    data = request.json  # Obtener los datos del cuerpo de la solicitud en formato JSON
+    password = data.get('password')  # Obtener la nueva contraseña del cuerpo de la solicitud
+    if not password:
+        return jsonify({"error": "Se requiere una nueva contraseña"}), 400
+    hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    patient.password = hashed_password
+    try:
+        db.session.commit()
+        return jsonify({"message": "Contraseña actualizada exitosamente"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Error al actualizar la contraseña"}), 500
 # Meetings
 
 @app.route("/meetings", methods=["GET"])
