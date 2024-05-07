@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const CambioContraseña = () => {
+
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
     const id = localStorage.getItem("id");
@@ -11,7 +12,6 @@ export const CambioContraseña = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
     const [submitted, setSubmitted] = useState(false); // Variable para rastrear si se ha enviado el formulario
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setSubmitted(true); // Se marca como enviado el formulario
@@ -37,7 +37,7 @@ export const CambioContraseña = () => {
         setError(""); // Limpiar el mensaje de error al volver
         navigate(-1);
     };
-
+    
     return (
         <div className="container" style={{ marginTop: "30px" }}>
             <form onSubmit={handleSubmit}>
@@ -51,7 +51,7 @@ export const CambioContraseña = () => {
                     />
                 </div>
                 <div className="form-group">
-                    <label>Confirm Password:</label>
+                    <label>Confirma Password:</label>
                     <input
                         type="password"
                         className="form-control"
