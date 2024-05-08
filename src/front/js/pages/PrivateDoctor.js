@@ -62,28 +62,28 @@ const PrivateDoctor = (props) => {
                     <GetProfilePicture />
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b> Nombre: </b> {doctor.name} <i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b> Nombre: </b> {doctor.name} <i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Apellido:</b> {doctor.surname} <i className="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Apellido:</b> {doctor.surname} <i className="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Edad: </b>{doctor.age}<i className="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Edad: </b>{doctor.age}<i className="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px" }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Identificación: </b>{doctor.identification} <i className="fa-solid fa-id-card fa-xl" style={{ objectPosition:"end", color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Identificación: </b>{doctor.identification} <i className="fa-solid fa-id-card fa-xl" style={{ objectPosition:"end", color: "#5C8692", marginLeft: "5px"  }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Email: </b>{doctor.email}<i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Email: </b>{doctor.email}<i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Medical License: </b>{doctor.medical_license}<i className="fa-solid fa-user-doctor fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Medical License: </b>{doctor.medical_license}<i className="fa-solid fa-user-doctor fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Especialidad: </b>{speciality ? speciality.name : 'No disponible'}<i className="fa-solid fa-stethoscope fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Especialidad: </b>{speciality ? speciality.name : 'No disponible'}<i className="fa-solid fa-stethoscope fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Bio: </b>{doctor.bio}<i className="fa-solid fa-comment-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692" }}></i></p>
+                            <p className="mb-0"><b>Bio: </b>{doctor.bio}<i className="fa-solid fa-comment-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px" }}></i></p>
                         </li>
                     </ul>
                 </div>
