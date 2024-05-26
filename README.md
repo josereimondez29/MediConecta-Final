@@ -8,7 +8,7 @@ Bootstrap, Cloudinary, CSS, Figma, HTML, JavaScript, Phyton, React.js, sqlAlchem
 
 ## 🏥 Sobre el proyecto
 - **HOME**
-  -Aquí encontramos un resumen de la web en general, pudiendo ver y acceder a las especialidades que tenemos, parte de los médicos asistenciales del equipo médico y  el contacto.
+  - Aquí encontramos un resumen de la web en general, pudiendo ver y acceder a las especialidades que tenemos, parte de los médicos asistenciales del equipo médico y  el contacto.
   
 - **CONTACTO**
   - Hay una opción para contactar con el soporte de dicha web por si hay dudas, quejas, sugerencias por parte de los usuarios del servicio.
