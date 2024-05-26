@@ -47,6 +47,6 @@ Bootstrap, Cloudinary, CSS, Figma, HTML, JavaScript, Phyton, React.js, sqlAlchem
 ## Autores
 
 - 👨🏻‍💻[@RubenMP](https://github.com/rubenmp92)
-- 🦊[@DianaPF](https://github.com/rubenmp92)
-- 👨🏽‍💻[@RubenMP](https://github.com/rubenmp92)
+- 🦊[@DianaPF](https://github.com/KitsuneDai)
+- 👨🏽‍💻[@JoseRA](https://github.com/josereimondez29)
 
