@@ -15,19 +15,7 @@
     position: absolute;
     bottom: 0;
   }
-/* .ftco-heading-2 {
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-} */
 
-/* .list-unstyled{
-    text-decoration: none;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
- }
-
-.text {
-    text-align: justify;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
- } */
 
 a{
     text-decoration: none;
@@ -45,4 +33,11 @@ a:hover{
 
  .text{
     color:#ffff;
+ }
+
+ .email-text{
+    text-decoration: underline;
+    color: orange;
+    margin-bottom: 15px;
+    color: #ffffff;
  }

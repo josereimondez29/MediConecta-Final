@@ -46,28 +46,28 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
                 <div className="d-flex ms-3">
-                    <Link className="navbar-brand text-center" to="/">MediConecta</Link>
+                    <Link className="navbar-brand text-center" style={{color:"black"}} to="/">MediConecta</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                 </div>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <div className="d-flex ms-3">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <div className="d-flex ms-3" >
+                        <ul className="navbar-nav me-auto mb-2 mb-lg-0" >
                             <li className="nav-item pe-5 ms-3">
-                                <Link className="nav-link active p-2" aria-current="page" to="/">Home</Link>
+                                <Link className="nav-link active p-2" style={{color:"black"}} aria-current="page" to="/">Home</Link>
                             </li>
-                            <li className="nav-item pe-5 ms-3">
-                                <Link className="nav-link p-2" to="/contact">Contacto</Link>
+                            <li className="nav-item pe-5 ms-3" >
+                                <Link className="nav-link p-2" style={{color:"black"}} to="/contact">Contacto</Link>
                             </li>
                             {/* <li className="nav-item pe-5 ms-3">
                                 <Link className="nav-link p-2" to="/prices">Tarifas</Link>
                             </li> */}
-                            <li className="nav-item dropdown pe-5 ms-3">
-                                <Link className="nav-link dropdown-toggle p-2" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <li className="nav-item dropdown pe-5 ms-3" >
+                                <Link className="nav-link dropdown-toggle p-2" style={{color:"black"}} to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Especialidades
                                 </Link>
-                                <ul className="dropdown-menu">
+                                <ul className="dropdown-menu" >
                                     <li><Link className="dropdown-item" to="/MedicinaGeneral">Medicina General</Link></li>
                                     <li><Link className="dropdown-item" to="/Dermatologia">Dermatología</Link></li>
                                     <li><Link className="dropdown-item" to="/Pediatria">Pediatría</Link></li>

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
-import paciente2 from "../../img/paciente2.jpg"
+import paciente2 from "./../../img/paciente2.jpg"
 import { Link, useNavigate } from 'react-router-dom';
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
-import ListAppointmentPatient from "../component/Doctors/ListAppointmentPatient";
+import ListAppointmentPatient from "../component/Doctors/MedicalAppointment/ListAppointmentPatient";
 import LoadAttachment from "../component/AttachmentFile/LoadAttachment";
 
 export const PrivatePatient = () => {
@@ -12,7 +12,7 @@ export const PrivatePatient = () => {
 
     const userType = localStorage.getItem("userType");
     const navigate = useNavigate()
-  
+
 
     useEffect(() => {
         const id = localStorage.getItem("id");
@@ -44,22 +44,22 @@ export const PrivatePatient = () => {
                                 <div>
                                     <ul className="list-group list-group-flush">
                                         <li className="list-group-item mb-1">
-                                            <p className="mb-0"><span>Nombre: {store.currentPatient.name}</span><i className="fa-regular fa-user fa-xl ms-2" style={{ color: "#5C8692" }}></i></p>
+                                        <p className="mb-0"><i className="fa-regular fa-user fa-xl ms-2" style={{ color: "#5C8692", marginRight:"7px" }}></i><span>Nombre: {store.currentPatient.name}</span></p>
                                         </li>
                                         <li className="list-group-item mb-1">
-                                            <p className="mb-0"><span>Apellido: {store.currentPatient.surname}</span><i className="fa-regular fa-user fa-xl ms-2" style={{ color: "#5C8692" }}></i></p>
+                                        <p className="mb-0"> <i className="fa-regular fa-user fa-xl ms-2" style={{ color: "#5C8692" , marginRight:"7px"}}></i>  <span>Apellido: {store.currentPatient.surname}</span></p>
                                         </li>
                                         <li className="list-group-item mb-1">
-                                            <p className="mb-0"><span>Edad: {store.currentPatient.age}</span><i className="fa-regular fa-calendar-days fa-xl ms-2" style={{ color: "#5C8692" }}></i></p>
+                                        <p className="mb-0">  <i className="fa-regular fa-calendar-days fa-xl ms-2" style={{ color: "#5C8692" , marginRight:"7px"}}></i> <span>Edad: {store.currentPatient.age}</span></p>
                                         </li>
                                         <li className="list-group-item mb-1">
-                                            <p className="mb-0"><span>Identificación: {store.currentPatient.identification}</span><i className="fa-solid fa-id-card fa-xl ms-2" style={{ color: "#5C8692" }}></i></p>
+                                        <p className="mb-0"> <i className="fa-solid fa-id-card fa-xl ms-2" style={{ color: "#5C8692" , marginRight:"7px"}}></i><span>Identificación: {store.currentPatient.identification}</span></p>
                                         </li>
                                         <li className="list-group-item mb-1">
-                                            <p className="mb-0"><span>Seguro Social: {store.currentPatient.social_security}</span><i className="fa-solid fa-user-doctor fa-xl ms-2" style={{ color: "#5C8692" }}></i></p>
+                                        <p className="mb-0">  <i className="fa-solid fa-user-doctor fa-xl ms-2" style={{ color: "#5C8692", marginRight:"7px"}}></i><span>Seguro Social: {store.currentPatient.social_security}</span></p>
                                         </li>
                                         <li className="list-group-item mb-1">
-                                            <p className="mb-0"><span>Email: {store.currentPatient.email}</span><i className="fa-solid fa-envelope fa-xl ms-2" style={{ color: "#5C8692" }}></i></p>
+                                        <p className="mb-0"> <i className="fa-solid fa-envelope fa-xl ms-2" style={{ color: "#5C8692", marginRight:"7px" }}></i> <span>Email: {store.currentPatient.email}</span></p>
                                         </li>
                                     </ul>
                                 </div>

@@ -1,8 +1,8 @@
 import React from "react";
-import Especialidades from "../component/Especialidades";
-import ListDoctors from "../component/ListDoctors";
+import Especialidades from "../component/Specialities/Especialidades";
+import ListDoctors from "../component/Doctors/ListDoctors";
 import "./../../styles/style.css"
-import Prices from "../component/Prices";
+// import Prices from "../component/Prices";
 import { Contact } from "../pages/Contact";
 
 export const Home = () => {

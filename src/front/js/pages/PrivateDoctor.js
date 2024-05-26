@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Context } from "../store/appContext";
 import PropTypes from "prop-types";
 import GetProfilePicture from "../component/ProfilePicture/GetProfilePicture";
-import ListDocument from "../component/Doctors/ListDocument";
-import ListAppointmentDoctor from "../component/Doctors/ListAppointmentDoctor";
+import ListDocument from "../component/Documents/ListDocuments";
+import ListAppointmentDoctor from "../component/Doctors/MedicalAppointment/ListAppointmentDoctor";
 
 const PrivateDoctor = (props) => {
     const { store, actions } = useContext(Context);
@@ -62,28 +62,28 @@ const PrivateDoctor = (props) => {
                     <GetProfilePicture />
                     <ul className="list-group list-group-flush">
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b> Nombre: </b> {doctor.name} <i className="fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
+                            <p className="mb-0"><i className="fa-regular fa-user fa-xl" style={{ color: "#5C8692",  marginRight:"7px"}}></i><b> Nombre: </b> {doctor.name} </p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Apellido:</b> {doctor.surname} <i className="fa-sharp fa-regular fa-user fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
+                            <p className="mb-0"><i className="fa-sharp fa-regular fa-user fa-xl" style={{color: "#5C8692",  marginRight:"7px"}}></i><b>Apellido:</b> {doctor.surname} </p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Edad: </b>{doctor.age}<i className="fa-regular fa-calendar-days fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px" }}></i></p>
+                            <p className="mb-0"><i className="fa-regular fa-calendar-days fa-xl" style={{  color: "#5C8692",  marginRight:"7px" }}></i><b>Edad: </b>{doctor.age}</p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Identificación: </b>{doctor.identification} <i className="fa-solid fa-id-card fa-xl" style={{ objectPosition:"end", color: "#5C8692", marginLeft: "5px"  }}></i></p>
+                            <p className="mb-0"> <i className="fa-solid fa-id-card fa-xl" style={{ color: "#5C8692", marginRight:"7px"}}></i><b>Identificación: </b>{doctor.identification} </p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Email: </b>{doctor.email}<i className="fa-solid fa-envelope fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
+                            <p className="mb-0"><i className="fa-solid fa-envelope fa-xl" style={{  color: "#5C8692",  marginRight:"7px"}}></i><b>Email: </b>{doctor.email}</p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Medical License: </b>{doctor.medical_license}<i className="fa-solid fa-user-doctor fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
+                            <p className="mb-0"><i className="fa-solid fa-user-doctor fa-xl" style={{  color: "#5C8692",  marginRight:"7px"}}></i><b>Medical License: </b>{doctor.medical_license}</p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Especialidad: </b>{speciality ? speciality.name : 'No disponible'}<i className="fa-solid fa-stethoscope fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px"  }}></i></p>
+                            <p className="mb-0"> <i className="fa-solid fa-stethoscope fa-xl" style={{  color: "#5C8692", marginRight:"7px" }}></i><b>Especialidad: </b>{speciality ? speciality.name : 'No disponible'}</p>
                         </li>
                         <li className="list-group-item mb-1">
-                            <p className="mb-0"><b>Bio: </b>{doctor.bio}<i className="fa-solid fa-comment-medical fa-xl" style={{ alignSelf: 'center', color: "#5C8692", marginLeft: "5px" }}></i></p>
+                            <p className="mb-0"><i className="fa-solid fa-comment-medical fa-xl" style={{ color: "#5C8692", marginRight:"7px" }}></i><b>Bio: </b>{doctor.bio}</p>
                         </li>
                     </ul>
                 </div>
@@ -92,7 +92,7 @@ const PrivateDoctor = (props) => {
                 </div>
             </div>
             <div className="row mt-3">
-            
+
                 <div className="col-md-12 text-center">
                     <Link to={`/editDoctor/${id}`}>
                         <button className="btn" style={{ backgroundColor: "#5C8692", color: "#fff", transition: "background-color 0.3s", ":hover": { backgroundColor: "#7A9CA5" } }} onMouseEnter={(e) => e.target.style.backgroundColor = "#7A9CA5"} onMouseLeave={(e) => e.target.style.backgroundColor = "#5C8692"}>Editar información <i className="fa-solid fa-pen-to-square" style={{ marginLeft: "5px" }}></i></button>

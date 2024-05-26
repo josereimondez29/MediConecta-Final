@@ -26,6 +26,7 @@ import secrets
 from dateutil import tz
 from flask import render_template
 import cloudinary.uploader
+import re
 
 
 
@@ -221,30 +222,57 @@ def delete_user(user_id):
 def register_patient():
     body = request.get_json(silent=True)
     if body is None:
-        return jsonify({'msg': "Debes enviar info al body"}), 400
+        return jsonify({'msg': "Debes enviar información en el cuerpo de la solicitud"}), 400
     if 'email' not in body or 'password' not in body:
         return jsonify({'msg': "Los campos email y password son obligatorios"}), 400
     
-    # Convertir las cadenas "true" o "false" a booleanos
-    # alergic_bool = body['alergic'].lower() == "true"
-    # medicated_bool = body['medicated'].lower() == "true"
-    
-    new_patient = Patient()
-    new_patient.name = body['name']
-    new_patient.surname = body['surname']
-    # new_patient.age = int(body['age'])
-    # new_patient.identification = body['identification']
-    # new_patient.social_security = body['social_security']
-    new_patient.email = body['email']
-    pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
-    new_patient.password = pw_hash
-    # new_patient.alergic = alergic_bool
-    # new_patient.medicated = medicated_bool
-    new_patient.is_active = True
+    email = body.get('email')
+    password = body.get('password')
 
-    db.session.add(new_patient)
-    db.session.commit()
-    return jsonify({"message": "Patient registered successfully"}), 201
+    # Validar contraseña
+    def valid_password(password):
+        pattern = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$#@]).{6,12}$')
+        if not pattern.match(password):
+            return False
+        return True
+
+    if not valid_password(password):
+            return jsonify({
+                'msg': (
+                    "La contraseña no cumple con los requisitos de seguridad:\n"
+                    "1. Al menos 1 letra entre [a-z].\n"
+                    "2. Al menos 1 número entre [0-9].\n"
+                    "3. Al menos 1 letra entre [A-Z].\n"
+                    "4. Al menos 1 carácter de [$#@].\n"
+                    "5. Longitud mínima de la contraseña: 6.\n"
+                    "6. Longitud máxima de la contraseña: 12."
+                )
+            }), 400
+
+    # Validar otros campos
+    name = body.get('name')
+    surname = body.get('surname')
+
+    if not name or not surname:
+        return jsonify({'msg': "Los campos name y surname son obligatorios"}), 400
+
+
+    new_patient = Patient(
+        name=name,
+        surname=surname,
+        email=email,
+        password=bcrypt.generate_password_hash(password).decode('utf-8'),
+        is_active=True
+    )
+
+    try:
+        db.session.add(new_patient)
+        db.session.commit()
+        return jsonify({"message": "Patient registered successfully"}), 201
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": f"Error al registrar al paciente: {str(e)}"}), 500
+
 
 # Login Patient
 @app.route("/api/login/patient", methods=["POST"])
@@ -388,55 +416,86 @@ def register_doctor():
     body = request.get_json(silent=True)
     
     if body is None:
-        return jsonify({'msg': "Debes enviar info al body"}), 400
-    if 'email' not in body:
-        return jsonify({'msg': "El campo email es obligatorio"}), 400
-    if 'password' not in body:
-        return jsonify({'msg': "El campo password es obligatorio"}), 400
+        return jsonify({'msg': "Debes enviar información en el cuerpo de la solicitud"}), 400
+    if 'email' not in body or 'password' not in body:
+        return jsonify({'msg': "Los campos email y password son obligatorios"}), 400
+
+    email = body.get('email')
+    password = body.get('password')
+
+    # Validar contraseña
+    def valid_password(password):
+        pattern = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$#@]).{6,12}$')
+        return pattern.match(password) is not None
+
+    if not valid_password(password):
+        return jsonify({
+            'msg': (
+                "La contraseña no cumple con los requisitos de seguridad:\n"
+                "1. Al menos 1 letra entre [a-z].\n"
+                "2. Al menos 1 número entre [0-9].\n"
+                "3. Al menos 1 letra entre [A-Z].\n"
+                "4. Al menos 1 carácter de [$#@].\n"
+                "5. Longitud mínima de la contraseña: 6.\n"
+                "6. Longitud máxima de la contraseña: 12."
+            )
+        }), 400
+
+    name = body.get('name')
+    surname = body.get('surname')
     
-    new_doctor = Doctor()
-    new_doctor.name = body['name']
-    new_doctor.surname = body['surname']
-    new_doctor.email = body['email']
-    pw_hash = bcrypt.generate_password_hash(body['password']).decode('utf-8')
-    new_doctor.password = pw_hash
-    new_doctor.is_active = True
+    if not name or not surname:
+        return jsonify({'msg': "Los campos name y surname son obligatorios"}), 400
 
     # Verificar si el email ya está registrado
-    existing_doctor = Doctor.query.filter_by(email=new_doctor.email).first()
+    existing_doctor = Doctor.query.filter_by(email=email).first()
     if existing_doctor:
         return jsonify({'msg': "El email ya está registrado"}), 400
 
-    # Guardar el nuevo doctor en la base de datos
-    db.session.add(new_doctor)
-    db.session.commit()
+    new_doctor = Doctor(
+        name=name,
+        surname=surname,
+        email=email,
+        password=bcrypt.generate_password_hash(password).decode('utf-8'),
+        is_active=True
+    )
 
-    # Crear una instancia de DoctorAvailability para cada día de la semana
-    for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
-        # Crear una instancia de DoctorAvailability para el día actual
-        availability = DoctorAvailability(
-             doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
-             day_of_week=day_of_week,  # Día de la semana actual en la iteración
-             start_time=time(hour=9, minute=0),  # empezando a las 9:00 AM
-             end_time=time(hour=17, minute=0)    # terminando a las 5:00 PM
-         )
-        
-        # Verificar si el horario de disponibilidad ya está ocupado
-        existing_availability = DoctorAvailability.query.filter_by(
-            doctor_id=new_doctor.id,
-            day_of_week=availability.day_of_week,
-            start_time=availability.start_time,
-            end_time=availability.end_time
-        ).first()
-
-        if existing_availability:
-            return jsonify({'msg': "El horario de disponibilidad ya está ocupado"}), 400
-
-        # Guardar la disponibilidad del doctor en la base de datos
-        db.session.add(availability)
+    try:
+        # Guardar el nuevo doctor en la base de datos
+        db.session.add(new_doctor)
         db.session.commit()
 
-    return jsonify({"message": "Doctor registered successfully"}), 201
+        # Crear una instancia de DoctorAvailability para cada día de la semana
+        for day_of_week in range(5):  # Recorre de 0 a 4 para representar de lunes a viernes
+            availability = DoctorAvailability(
+                doctor_id=new_doctor.id,  # Aquí pasamos el id del nuevo doctor
+                day_of_week=day_of_week,  # Día de la semana actual en la iteración
+                start_time=time(hour=9, minute=0),  # Empezando a las 9:00 AM
+                end_time=time(hour=17, minute=0)    # Terminando a las 5:00 PM
+            )
+            
+            # Verificar si el horario de disponibilidad ya está ocupado
+            existing_availability = DoctorAvailability.query.filter_by(
+                doctor_id=new_doctor.id,
+                day_of_week=availability.day_of_week,
+                start_time=availability.start_time,
+                end_time=availability.end_time
+            ).first()
+
+            if existing_availability:
+                return jsonify({'msg': "El horario de disponibilidad ya está ocupado"}), 400
+
+            # Guardar la disponibilidad del doctor en la base de datos
+            db.session.add(availability)
+        
+        # Confirmar todos los cambios en la base de datos
+        db.session.commit()
+
+        return jsonify({"message": "Doctor registrado exitosamente"}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"msg": f"Error al registrar al doctor: {str(e)}"}), 500
 
 
 

@@ -33,12 +33,34 @@ export const Register = () => {
   };
 
 
+  const isValidPassword = (password) => {
+    const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$#@!])[A-Za-z\d$#@!]{6,12}$/;
+    return pattern.test(password);
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
   
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+  
+    if (!isValidPassword(password)) {
+      setError(
+        <div>
+        <p>La contraseña no cumple con los siguientes requisitos de seguridad:</p>
+        <ul style={{ fontSize: '0.9em' }}>
+          <li>Al menos 1 letra entre [a-z]</li>
+          <li>Al menos 1 número entre [0-9]</li>
+          <li>Al menos 1 letra entre [A-Z]</li>
+          <li>Al menos 1 carácter de [$#@]</li>
+          <li>Longitud mínima de la contraseña: 6</li>
+          <li>Longitud máxima de la contraseña: 12</li>
+        </ul>
+      </div>
+      );
       return;
     }
   
@@ -51,8 +73,7 @@ export const Register = () => {
     };
   
     console.log('Email:', email);
-
-    
+  
     try {
       await actions.register(userData, userType, navigate);
       await sendWelcomeEmail(email, userType, name); // Llama a la función para enviar el correo electrónico de bienvenida
@@ -64,6 +85,7 @@ export const Register = () => {
       navigate('/login');
     }, 3000);
   };
+  
   
   return (
     <div className="container mt-5" style={{boxShadow: "10px 5px 5px grey"}}>

@@ -28,15 +28,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 						"password": password
 					})
 				};
+			
 				fetch(process.env.BACKEND_URL + `/api/login/${userType}`, requestOptions)
-					.then((response) => {
-						console.log(response.status)
-						if (response.status === 200) {
-							setStore({ authentication: true });
+					.then(response => {
+						if (response.ok) {
+							return response.json();
+						} else {
+							throw new Error('Error al iniciar sesión. Por favor, verifica tus credenciales e intenta nuevamente.');
 						}
-						return response.json();
 					})
-					.then((data) => {
+					.then(data => {
 						localStorage.setItem("token", data.token);
 						sessionStorage.setItem("token", data.token);
 						localStorage.setItem("authentication", true);
@@ -52,16 +53,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 							localStorage.setItem("name", data.doctor.name);
 							sessionStorage.setItem("name", data.doctor.name);
 						}
-						localStorage.setItem("userType", userType); // Añade esta línea para guardar el tipo de usuario
-						console.log("UserType stored in localStorage:", localStorage.getItem("userType")); // Verifica si se almacenó correctamente
+						localStorage.setItem("userType", userType);
+						console.log("UserType almacenado en localStorage:", localStorage.getItem("userType"));
 						console.log("DATA LOGIN ->", data);
+						setStore({ authentication: true, messageError: null });
 					})
-					.catch((error) => {
+					.catch(error => {
 						console.error(error);
 						setStore({ messageError: error.message });
 					});
 			},
-
 
 
 			register: async (userData, userType, id) => {

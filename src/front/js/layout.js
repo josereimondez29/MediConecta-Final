@@ -2,37 +2,38 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
-import { Home } from "./pages/home";
-import { Single } from "./pages/single";
-import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
-import { EditDoctor } from "./pages/EditDoctor";
-import { EditPatient } from "./pages/EditPatient";
-import { SingleDoctor } from "./pages/SingleDoctor";
 import injectContext from "./store/appContext";
-import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
-import MedicalAppointment from "./component/CitaMedica";
-import PrivateDoctor from "./pages/PrivateDoctor";
-import { AllDoctors } from "./component/AllDoctors";
-import { AllPatients } from "./component/AllPatients";
-import { IsLogin } from "./component/IsLogin";
-import Jumbotron from "./component/Jumbotron";
-import { PrivatePatient } from "./pages/PrivatePatient";
-import Prices from "./component/Prices";
-import MedicinaGeneral from "./component/MedicinaGeneral";
-import Dermatologia from "./component/Dermatologia";
-import Pediatria from "./component/Pediatria";
+//PAGINAS
 import NotFound from "./component/NotFound";
 import { Contact } from "./pages/Contact";
-import Psicologia from "./component/Psicologia";
-import Fisioterapia from "./component/Fisioterapia";
-import Nutricion from "./component/Nutricion";
 import { RecoverPassword } from "./pages/RecoverPassword";
 import { CambioContraseña } from "./component/CambioContraseña";
+import { Home } from "./pages/home";
+import { Register } from "./pages/Register";
+import { Login } from "./pages/Login";
+import MedicalAppointment from "./component/Appoinments/CitaMedica";
+//DOCTOR
+import { EditDoctor } from "./pages/EditDoctor";
+import { SingleDoctor } from "./pages/SingleDoctor";
+import { IsLogin } from "./component/IsLogin";
+import PrivateDoctor from "./pages/PrivateDoctor";
+import { AllDoctors } from "./component/Doctors/AllDoctors";
+//PACIENTE
+import { PrivatePatient } from "./pages/PrivatePatient";
+import { EditPatient } from "./pages/EditPatient";
+//COMPONENTES
+import Jumbotron from "./component/Jumbotron";
+import { Navbar } from "./component/navbar";
+import { Footer } from "./component/footer";
 import { ProfilePicture } from "./component/ProfilePicture/ProfilePicture";
 import { UpdateAttachment } from "./component/AttachmentFile/UpdateAttachment";
-
+//SPECIALTY
+import Psicologia from "./component/Specialities/Psicologia";
+import Fisioterapia from "./component/Specialities/Fisioterapia";
+import Nutricion from "./component/Specialities/Nutricion";
+import MedicinaGeneral from "./component/Specialities/MedicinaGeneral";
+import Dermatologia from "./component/Specialities/Dermatologia";
+import Pediatria from "./component/Specialities/Pediatria";
 
 const Layout = () => {
 
@@ -140,13 +141,10 @@ const LayoutContent = () => {
         <Route element={<MedicalAppointment />} path="/register/medical_appointment" />
         <Route element={<Login />} path="/login" />
         <Route element={<Register />} path="/register" />
-        <Route element={<Single />} path="/single/:theid" />
         <Route element={<PrivateDoctor />} path="/privatedoctor" />
         <Route element={<SingleDoctor />} path="/doctor/:id/details" />
         <Route element={<AllDoctors />} path="/alldoctors" />
-        <Route element={<AllPatients />} path="/allpatients" />
         <Route element={<PrivatePatient />} path="/PrivatePatient" />
-        <Route element={<Prices />} path="/prices" />
         <Route element={<IsLogin />} path="/log" />
         <Route element={<EditDoctor />} path="/editDoctor/:id" />
         <Route element={<EditPatient />} path="/editPatient/:id" />

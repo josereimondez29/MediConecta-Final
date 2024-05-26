@@ -11,8 +11,6 @@ export const Login = () => {
   
   const navigate = useNavigate();
 
-  const id = localStorage.getItem("id");
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -28,7 +26,7 @@ export const Login = () => {
   };
 
   return (
-    <div className="container-fluid mt-2  mb-5" >
+    <div className="container-fluid mt-2 mb-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
           <div className="card" style={{ boxShadow: "10px 5px 5px grey" }}>
@@ -70,13 +68,12 @@ export const Login = () => {
                   <Link to={"/"}>
                     <button type="button" className="btn btn-secundario">Back home</button>
                   </Link>
-                  
                 </div>
                 <div className="text-center">
-                <Link to={"/recoverpassword"}>
-                    <button   type="button" className="btn btn-primario mt-3">Recuperar contraseña</button>
+                  <Link to={"/recoverpassword"}>
+                    <button type="button" className="btn btn-primario mt-3">Recuperar contraseña</button>
                   </Link>
-                  </div>
+                </div>
               </form>
               {store.messageError && <div className="mt-3 text-danger">{store.messageError}</div>}
               {store.authentication && (
