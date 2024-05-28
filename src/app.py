@@ -92,7 +92,7 @@ setup_commands(app)
 def handle_invalid_usage(error):
     return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoint
+# generate sitemap with  your endpoint
 
 
 @app.route('/')
