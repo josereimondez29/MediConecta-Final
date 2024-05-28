@@ -1,0 +1,9 @@
+[build]
+  command = "pip install -r requirements.txt && npm run build"
+  publish = "build_directory" # Reemplaza "build_directory" con el directorio donde se genera tu build estática
+
+[build.environment]
+  PYTHON_VERSION = "3.8"
+
+[[plugins]]
+  package = "@netlify/plugin-local-install"
