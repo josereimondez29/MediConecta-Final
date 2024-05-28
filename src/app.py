@@ -112,7 +112,7 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
-#Register admin users    
+#Register admin user    
 @app.route("/api/register/user", methods=["POST"])
 def register_user():
     body = request.get_json(silent=True)
