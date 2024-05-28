@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 # 🩺 MEDICONECTA 
 
@@ -50,3 +51,6 @@ Bootstrap, Cloudinary, CSS, Figma, HTML, JavaScript, Phyton, React.js, sqlAlchem
 - 🦊[@DianaPF](https://github.com/KitsuneDai)
 - 👨🏽‍💻[@JoseRA](https://github.com/josereimondez29)
 
+=======
+# MediConecta-Final
+>>>>>>> 480e526d68e22ac15edbab2e6ab4060a328f2804
