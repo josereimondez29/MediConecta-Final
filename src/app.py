@@ -56,7 +56,7 @@ CORS(app ) #supports_credentials=True
 app.url_map.strict_slashes = False
 
 # Setup the Flask-JWT-Extended
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this
 jwt = JWTManager(app)
 
 #Bcrypt
