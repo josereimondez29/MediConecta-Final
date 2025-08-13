@@ -1,56 +1,108 @@
-<<<<<<< HEAD
-
 # 🩺 MEDICONECTA 
 
-Mediconecta es una página web destinada a la gestión de citas médicas que incluye funciones como el envío de emails automáticos, recuperación de contraseña, carga de documentos y acceso a videoconferencia.
+Mediconecta es una plataforma web innovadora destinada a la gestión de citas médicas que incluye funcionalidades avanzadas como envío de emails automáticos, recuperación de contraseña, gestión documental y videoconferencias médicas.
 
-## 🛠 Herramientas
-Bootstrap, Cloudinary, CSS, Figma, HTML, JavaScript, Phyton, React.js, sqlAlchemy, Whereby.
+## 🚀 Características Principales
 
-## 🏥 Sobre el proyecto
-- **HOME**
-  - Aquí encontramos un resumen de la web en general, pudiendo ver y acceder a las especialidades que tenemos, parte de los médicos asistenciales del equipo médico y  el contacto.
-  
-- **CONTACTO**
-  - Hay una opción para contactar con el soporte de dicha web por si hay dudas, quejas, sugerencias por parte de los usuarios del servicio.
-  
-- **ESPECIALIDADES**
-  - En este apartado podemos encontrar un breve resumen de los servicios que se pueden esperar de una consulta online, en cada sección podemos acceder a los médicos que practican la misma y a su vez, acceder a la información más detallada de dichos médicos.
-  
-- **REGISTRO Y AUTENTIFICACIÓN**
-   - Registro de usuario ya sea paciente o médico y proporcionar información personal, tras el registro, recibe un email de bienvenida.
-   - Si el usuario se olvida de la contraseña puede solicitar un reseteo de la misma, recibiendo un email con una contraseña aleatoria.
-   - Una vez logueado puede cambiar la contraseña de nuevo.
-   
-- **GESTIÓN DE CITAS/CONSULTA ONLINE**
-   - Los pacientes registrados podrán acceder para pedir cita con el médico de su elección y recibirán un correo recordatorio con el enlace para acceder a su consulta.
-   
-- **MANEJO DE DOCUMENTOS**
-   - Los usuarios pacientes pueden cargar documentos médicos relevantes a través de un formulario desde su perfil.
-   - El acceso a dichos documentos está también habilitado para el médico en el caso que lo necesite, pueda leerlos antes de la consulta.
-   
-- **SEGURIDAD**
-   - No se puede acceder a los perfiles de otros sin la autentificación necesaria.
+- Sistema de gestión de citas médicas online
+- Envío automático de emails para confirmaciones y recordatorios
+- Videoconferencias médicas integradas con Whereby
+- Sistema de gestión documental seguro
+- Perfiles diferenciados para médicos y pacientes
+- Recuperación de contraseña automatizada
+- Diseño completamente responsive
 
-- **RESPONSIVE**
+## 🛠 Tecnologías Utilizadas
 
-## Demo
+- **Frontend**
+  - React.js
+  - Bootstrap
+  - HTML5
+  - CSS3
+  - JavaScript/ES6+
 
-![Demoweb](./DemoWeb.gif)
+- **Backend**
+  - Python
+  - SQLAlchemy
+  - Flask
 
-## Vista previa de los perfiles
-**Zona Privada Paciente**
-![Perfil_Paciente](./Perfil_Paciente.jpg)
-**Zona Privada Doctor**
-![Perfil_Doctor](./Perfil_Doctor.jpg)
+- **Servicios**
+  - Cloudinary (gestión de archivos)
+  - Whereby (videoconferencias)
+  - Sistemas de email automatizado
 
+- **Diseño**
+  - Figma
 
-## Autores
+## 🏥 Funcionalidades Detalladas
 
-- 👨🏻‍💻[@RubenMP](https://github.com/rubenmp92)
-- 🦊[@DianaPF](https://github.com/KitsuneDai)
-- 👨🏽‍💻[@JoseRA](https://github.com/josereimondez29)
+### HOME
+- Resumen general de servicios
+- Listado de especialidades médicas
+- Presentación del equipo médico
+- Información de contacto
 
-=======
-# MediConecta-Final
->>>>>>> 480e526d68e22ac15edbab2e6ab4060a328f2804
+### GESTIÓN DE USUARIOS
+- **Registro y Autenticación**
+  - Registro diferenciado para pacientes y médicos
+  - Email de bienvenida automático
+  - Sistema de recuperación de contraseña
+  - Gestión de perfil personal
+
+### ESPECIALIDADES MÉDICAS
+- Catálogo de servicios médicos
+- Información detallada de especialidades
+- Acceso directo a profesionales por especialidad
+
+### SISTEMA DE CITAS
+- Reserva de citas online
+- Recordatorios por email automáticos
+- Acceso directo a consulta virtual
+- Gestión de calendario médico
+
+### GESTIÓN DOCUMENTAL
+- Carga segura de documentos médicos
+- Acceso controlado a historiales
+- Compartición segura entre paciente y médico
+
+### SEGURIDAD
+- Autenticación robusta
+- Acceso controlado a perfiles
+- Protección de datos médicos
+- Cumplimiento de normativas de privacidad
+
+## 📱 Interfaces de Usuario
+
+### Portal del Paciente
+![Perfil del Paciente](./Perfil_Paciente.jpg)
+- Gestión de citas médicas
+- Acceso a documentación
+- Historial de consultas
+- Videoconferencias
+
+### Portal del Médico
+![Perfil del Doctor](./Perfil_Doctor.jpg)
+- Gestión de agenda
+- Acceso a historiales
+- Consultas virtuales
+- Gestión documental
+
+## 🎥 Demostración
+
+![Demo de la aplicación](./DemoWeb.gif)
+
+## 📊 Estructura del Proyecto
+![Diagrama de la aplicación](./diagrama_Mediconecta.png)
+
+## 👥 Autores
+
+- 👨🏻‍💻 [@RubenMP](https://github.com/rubenmp92) - Desarrollo Backend
+- 🦊 [@DianaPF](https://github.com/KitsuneDai) - Diseño UI/UX
+- 👨🏽‍💻 [@JoseRA](https://github.com/josereimondez29) - Desarrollo Frontend
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+
+---
+⌨️ Desarrollado con ❤️ por el equipo de MediConecta
